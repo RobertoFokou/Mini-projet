@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import AllTache from "./Services/AllTaches";
 import AddTache from "./Services/AddTache";
 import UpdateTache from "./Services/UpdateTache";
+import Inscription from "./Authentification/Inscription";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);
@@ -32,7 +33,8 @@ export default function Routing() {
     <TaskContext.Provider value={{ tache, add, deleteTask }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Accueil />} />
+          <Route path="/" element={<Inscription />} />
+          <Route path="/index" element={<Accueil />} />
           <Route path="/ajouter" element={<AddTasks />} />
           <Route path="/gerer" element={<AllTache />} />
           <Route path="/add" element={<AddTache />} />

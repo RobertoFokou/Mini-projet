@@ -109,7 +109,7 @@ export default function Taches({ titre, auteur, details, duree, taskId }) {
             id="outlined-basic"
             label="Durée "
             variant="outlined"
-            type="text"
+            type="number"
             value={updateDuree}
             onChange={(e) => setUpdateDuree(e.target.value)}
             // onBlur={() => setShow(false)}

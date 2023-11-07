@@ -1,13 +1,6 @@
 {
   "taches": [
     {
-      "titre": "Design des interfaces",
-      "auteur": "Defo defo",
-      "details": "production de la maquette",
-      "duree": "30",
-      "id": "1"
-    },
-    {
       "titre": "Developpeur fontend",
       "auteur": "Boris",
       "details": "Realisation",
@@ -25,8 +18,22 @@
       "titre": "dev",
       "auteur": "FOKOU Sarl",
       "details": "Beone Conseil",
-      "duree": "154",
+      "duree": "15",
       "id": "0e703f97-af41-4e7d-bb64-5924ad165fe1"
+    },
+    {
+      "titre": "dev",
+      "auteur": "Beone Conseil",
+      "details": "gkjhpfdhfdjkbnfdb",
+      "duree": "120",
+      "id": "72964d84-b9d3-4485-b628-fafc47130bea"
+    },
+    {
+      "titre": "Designer",
+      "auteur": "Designer",
+      "details": "Designer",
+      "duree": "-2",
+      "id": "d9b0ecd6-005a-494d-a54a-36e33a5a707b"
     }
   ],
   "utilisateurs": [
