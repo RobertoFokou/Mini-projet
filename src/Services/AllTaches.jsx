@@ -14,7 +14,6 @@ import Taches from "./Taches";
 export default function AllTache() {
   const tasks = useSelector((state) => state.tacheReducer);
   localStorage.setItem("dataSelect", JSON.stringify(tasks));
-  console.log(tasks);
   return (
     <div className="App">
       <h1>Liste des Taches API </h1>

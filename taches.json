@@ -2,7 +2,7 @@
   "taches": [
     {
       "titre": "Design des interfaces",
-      "auteur": "Roberto",
+      "auteur": "Defo defo",
       "details": "production de la maquette",
       "duree": "30",
       "id": "1"
@@ -10,7 +10,7 @@
     {
       "titre": "Developpeur fontend",
       "auteur": "Boris",
-      "details": "Realisation des interfaces users",
+      "details": "Realisation",
       "duree": "21",
       "id": "2"
     },
