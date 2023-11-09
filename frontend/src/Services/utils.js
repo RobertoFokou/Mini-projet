@@ -6,3 +6,5 @@ export const isEmpty = (value) => {
       (typeof value === "string" && value.trim().length === 0)
     );
   };
+
+  export const baseURL ='http://localhost:5000/api'

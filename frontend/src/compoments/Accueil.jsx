@@ -9,11 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Taks from "./Taks";
 import TaskContext from "./TaskContext";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 export default function Accueil() {
-  const taches = useSelector((state) => state.tacheReducer);
-  console.log(taches[0]);
+  // const taches = useSelector((state) => state.tacheReducer);
   const { tache, deleteTask } = useContext(TaskContext);
   return (
     <div className="App">

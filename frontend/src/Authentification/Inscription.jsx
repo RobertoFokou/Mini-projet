@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Button,
@@ -13,7 +14,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import React from "react";
+import "../styles/inscription.css";
+import axios from "axios";
+import { baseURL } from "../Services/utils";
+import { Link } from "react-router-dom";
+
 
 export default function Inscription() {
   const [nom, setNom] = useState("");
@@ -28,12 +33,87 @@ export default function Inscription() {
   const [nomMessage, setNomMessage] = useState(false);
   const [prenomMessage, setPrenomMessage] = useState(false);
   const [telMessage, setTelsMessage] = useState(false);
-  const [emailMessage, setEmailMessage] = useState(false);
+  // const [emailMessage, setEmailMessage] = useState(false);
   const [passMessage, setPassMessage] = useState(false);
   const [strongMessage, setStrongMessage] = useState(false);
   const [finalMessage, setFinaMessage] = useState(false);
   const [numExist, setNumExist] = useState(false);
-  const [EmailExist, setEmailExist] = useState(false);
+  // const [EmailExist, setEmailExist] = useState(false);
+
+  const handelPasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (e.target.value.length === "") {
+      setStrongMessage("veille saisir le mot de passe");
+    } else if (e.target.value.length < 5) {
+      setStrongMessage("mot de passe faible");
+    } else if (e.target.value.length < 8) {
+      setStrongMessage("mot de passe moyen");
+    } else {
+      setStrongMessage("Mot de passe fort");
+    }
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (
+      nom.length > 5 &&
+      telephone.length === 9 &&
+      password.length > 5 &&
+      password === passconfirm
+    ) {
+      const formdata = new FormData();
+      formdata.append("nom", nom);
+      formdata.append("prenom", prenom);
+      formdata.append("telephone", telephone);
+      formdata.append("email", email);
+      formdata.append("photo", photo);
+      formdata.append("genre", genre);
+      formdata.append("password", password);
+      axios
+        .post(`${baseURL}/users/add`, formdata, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.status === "success") {
+            setFinaMessage(true);
+            // navigate("/");
+          } else {
+            // navigate("/inscription");
+            console.log("erreur lors d'inscription ");
+            setNumExist(true);
+            setFinaMessage(false);
+          }
+        });
+      setFinaMessage(true);
+      setNumExist(false);
+    } else {
+      setFinaMessage(false);
+      if (nom.length <= 5) {
+        setNomMessage(true);
+      } else {
+        setNomMessage(false);
+      }
+      if (prenom.length <= 5) {
+        setPrenomMessage(true);
+      } else {
+        setPrenomMessage(false);
+      }
+      if (telephone.length !== 9) {
+        setTelsMessage(true);
+      } else {
+        setTelsMessage(false);
+      }
+
+      if (password !== passconfirm) {
+        setPassMessage(true);
+      } else {
+        setPassMessage(false);
+      }
+    }
+  }
 
   const paperStyle = { padding: "30px 20px", width: 350, margin: "20px auto" };
   const headerStyle = { margin: 0 };
@@ -51,6 +131,16 @@ export default function Inscription() {
             Utiliser ce formulaire pour créer votre compte
           </Typography>
         </Grid>
+        {numExist && (
+          <span style={{ color: "red" }}>
+            le nnumero de telephone existe deja
+          </span>
+        )}
+        {finalMessage && (
+          <span style={{ color: "#1bbd7e" }}>
+            Inscription Effectueée avec success
+          </span>
+        )}
         <form action="">
           <TextField
             value={nom}
@@ -59,7 +149,13 @@ export default function Inscription() {
             label="Nom : "
             variant="standard"
             placeholder="Entrer votre nom ici"
+            style={{ marginBottom: "20px" }}
           />
+          {nomMessage && (
+            <span style={{ color: "red" }}>
+              le nombre de caractere doit être supérieur à 5
+            </span>
+          )}
           <TextField
             value={prenom}
             onChange={(e) => setPrenom(e.target.value)}
@@ -67,7 +163,13 @@ export default function Inscription() {
             label="Prenom : "
             variant="standard"
             placeholder="Entrer votre prenom"
+            style={{ marginBottom: "20px" }}
           />
+          {prenomMessage && (
+            <span style={{ color: "red" }}>
+              le nombre de caractere doit être supérieur à 5
+            </span>
+          )}
           <TextField
             value={telephone}
             onChange={(e) => setTelephone(e.target.value)}
@@ -76,7 +178,13 @@ export default function Inscription() {
             variant="standard"
             type="number"
             placeholder="Votre numero de telephone"
+            style={{ marginBottom: "20px" }}
           />
+          {telMessage && (
+            <span style={{ color: "red" }}>
+              le nnumero de telephone est incorrect
+            </span>
+          )}
           <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -84,6 +192,7 @@ export default function Inscription() {
             label="Email : "
             variant="standard"
             placeholder="Votre adresse mail"
+            style={{ marginBottom: "20px" }}
           />
           <TextField
             value={photo}
@@ -93,13 +202,14 @@ export default function Inscription() {
             variant="standard"
             placeholder="photo de profil"
             type="file"
+            style={{ marginBottom: "20px" }}
           />
           <FormControl style={{ marginTop: 5 }}>
             <FormLabel id="demo-radio-buttons-group-label">Genre : </FormLabel>
             <RadioGroup
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
-              style={{ display: "initial" }}
+              style={{ display: "initial", marginBottom: "20px" }}
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="female"
               name="radio-buttons-group"
@@ -117,13 +227,23 @@ export default function Inscription() {
             </RadioGroup>
           </FormControl>
           <TextField
+            required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handelPasswordChange}
             fullWidth
             label="Mot de passe : "
             variant="standard"
             placeholder="votre mot de passe"
+            style={{ marginBottom: "20px" }}
           />
+          {prenomMessage && (
+            <span style={{ color: "red" }}>
+              le nombre de caractere doit être supérieur à 5
+            </span>
+          )}
+          {strongMessage && (
+            <span style={{ color: "#1bbd7e" }}>{strongMessage}</span>
+          )}
           <TextField
             value={passconfirm}
             onChange={(e) => setPassconfirm(e.target.value)}
@@ -131,15 +251,33 @@ export default function Inscription() {
             label="Confirmer mot de passe :"
             variant="standard"
             placeholder="Retapez le mot de passe"
+            style={{ marginBottom: "20px" }}
           />
+          {passMessage && (
+            <span style={{ color: "red" }}>
+              les mots de passes sont differents
+            </span>
+          )}
           <Button
+            onClick={handleSubmit}
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "40px", margin: "20px" }}
           >
-            Envoyer
+            S'inscrire
           </Button>
+          <Link to="/">
+          <Button
+            // onClick={handleSubmit}
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "40px", margin: "20px" }}
+          >
+            Se connecter
+          </Button>
+          </Link>
         </form>
       </Paper>
     </Grid>

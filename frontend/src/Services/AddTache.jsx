@@ -16,7 +16,7 @@ export default function AddTache() {
   const [details, setDeatails] = useState("");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
-  const [edit, setEdit] = useState(false);
+  // const [edit, setEdit] = useState(false);
   const handleClick = async (e) => {
     e.preventDefault();
     if (titre === "" || auteur === "" || duree === "" || details === "") {

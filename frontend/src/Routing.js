@@ -9,6 +9,7 @@ import AllTache from "./Services/AllTaches";
 import AddTache from "./Services/AddTache";
 import UpdateTache from "./Services/UpdateTache";
 import Inscription from "./Authentification/Inscription";
+import Connexion from "./Authentification/Connexion";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);
@@ -33,7 +34,8 @@ export default function Routing() {
     <TaskContext.Provider value={{ tache, add, deleteTask }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Inscription />} />
+          <Route path="/" element={<Connexion />} />
+          <Route path="/inscrire" element={<Inscription />} />
           <Route path="/index" element={<Accueil />} />
           <Route path="/ajouter" element={<AddTasks />} />
           <Route path="/gerer" element={<AllTache />} />
