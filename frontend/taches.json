@@ -4,7 +4,7 @@
       "titre": "Developpeur fontend",
       "auteur": "Boris",
       "details": "Realisation",
-      "duree": "21",
+      "duree": "20",
       "id": "2"
     },
     {
@@ -34,6 +34,13 @@
       "details": "Designer",
       "duree": "-2",
       "id": "d9b0ecd6-005a-494d-a54a-36e33a5a707b"
+    },
+    {
+      "titre": "dev",
+      "auteur": "Beone Conseil",
+      "details": "gkjhpfdhfdjkbnfdb",
+      "duree": "120",
+      "id": "4e258dd6-7446-4df2-8889-8cb1785e935c"
     }
   ],
   "utilisateurs": [

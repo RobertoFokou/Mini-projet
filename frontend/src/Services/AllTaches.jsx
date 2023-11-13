@@ -18,7 +18,7 @@ export default function AllTache() {
     <div className="App">
       <h1>Liste des Taches API </h1>
       <div>
-        <Link to="/">
+        <Link to="/index">
           <button
             type="button"
             style={{

@@ -22,7 +22,7 @@ export default function AddTasks() {
       setBad(false);
       setGood(true);
       setTimeout(() => {
-        navigate("/");
+        navigate("/index");
       }, 1000);
     }
   }

@@ -17,8 +17,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import "../styles/inscription.css";
 import axios from "axios";
 import { baseURL } from "../Services/utils";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Inscription() {
   const [nom, setNom] = useState("");
@@ -38,7 +37,13 @@ export default function Inscription() {
   const [strongMessage, setStrongMessage] = useState(false);
   const [finalMessage, setFinaMessage] = useState(false);
   const [numExist, setNumExist] = useState(false);
-  // const [EmailExist, setEmailExist] = useState(false);
+  const [genreMessage, setGenreMessage] = useState(false);
+const navigate = useNavigate()
+
+const handePhotoChange = (e) => {
+  // console.log(e.target.files[0]);
+  setPhoto(e.target.files[0]);
+};
 
   const handelPasswordChange = (e) => {
     setPassword(e.target.value);
@@ -79,7 +84,9 @@ export default function Inscription() {
           console.log(res.data);
           if (res.data.status === "success") {
             setFinaMessage(true);
-            // navigate("/");
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
           } else {
             // navigate("/inscription");
             console.log("erreur lors d'inscription ");
@@ -100,6 +107,11 @@ export default function Inscription() {
         setPrenomMessage(true);
       } else {
         setPrenomMessage(false);
+      }
+      if (genre.length === "") {
+        setGenreMessage(true);
+      } else {
+        setGenreMessage(false);
       }
       if (telephone.length !== 9) {
         setTelsMessage(true);
@@ -142,68 +154,6 @@ export default function Inscription() {
           </span>
         )}
         <form action="">
-          <TextField
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            fullWidth
-            label="Nom : "
-            variant="standard"
-            placeholder="Entrer votre nom ici"
-            style={{ marginBottom: "20px" }}
-          />
-          {nomMessage && (
-            <span style={{ color: "red" }}>
-              le nombre de caractere doit être supérieur à 5
-            </span>
-          )}
-          <TextField
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-            fullWidth
-            label="Prenom : "
-            variant="standard"
-            placeholder="Entrer votre prenom"
-            style={{ marginBottom: "20px" }}
-          />
-          {prenomMessage && (
-            <span style={{ color: "red" }}>
-              le nombre de caractere doit être supérieur à 5
-            </span>
-          )}
-          <TextField
-            value={telephone}
-            onChange={(e) => setTelephone(e.target.value)}
-            fullWidth
-            label="Telephone : "
-            variant="standard"
-            type="number"
-            placeholder="Votre numero de telephone"
-            style={{ marginBottom: "20px" }}
-          />
-          {telMessage && (
-            <span style={{ color: "red" }}>
-              le nnumero de telephone est incorrect
-            </span>
-          )}
-          <TextField
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            label="Email : "
-            variant="standard"
-            placeholder="Votre adresse mail"
-            style={{ marginBottom: "20px" }}
-          />
-          <TextField
-            value={photo}
-            onChange={(e) => setPhoto(e.target.value)}
-            fullWidth
-            label="photo : "
-            variant="standard"
-            placeholder="photo de profil"
-            type="file"
-            style={{ marginBottom: "20px" }}
-          />
           <FormControl style={{ marginTop: 5 }}>
             <FormLabel id="demo-radio-buttons-group-label">Genre : </FormLabel>
             <RadioGroup
@@ -226,13 +176,77 @@ export default function Inscription() {
               />
             </RadioGroup>
           </FormControl>
+          {genreMessage && <span style={{ color: "red" }}>Veuille choisir votre genre</span>}
+          <TextField
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+            fullWidth
+            label="Nom : "
+            variant="outlined"
+            placeholder="Entrer votre nom ici"
+            style={{ marginBottom: "20px" }}
+          />
+          {nomMessage && (
+            <span style={{ color: "red" }}>
+              le nombre de caractere doit être supérieur à 5
+            </span>
+          )}
+          <TextField
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
+            fullWidth
+            label="Prenom : "
+            variant="outlined"
+            placeholder="Entrer votre prenom"
+            style={{ marginBottom: "20px" }}
+          />
+          {prenomMessage && (
+            <span style={{ color: "red" }}>
+              le nombre de caractere doit être supérieur à 5
+            </span>
+          )}
+          <TextField
+            value={telephone}
+            onChange={(e) => setTelephone(e.target.value)}
+            fullWidth
+            label="Telephone : "
+            variant="outlined"
+            type="number"
+            placeholder="Votre numero de telephone"
+            style={{ marginBottom: "20px" }}
+          />
+          {telMessage && (
+            <span style={{ color: "red" }}>
+              le nnumero de telephone est incorrect
+            </span>
+          )}
+          <TextField
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            label="Email : "
+            variant="outlined"
+            placeholder="Votre adresse mail"
+            style={{ marginBottom: "20px" }}
+          />
+          <TextField
+            // value={photo}
+            onChange={handePhotoChange}
+            fullWidth
+            label="photo : "
+            variant="outlined"
+            placeholder="photo de profil"
+            type="file"
+            enctype="multipart/form-data"
+            style={{ marginBottom: "20px" }}
+          />
           <TextField
             required
             value={password}
             onChange={handelPasswordChange}
             fullWidth
             label="Mot de passe : "
-            variant="standard"
+            variant="outlined"
             placeholder="votre mot de passe"
             style={{ marginBottom: "20px" }}
           />
@@ -249,7 +263,7 @@ export default function Inscription() {
             onChange={(e) => setPassconfirm(e.target.value)}
             fullWidth
             label="Confirmer mot de passe :"
-            variant="standard"
+            variant="outlined"
             placeholder="Retapez le mot de passe"
             style={{ marginBottom: "20px" }}
           />
@@ -263,20 +277,24 @@ export default function Inscription() {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: "40px", margin: "20px" }}
+            style={{ marginTop: "40px", margin: "20px", borderRadius: "20px" }}
           >
             S'inscrire
           </Button>
           <Link to="/">
-          <Button
-            // onClick={handleSubmit}
-            type="submit"
-            variant="contained"
-            color="primary"
-            style={{ marginTop: "40px", margin: "20px" }}
-          >
-            Se connecter
-          </Button>
+            <Button
+              // onClick={handleSubmit}
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{
+                marginTop: "40px",
+                margin: "20px",
+                borderRadius: "20px",
+              }}
+            >
+              Se connecter
+            </Button>
           </Link>
         </form>
       </Paper>

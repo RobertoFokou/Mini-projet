@@ -5,9 +5,9 @@ const connexion = new mongoose.Schema({
   prenom: String,
   telephone: { type: Number, require: true, unique: true },
   email: { type: String, require: true, unique: true },
-  photo: { type: String, require: true },
+  photo: { type: String },
   genre: String,
-  password: String
+  password: String,
 });
 
 module.exports = mongoose.model("utilisateurs", connexion, "Developpeur");

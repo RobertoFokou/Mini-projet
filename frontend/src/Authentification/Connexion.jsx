@@ -33,7 +33,7 @@ export default function Connexion() {
       .then((res) => {
         if (res.data.message === "success") {
           const token = res.data.data.token;
-          const login = res.data.data.Utilisateur
+          const login = res.data.data.Utilisateur;
           localStorage.setItem("login", JSON.stringify(login));
           Cookies.set("token", token);
           console.log(token);
@@ -43,7 +43,7 @@ export default function Connexion() {
           }, 1000);
           // window.location.reload();
         } else {
-          setError(true)
+          setError(true);
           setTimeout(() => {
             navigate("/inscrire");
           }, 1000);
@@ -65,7 +65,11 @@ export default function Connexion() {
         </Grid>
         {message && (
           <span
-            style={{ color: "1bbd7e", fontSize: "20px", alignItems: "center" }}
+            style={{
+              backgroundColor: "#1bbd7e",
+              fontSize: "20px",
+              alignItems: "center",
+            }}
           >
             {" "}
             vous êtes connecté{" "}
@@ -86,23 +90,21 @@ export default function Connexion() {
             onChange={(e) => setUnique(e.target.value)}
             fullWidth
             label=" Telephone ou Email : "
-            variant="standard"
+            variant="outlined"
             placeholder="Votre adresse mail"
             style={{ marginTop: "20px" }}
           />
           <TextField
             required
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             label="Mot de passe : "
-            variant="standard"
+            variant="outlined"
             placeholder="votre mot de passe"
             style={{ marginTop: "35px" }}
           />
-          {/* {strongMessage && (
-          <span style={{ color: "#1bbd7e" }}>{strongMessage}</span>
-        )} */}
           <Grid
             align="center"
             style={{

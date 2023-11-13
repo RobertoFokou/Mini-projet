@@ -45,14 +45,7 @@ const getOneUser = (req, res) => {
 const findUser = async function (req, res) {
   console.log(req.body);
   const { unique, password } = req.body;
-  const payload =
-    typeof unique === "string"
-      ? {
-          email: unique,
-        }
-      : {
-          telephone: unique,
-        };
+  const payload =typeof unique === "string"? {email: unique, }: {telephone: unique,};
   try {
     const user = await Utilisateur.findOne(payload);
     if (user && (await bcrypt.compare(password, user.password))) {

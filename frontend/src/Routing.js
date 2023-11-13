@@ -10,6 +10,7 @@ import AddTache from "./Services/AddTache";
 import UpdateTache from "./Services/UpdateTache";
 import Inscription from "./Authentification/Inscription";
 import Connexion from "./Authentification/Connexion";
+import Navbar from "./Dashboard/Navbar";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);
@@ -41,6 +42,7 @@ export default function Routing() {
           <Route path="/gerer" element={<AllTache />} />
           <Route path="/add" element={<AddTache />} />
           <Route path="/gerer/update/:id" element={<UpdateTache />} />
+          <Route path="/dashbord" element={<Navbar />} />
         </Routes>
       </BrowserRouter>
     </TaskContext.Provider>

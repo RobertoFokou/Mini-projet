@@ -14,11 +14,14 @@ import TaskContext from "./TaskContext";
 export default function Accueil() {
   // const taches = useSelector((state) => state.tacheReducer);
   const { tache, deleteTask } = useContext(TaskContext);
+  const data = JSON.parse(localStorage.getItem("login"));
+  console.log(data);
   return (
     <div className="App">
-      <h1>Liste des Taches </h1>
+      <p>Bienvenue monsieur <strong>{data.prenom}</strong></p>
+      <h2>Liste des Taches </h2>
       <div>
-        <Link to="ajouter">
+        <Link to="/ajouter">
           <button
             type="button"
             style={{
@@ -33,7 +36,22 @@ export default function Accueil() {
             Ajouter une nouvelle tache
           </button>
         </Link>
-        <Link to="gerer">
+        <Link to="/gerer">
+          <button
+            type="button"
+            style={{
+              border: "none",
+              cursor: "pointer",
+              padding: "8px",
+              color: "blue",
+              fontSize: "14px",
+              margin: "10px",
+            }}
+          >
+            Gerer les tâches d'API
+          </button>
+        </Link>
+        <Link to="/dashbord">
           <button
             type="button"
             style={{
@@ -44,7 +62,7 @@ export default function Accueil() {
               fontSize: "14px",
             }}
           >
-            Gerer les tâches d'API
+            Gerer les tâches BD
           </button>
         </Link>
         <br />
