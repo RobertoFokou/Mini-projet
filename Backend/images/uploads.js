@@ -21,7 +21,7 @@ var upload = multer({
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg") {
       callback(null, true);
     } else {
-      console.log("le format d'image est incorrex=ct");
+      console.log("le format d'image est incorrect");
       callback(null, false);
     }
   },

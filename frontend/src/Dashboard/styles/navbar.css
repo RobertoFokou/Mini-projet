@@ -1,0 +1,40 @@
+.container {
+  background-color: #05153f;
+  color: white;
+  width: 15vw;
+  height: 100vh;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  & li {
+    color: white;
+    padding: 18px;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+
+    & i {
+      font-size: 20px;
+    }
+  }
+
+  & li:hover {
+    background-color: rgb(17, 236, 9);
+    color: rgb(8, 238, 219);
+    border-top-left-radius: 50px;
+    border-top-right-radius: -20px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: -10px;
+  }
+
+  & #premium {
+    position: relative;
+    background-color: white;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom-right-radius: 10px;
+    margin-top: 50%;
+  }
+}
