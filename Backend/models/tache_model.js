@@ -4,7 +4,8 @@ const tache = new mongoose.Schema({
     titre : String,
     auteur: String,
     details: String,
-    duree: Number
+    duree: Number,
+    telephone: Number
 })
 
 module.exports = mongoose.model("taches", tache, "Gestion_taches")

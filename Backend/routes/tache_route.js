@@ -1,8 +1,13 @@
-const express = require("express")
-const router = express.Router()
-const {route} = require("../app")
-const { createTache } = require("../controlleurs/tache_contoller")
+const express = require("express");
+const router = express.Router();
+const {
+  createTache,
+  getAllTaches,
+  deleteOneTache,
+} = require("../controlleurs/tache_contoller");
 
-router.route("/add").post(createTache)
+router.route("/add").post(createTache);
+router.route("/").get(getAllTaches);
+router.route("/:id").delete(deleteOneTache)
 
-module.exports = route;
+module.exports = router;

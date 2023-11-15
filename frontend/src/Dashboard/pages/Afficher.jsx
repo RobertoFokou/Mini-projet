@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,21 +7,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Taks from "./Taks";
-import TaskContext from "./TaskContext";
-// import { useSelector } from "react-redux";
+import { isEmpty } from "../../Services/utils";
+import { useSelector } from "react-redux";
+// import Taches from "./Taches";
+import TachesBd from "./TachesAPI";
 
-export default function Accueil() {
-  // const taches = useSelector((state) => state.tacheReducer);
-  const { tache, deleteTask } = useContext(TaskContext);
-  const data = JSON.parse(localStorage.getItem("login"));
-  console.log(data.telephone);
+export default function AfficherTaches() {
+  const tasks = useSelector((state) => state.tacheReducerAPI);
+  localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
   return (
     <div className="App">
-      <p>Bienvenue monsieur <strong>{data.prenom}</strong></p>
-      <h2>Liste des Taches </h2>
+      <h1>Liste des Taches API </h1>
       <div>
-        <Link to="/ajouter">
+        <Link to="/index">
           <button
             type="button"
             style={{
@@ -33,25 +31,10 @@ export default function Accueil() {
               margin: "10px",
             }}
           >
-            Ajouter une nouvelle tache
+            Retour
           </button>
         </Link>
-        <Link to="/gerer">
-          <button
-            type="button"
-            style={{
-              border: "none",
-              cursor: "pointer",
-              padding: "8px",
-              color: "blue",
-              fontSize: "14px",
-              margin: "10px",
-            }}
-          >
-            Gerer les tâches d'API
-          </button>
-        </Link>
-        <Link to="/dashbord">
+        <Link to="/add">
           <button
             type="button"
             style={{
@@ -62,7 +45,7 @@ export default function Accueil() {
               fontSize: "14px",
             }}
           >
-            Gerer les tâches BD
+            Ajouter une donnée
           </button>
         </Link>
         <br />
@@ -73,22 +56,27 @@ export default function Accueil() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Nom</TableCell>
-                <TableCell>Titre </TableCell>
-                <TableCell>completed </TableCell>
+                <TableCell>Titre</TableCell>
+                <TableCell>Auteur</TableCell>
+                <TableCell>Details </TableCell>
+                <TableCell>Durée</TableCell>
                 <TableCell>supprimer</TableCell>
+                <TableCell>Modifier</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tache.map((e) => (
-                <Taks
-                  key={e.id}
-                  titre={e.title}
-                  nom={e.nom}
-                  taskId={e.id}
-                  supp={deleteTask}
-                />
-              ))}
+              {!isEmpty(tasks) &&
+                tasks.map((e) => (
+                  <TachesBd
+                    key={e.id}
+                    titre={e.titre}
+                    auteur={e.auteur}
+                    details={e.details}
+                    duree={e.duree}
+                    taskId={e.id}
+                    // supp={deletetTaches}
+                  />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

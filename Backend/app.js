@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const RouteUser = require("./routes/user_route");
+const RouteTaches = require("./routes/tache_route")
 require("dotenv").config();
 
 mongoose
@@ -33,6 +34,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/api/users/", RouteUser);
+app.use("/api/taches/", RouteTaches);
 app.use("/uploads/", express.static("uploads"));
 
 module.exports = app

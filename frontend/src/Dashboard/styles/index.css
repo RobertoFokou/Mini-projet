@@ -1,16 +1,16 @@
 .informe {
     display: flex;
-  
+    gap: 1px;
+
     & .navbar {
-      height: 100vh;
-      width: 19%;
+      
+      height: 100%;
+      /* width: 20%; */
     }
   
     & .body-container {
-      border: 2px solid rgba(0, 0, 0, 0.25);
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-      padding-left: 20px;
-      width: 100%;
+      width: 85vw;
       overflow: auto;
       height: 100vh;
 
@@ -21,10 +21,8 @@
       }
   
       & .section_clients {
-        margin-top: 10px;
-        overflow: hidden;
+        margin-top: 30px;
         padding: 10px;
-        /* border: 2px solid red; */
       }
   
     }

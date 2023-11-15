@@ -4,13 +4,13 @@ import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import { Link } from "react-router-dom";
-import { deleteTaches, editTaches, getTaches } from "../actions/tache.action";
+import { Link} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import "../styles/Taches.css";
+import "../styles/TachesAPI.css";
 import { TextField } from "@mui/material";
+import { deleteTachesAPI, editTachesAPI, getOneTachesAPI } from "../../actions/API_taches";
 
-export default function Taches({ titre, auteur, details, duree, taskId }) {
+export default function TachesBd({ titre, auteur, details, duree, taskId }) {
   const dispatch = useDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [updateTitre, setUpdateTitre] = useState(titre);
@@ -26,27 +26,27 @@ export default function Taches({ titre, auteur, details, duree, taskId }) {
     setUpdateAuteur(auteur);
     setShow(false);
   };
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    const updateTaches = {
-      titre: updateTitre,
-      auteur: updateAuteur,
-      details: updateDetails,
-      duree: updateDuree,
-      id: taskId,
-    };
-    await dispatch(editTaches(updateTaches));
-    dispatch(getTaches());
-    // window.location.reload();
-    resetForm();
-  };
+  // const handleUpdate = async (e) => {
+  //   e.preventDefault();
+  //   const updateTaches = {
+  //     titre: updateTitre,
+  //     auteur: updateAuteur,
+  //     details: updateDetails,
+  //     duree: updateDuree,
+  //     id: taskId
+  //   };
+  //   await dispatch(editTaches(updateTaches));
+  //   dispatch(getTaches());
+  //   // window.location.reload();
+  //   resetForm ()
+  // };
 
   const handleDeleteClick = () => {
     setConfirmDelete(true);
   };
 
   const handleConfirmDelete = () => {
-    dispatch(deleteTaches(taskId));
+    dispatch(deleteTachesAPI(taskId));
     setConfirmDelete(false);
   };
 
@@ -152,7 +152,7 @@ export default function Taches({ titre, auteur, details, duree, taskId }) {
           </Link>
         )}
         {show && (
-          <span onClick={handleUpdate} style={{ cursor: "pointer" }}>
+          <span style={{ cursor: "pointer" }}>
             <AssignmentTurnedInIcon />
           </span>
         )}

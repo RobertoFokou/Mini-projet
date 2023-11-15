@@ -1,13 +1,6 @@
 {
   "taches": [
     {
-      "titre": "Developpeur fontend",
-      "auteur": "Boris",
-      "details": "Realisation",
-      "duree": "20",
-      "id": "2"
-    },
-    {
       "titre": "dev",
       "auteur": "yoss steve",
       "details": "Design ",

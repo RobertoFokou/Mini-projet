@@ -1,22 +1,26 @@
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/navbar.css"
-
+import "../styles/navbar.css";
+import logo from "../../images/logo.jpeg";
 export default function Navbar() {
   const navigate = useNavigate();
   function deconnecter() {
     navigate("/");
     Cookies.remove("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("login");
     window.location.reload();
   }
   const [selectedItem, setSelectedItem] = useState(1);
   return (
     <div className="container">
       <div>
+        <div className="logo">
+          <img src={logo} alt="logo" />
+          <p>GateWayTACHES</p>
+        </div>
         <ul>
-          <Link to="All_clients" onClick={() => setSelectedItem(2)}>
+          <Link to="all_taches" onClick={() => setSelectedItem(2)}>
             <li
               style={{
                 backgroundColor: selectedItem === 2 ? "red" : "#05153f",
@@ -26,7 +30,7 @@ export default function Navbar() {
               <i className="fa-solid fa-user-secret"></i>Accueil
             </li>
           </Link>
-          <Link to="ReservationChef">
+          <Link to="ajout">
             <li
               style={{
                 backgroundColor: selectedItem === 3 ? "red" : "#05153f",
