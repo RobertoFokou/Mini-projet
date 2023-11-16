@@ -13,6 +13,7 @@ import Taches from "./Taches";
 
 export default function AllTache() {
   const tasks = useSelector((state) => state.tacheReducer);
+  console.log(tasks);
   localStorage.setItem("dataSelect", JSON.stringify(tasks));
   return (
     <div className="App">

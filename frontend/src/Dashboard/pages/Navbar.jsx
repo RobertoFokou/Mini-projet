@@ -8,7 +8,7 @@ export default function Navbar() {
   function deconnecter() {
     navigate("/");
     Cookies.remove("token");
-    localStorage.removeItem("login");
+    // localStorage.removeItem("login");
     window.location.reload();
   }
   const [selectedItem, setSelectedItem] = useState(1);

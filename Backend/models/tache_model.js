@@ -2,10 +2,15 @@ const mongoose = require("mongoose")
 
 const tache = new mongoose.Schema({
     titre : String,
-    auteur: String,
+    origine: String,
     details: String,
     duree: Number,
-    telephone: Number
+    auteur: String,
+    developpeur:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref : "utilisateurs"
+    }
+
 })
 
 module.exports = mongoose.model("taches", tache, "Gestion_taches")

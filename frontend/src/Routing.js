@@ -14,6 +14,7 @@ import Header from "./Dashboard/pages/Header";
 import Index from "./Dashboard/pages/Index";
 import AjouterTaches from "./Dashboard/pages/Ajouter";
 import AfficherTaches from "./Dashboard/pages/Afficher";
+import ModiferTache from "./Dashboard/pages/Modifier";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);
@@ -49,6 +50,7 @@ export default function Routing() {
           <Route path="/dashbord" element={ <> <Index /> </>} >
             <Route path="ajout" element={<AjouterTaches/>} />
             <Route path="all_taches" element={<AfficherTaches/>} />
+            <Route path="update/:id" element={<ModiferTache/>} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -6,9 +6,12 @@ export const EDIT_TACHE_API = "EDIT_TACHE_API";
 export const GETONE_TACHE_API = "GETONE_TACHE_API";
 export const DELETE_TACHE_API = "DELETE_TACHE_API";
 
+const user = JSON.parse(localStorage.getItem("login"));
+const id = user._id;
 export const getTachesAPI = () => {
   return (dispatch) => {
-    return axios.get("http://localhost:5000/api/taches").then((res) => {
+    return axios.get(`http://localhost:5000/api/taches/${id}`).then((res) => {
+      console.log(res.data);
       dispatch({ type: GET_TACHE_API, payload: res.data });
     });
   };
@@ -25,10 +28,12 @@ export const getOneTachesAPI = (id) => {
 
 export const addTachesAPI = (data) => {
   return (dispatch) => {
-    return axios.post("http://localhost:5000/api/taches/add", data).then((res) => {
-      console.log(res.data);
-      dispatch({ type: ADD_TACHE_API, payload: data });
-    });
+    return axios
+      .post("http://localhost:5000/api/taches/add", data)
+      .then((res) => {
+        console.log(res.data);
+        dispatch({ type: ADD_TACHE_API, payload: data });
+      });
   };
 };
 

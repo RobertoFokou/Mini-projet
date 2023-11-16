@@ -2,13 +2,6 @@
   "taches": [
     {
       "titre": "dev",
-      "auteur": "yoss steve",
-      "details": "Design ",
-      "duree": "10",
-      "id": "b4b6edcb-c92e-4027-9956-6db3c7343a8e"
-    },
-    {
-      "titre": "dev",
       "auteur": "FOKOU Sarl",
       "details": "Beone Conseil",
       "duree": "15",
@@ -29,11 +22,10 @@
       "id": "d9b0ecd6-005a-494d-a54a-36e33a5a707b"
     },
     {
-      "titre": "dev",
-      "auteur": "Beone Conseil",
-      "details": "gkjhpfdhfdjkbnfdb",
-      "duree": "120",
-      "id": "4e258dd6-7446-4df2-8889-8cb1785e935c"
+      "titre": "Designer",
+      "auteur": "jkd;wfebcebcjdc",
+      "details": "jkd;wfebcebcjdc",
+      "id": "f5718633-8805-4afe-b165-9fab99ee9529"
     }
   ],
   "utilisateurs": [

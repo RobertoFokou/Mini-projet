@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 import TachesBd from "./TachesAPI";
 
 export default function AfficherTaches() {
+  const user = JSON.parse(localStorage.getItem("login"));
+  console.log(user.nom);
   const tasks = useSelector((state) => state.tacheReducerAPI);
   localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
   return (
@@ -57,9 +59,10 @@ export default function AfficherTaches() {
             <TableHead>
               <TableRow>
                 <TableCell>Titre</TableCell>
-                <TableCell>Auteur</TableCell>
+                <TableCell>Oringine</TableCell>
                 <TableCell>Details </TableCell>
                 <TableCell>Durée</TableCell>
+                <TableCell>Auteur</TableCell>
                 <TableCell>supprimer</TableCell>
                 <TableCell>Modifier</TableCell>
               </TableRow>
@@ -73,7 +76,8 @@ export default function AfficherTaches() {
                     auteur={e.auteur}
                     details={e.details}
                     duree={e.duree}
-                    taskId={e.id}
+                    origine={user.nom}
+                    taskId={e._id}
                     // supp={deletetTaches}
                   />
                 ))}

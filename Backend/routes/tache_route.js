@@ -7,7 +7,7 @@ const {
 } = require("../controlleurs/tache_contoller");
 
 router.route("/add").post(createTache);
-router.route("/").get(getAllTaches);
+router.route("/:id").get(getAllTaches);
 router.route("/:id").delete(deleteOneTache)
 
 module.exports = router;

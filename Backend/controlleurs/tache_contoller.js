@@ -17,7 +17,8 @@ const createTache = async (req, res) => {
 
 // Afficher toutes les taches
 const getAllTaches = async (req, res) => {
-  const tache = await Tache.find();
+  const id = req.params.id
+  const tache = await Tache.find({developpeur: id});
   res.send(tache);
 };
 
