@@ -1,30 +1,54 @@
 const Tache = require("../models/tache_model");
 
 // Creation et enregistrement d'une tache
+// const createTache = async (req, res) => {
+//   const tache = new Tache(req.body);
+//   try {
+//     const result = await tache.save();
+//     // console.log(result);
+//     res.status(201).send({ data: result });
+//   } catch (error) {
+//     res.status(500).send({
+//       error: error,
+//       message: "erreur lors d'ajour de la tache",
+//     });
+//   }
+// };
 
-const createTache = async (req, res) => {
+const createTache  = (req, res) => {
   const tache = new Tache(req.body);
-  try {
-    const result = await tache.save();
-    res.status(201).send({ data: result });
-  } catch (error) {
-    res.status(500).send({
-      error: error,
-      message: "erreur lors d'ajour de la tache",
+  tache
+    .save()
+    .then((data) => {
+      console.log("nouvelle tache enregistré avec succès");
+      data.populate("developpeur").then((result) => {
+        res.status(201).send(result);
+        console.log(result);
+      });
+    })
+    .catch((error) => {
+      res.send({ error: error, msg: "tache pas enregistré" });
     });
-  }
 };
 
-// Afficher toutes les taches
-const getAllTaches = async (req, res) => {
+// Afficher toutes les taches en fonction d'un utilisateur unique
+const getOneTaches = async (req, res) => {
   const id = req.params.id
-  const tache = await Tache.find({developpeur: id});
+  const tache = await Tache.find({developpeur: id}).populate("developpeur");
   res.send(tache);
 };
+
+
+//Afficher toutes les taches de la base de donnée
+const getAllTaches = async (req, res) =>{
+  const tache = await Tache.find().populate("developpeur")
+  res.send(tache)
+} 
 
 // supprimer une tache
 const deleteOneTache = async (req, res) => {
   const tacheId = req.params.id;
+  console.log(tacheId);
   try {
     await Tache.findByIdAndRemove(tacheId);
     console.log("suppression éffectuée avec success");
@@ -35,8 +59,33 @@ const deleteOneTache = async (req, res) => {
   }
 };
 
+// Mettre à jour les données
+
+const UpdateTache = async(req, res) =>{
+  const tacheId = req.params.id
+  const data = req.body
+  try {
+    const tache = await Tache.findById(tacheId)
+    if(!tache){
+      console.log("aucune tache trouvée à cet identifiant");
+      return res.status(400).json({Error})
+    }
+    tache.set(data);
+    tache.updateOne({_id: tacheId}, data)
+    await tache.save()
+    console.log("la tâche a été mise à jour avec succès");
+    res.status(200).json(tache)
+  } catch (error) {
+    console.log(error);
+    console.log("echec de la mise à jour");
+    return res.status(400).json({error})
+  }
+}
+
 module.exports = {
   createTache,
-  getAllTaches,
+  getOneTaches,
   deleteOneTache,
+  UpdateTache,
+  getAllTaches
 };

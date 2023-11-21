@@ -14,12 +14,14 @@ import TachesBd from "./TachesAPI";
 
 export default function AfficherTaches() {
   const user = JSON.parse(localStorage.getItem("login"));
-  console.log(user.nom);
   const tasks = useSelector((state) => state.tacheReducerAPI);
   localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
   return (
     <div className="App">
-      <h1>Liste des Taches API </h1>
+      <h1>
+        Nombre total de tâche :{" "}
+        <span style={{ color: "red" }}> {tasks.length}</span>
+      </h1>
       <div>
         <Link to="/index">
           <button
@@ -76,7 +78,7 @@ export default function AfficherTaches() {
                     auteur={e.auteur}
                     details={e.details}
                     duree={e.duree}
-                    origine={user.nom}
+                    origine={e.developpeur.nom}
                     taskId={e._id}
                     // supp={deletetTaches}
                   />

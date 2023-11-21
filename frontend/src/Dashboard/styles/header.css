@@ -13,7 +13,6 @@
 }
 
 .welcome {
-  /* border: 2px solid blue; */
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -74,7 +73,7 @@
       height: 30px;
       flex-shrink: 0;
       margin-top: 10px;
-      border: 1px solid white;
+      border: 1px solid rgb(160, 155, 155);
       border-radius: 50px;
     }
   }

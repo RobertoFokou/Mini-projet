@@ -17,6 +17,14 @@ export default function AddTache() {
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
   // const [edit, setEdit] = useState(false);
+
+  const handleChangeDuree = (e) => {
+    let value = e.target.value;
+    if (value < 0) {
+      value = 0;
+    }
+    setDuree(value);
+  };
   const handleClick = async (e) => {
     e.preventDefault();
     if (titre === "" || auteur === "" || duree === "" || details === "") {
@@ -82,7 +90,7 @@ export default function AddTache() {
           variant="outlined"
           type="number"
           value={duree}
-          onChange={(e) => setDuree(e.target.value)}
+          onChange={handleChangeDuree}
         />
         <br />
         <Button

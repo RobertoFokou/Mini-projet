@@ -40,8 +40,8 @@ export default function Connexion() {
           setMessage(true);
           setTimeout(() => {
             navigate("/index");
+            window.location.reload();
           }, 1000);
-          // window.location.reload();
         } else {
           setError(true);
           setTimeout(() => {

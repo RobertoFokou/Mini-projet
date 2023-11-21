@@ -15,7 +15,6 @@ export default function Accueil() {
   // const taches = useSelector((state) => state.tacheReducer);
   const { tache, deleteTask } = useContext(TaskContext);
   const data = JSON.parse(localStorage.getItem("login"));
-  console.log(data.telephone);
   return (
     <div className="App">
       <p>Bienvenue monsieur <strong>{data.prenom}</strong></p>

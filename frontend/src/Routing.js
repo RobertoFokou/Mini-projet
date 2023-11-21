@@ -10,11 +10,10 @@ import AddTache from "./Services/AddTache";
 import UpdateTache from "./Services/UpdateTache";
 import Inscription from "./Authentification/Inscription";
 import Connexion from "./Authentification/Connexion";
-import Header from "./Dashboard/pages/Header";
-import Index from "./Dashboard/pages/Index";
-import AjouterTaches from "./Dashboard/pages/Ajouter";
-import AfficherTaches from "./Dashboard/pages/Afficher";
-import ModiferTache from "./Dashboard/pages/Modifier";
+import Index from "./Dashboard/Devellopeurs/Index";
+import AjouterTaches from "./Dashboard/Devellopeurs/Ajouter";
+import AfficherTaches from "./Dashboard/Devellopeurs/Afficher";
+import ModiferTache from "./Dashboard/Devellopeurs/Modifier";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);

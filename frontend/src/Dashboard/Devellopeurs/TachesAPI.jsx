@@ -13,7 +13,6 @@ import {
   editTachesAPI,
   getTachesAPI,
 } from "../../actions/API_taches";
-import { baseURL } from "../../Services/utils";
 import axios from "axios";
 
 export default function TachesBd({
@@ -30,7 +29,6 @@ export default function TachesBd({
   const [updateDetails, setUpdateDetail] = useState(details);
   const [updateDuree, setUpdateDuree] = useState(duree);
   const [updateAuteur, setUpdateAuteur] = useState(auteur);
-  const [updateOrigine, setUpdateOrigine] = useState(origine);
   const [show, setShow] = useState(false);
 
   const resetForm = () => {
@@ -40,20 +38,20 @@ export default function TachesBd({
     setUpdateAuteur(auteur);
     setShow(false);
   };
-  // const handleUpdate = async (e) => {
-  //   e.preventDefault();
-  //   const updateTaches = {
-  //     titre: updateTitre,
-  //     auteur: updateAuteur,
-  //     details: updateDetails,
-  //     duree: updateDuree,
-  //     id: taskId
-  //   };
-  //   await dispatch(editTaches(updateTaches));
-  //   dispatch(getTaches());
-  //   // window.location.reload();
-  //   resetForm ()
-  // };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const updateTaches = {
+      titre: updateTitre,
+      auteur: updateAuteur,
+      details: updateDetails,
+      duree: updateDuree,
+      id: taskId,
+    };
+    await dispatch(editTachesAPI(updateTaches));
+    dispatch(getTachesAPI());
+    window.location.reload();
+    resetForm();
+  };
 
   const handleDeleteClick = () => {
     setConfirmDelete(true);
@@ -64,6 +62,7 @@ export default function TachesBd({
       .delete(`http://localhost:5000/api/taches/${id}`)
       .then((res) => {
         console.log("suppression reussie");
+        console.log(id);
       })
       .catch((error) => {
         console.log("erreur lors la suppression");
@@ -73,7 +72,8 @@ export default function TachesBd({
   };
 
   const handleConfirmDelete = () => {
-    removeItem(taskId)
+    removeItem(taskId);
+    window.location.reload();
     dispatch(deleteTachesAPI(taskId));
     dispatch(getTachesAPI());
     setConfirmDelete(false);
@@ -146,21 +146,7 @@ export default function TachesBd({
         )}
         {!show && <span onDoubleClick={() => setShow(true)}>{duree}</span>}
       </TableCell>
-      <TableCell style={{ cursor: "pointer" }}>
-        {show && (
-          <TextField
-            className="input-field"
-            id="outlined-basic"
-            label="Durée "
-            variant="outlined"
-            type="text"
-            value={updateOrigine}
-            onChange={(e) => setUpdateOrigine(e.target.value)}
-            // onBlur={() => setShow(false)}
-          />
-        )}
-        {!show && <span onDoubleClick={() => setShow(true)}>{origine}</span>}
-      </TableCell>
+      <TableCell>{origine}</TableCell>
       <TableCell>
         {confirmDelete ? (
           <div className="dialog-overlay" onClick={handleCancelDelete}>
@@ -196,7 +182,7 @@ export default function TachesBd({
           </Link>
         )}
         {show && (
-          <span style={{ cursor: "pointer" }}>
+          <span style={{ cursor: "pointer" }} onClick={handleUpdate}>
             <AssignmentTurnedInIcon />
           </span>
         )}

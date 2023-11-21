@@ -8,6 +8,7 @@ const connexion = new mongoose.Schema({
   photo: { type: String },
   genre: String,
   password: String,
+  privilege : {type: String, default: "Developpeur"}
 });
 
 module.exports = mongoose.model("utilisateurs", connexion, "Developpeur");
