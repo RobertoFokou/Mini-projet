@@ -45,7 +45,8 @@ const getOneUser = (req, res) => {
 const findUser = async function (req, res) {
   console.log(req.body);
   const { unique, password } = req.body;
-  const payload =typeof unique === "string"? {email: unique, }: {telephone: unique,};
+  const payload =
+    typeof unique === "string" ? { email: unique } : { telephone: unique };
   try {
     const user = await Utilisateur.findOne(payload);
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -84,8 +85,31 @@ const findUser = async function (req, res) {
   }
 };
 
+// Mettre à jour un utilisateur
+const UpdateUser = async (req, res) => {
+  const userId = req.params.id;
+  const data = req.body;
+  try {
+    const user = await Utilisateur.findById(userId);
+    if (!user) {
+      console.log("aucun utilisateur trouvé à cet identifiant");
+      return res.status(400).json({ Error });
+    }
+    user.set(data);
+    user.updateOne({ _id: userId }, data);
+    await user.save();
+    console.log("la tâche a été mise à jour avec succès");
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    console.log("echec de la mise à jour");
+    return res.status(400).json({ error });
+  }
+};
+
 module.exports = {
   createUser,
   getOneUser,
   findUser,
+  UpdateUser,
 };

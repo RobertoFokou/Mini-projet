@@ -4,10 +4,11 @@
 }
 
 .global {
-  margin-top: -19px;
+  top: 0;
   padding: 15px;
   background-color: #063970;
   height: 100%;
+  /* width: 95%; */
   align-items: center;
   text-align: center;
 }

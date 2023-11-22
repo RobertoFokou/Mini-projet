@@ -1,7 +1,7 @@
 .container {
   background-color: #05153f;
   color: white;
-  width: 15vw;
+  /* width: 15vw; */
   height: 100vh;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

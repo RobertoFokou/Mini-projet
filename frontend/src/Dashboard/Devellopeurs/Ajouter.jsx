@@ -62,6 +62,7 @@ export default function AjouterTaches() {
         });
       setTimeout(() => {
         navigate("/dashbord/all_taches");
+        window.location.reload();
       }, 1000);
     }
   };

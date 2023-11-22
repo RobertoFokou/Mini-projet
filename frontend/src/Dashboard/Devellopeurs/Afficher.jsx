@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import TachesBd from "./TachesAPI";
 
 export default function AfficherTaches() {
-  const user = JSON.parse(localStorage.getItem("login"));
+  // const user = JSON.parse(localStorage.getItem("login"));
   const tasks = useSelector((state) => state.tacheReducerAPI);
   localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
   return (
@@ -58,15 +58,15 @@ export default function AfficherTaches() {
       <div>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead>
+            <TableHead style={{ backgroundColor: "red" }}>
               <TableRow>
-                <TableCell>Titre</TableCell>
-                <TableCell>Oringine</TableCell>
-                <TableCell>Details </TableCell>
-                <TableCell>Durée</TableCell>
-                <TableCell>Auteur</TableCell>
-                <TableCell>supprimer</TableCell>
-                <TableCell>Modifier</TableCell>
+                <TableCell style={{ color: "white" }}>Titre</TableCell>
+                <TableCell style={{ color: "white" }}>Oringine</TableCell>
+                <TableCell style={{ color: "white" }}>Details </TableCell>
+                <TableCell style={{ color: "white" }}>Durée</TableCell>
+                <TableCell style={{ color: "white" }}>Auteur</TableCell>
+                <TableCell style={{ color: "white" }}>supprimer</TableCell>
+                <TableCell style={{ color: "white" }}>Modifier</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

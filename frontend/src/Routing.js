@@ -14,6 +14,8 @@ import Index from "./Dashboard/Devellopeurs/Index";
 import AjouterTaches from "./Dashboard/Devellopeurs/Ajouter";
 import AfficherTaches from "./Dashboard/Devellopeurs/Afficher";
 import ModiferTache from "./Dashboard/Devellopeurs/Modifier";
+import Profil from "./Dashboard/Devellopeurs/Profil";
+import Modifier_Profil from "./Dashboard/Devellopeurs/Modifier_Profil";
 
 export default function Routing() {
   const [tache, setTache] = useState(data);
@@ -50,6 +52,8 @@ export default function Routing() {
             <Route path="ajout" element={<AjouterTaches/>} />
             <Route path="all_taches" element={<AfficherTaches/>} />
             <Route path="update/:id" element={<ModiferTache/>} />
+            <Route path="profil" element={<Profil/>} />
+            <Route path="update_Profil" element={<Modifier_Profil/>} />
           </Route>
         </Routes>
       </BrowserRouter>

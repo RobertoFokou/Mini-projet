@@ -40,12 +40,16 @@ export default function Navbar() {
               <i className="fa-solid fa-car"></i>Ajouter
             </li>
           </Link>
-          <li
-            style={{ backgroundColor: selectedItem === 6 ? "red" : "#05153f" }}
-            onClick={() => setSelectedItem(6)}
-          >
-            <i className="fa-solid fa-user"></i>Profil
-          </li>
+          <Link to="profil">
+            <li
+              style={{
+                backgroundColor: selectedItem === 6 ? "red" : "#05153f",
+              }}
+              onClick={() => setSelectedItem(6)}
+            >
+              <i className="fa-solid fa-user"></i>Profil
+            </li>
+          </Link>
           <li
             style={{ backgroundColor: selectedItem === 7 ? "red" : "#05153f" }}
             onClick={() => setSelectedItem(7)}
