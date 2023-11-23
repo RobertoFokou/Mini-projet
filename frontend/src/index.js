@@ -8,6 +8,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducers/index";
 import { getTaches } from "./actions/tache.action";
 import { getAllTachesAPI, getTachesAPI } from "./actions/API_taches";
+import { getAllUsersAPI } from "./actions/API_user";
+import { getAllProjets, getProjets } from "./actions/projets.actions";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -17,8 +19,11 @@ const user = JSON.parse(localStorage.getItem("login"));
 let privilege = user?.privilege;
 if (privilege === "Admin") {
   store.dispatch(getAllTachesAPI());
+  store.dispatch(getAllUsersAPI());
+  store.dispatch(getAllProjets())
 } else {
   store.dispatch(getTachesAPI());
+  store.dispatch(getProjets())
 }
 
 store.dispatch(getTaches());

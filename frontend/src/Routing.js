@@ -16,8 +16,14 @@ import AfficherTaches from "./Dashboard/Devellopeurs/Afficher";
 import ModiferTache from "./Dashboard/Devellopeurs/Modifier";
 import Profil from "./Dashboard/Devellopeurs/Profil";
 import Modifier_Profil from "./Dashboard/Devellopeurs/Modifier_Profil";
+import StatistiqueAdmin from "./Dashboard/Projets/StatistiqueAdmin";
+import StatistiquUser from "./Dashboard/Projets/StatistiqueUtilisateur";
+import AfficherProjet from "./Dashboard/Projets/AfficherProjets";
+import AjouterProjet from "./Dashboard/Projets/AjouterProjet";
 
 export default function Routing() {
+  const user = JSON.parse(localStorage.getItem("login"));
+  let privilege = user?.privilege;
   const [tache, setTache] = useState(data);
   // console.log(data);
   function add(title, nom) {
@@ -46,14 +52,30 @@ export default function Routing() {
           <Route path="/ajouter" element={<AddTasks />} />
           <Route path="/gerer" element={<AllTache />} />
           <Route path="/add" element={<AddTache />} />
-          <Route path="/gerer/update/:id" element={<UpdateTache /> } />
+          <Route path="/gerer/update/:id" element={<UpdateTache />} />
 
-          <Route path="/dashbord" element={ <> <Index /> </>} >
-            <Route path="ajout" element={<AjouterTaches/>} />
-            <Route path="all_taches" element={<AfficherTaches/>} />
-            <Route path="update/:id" element={<ModiferTache/>} />
-            <Route path="profil" element={<Profil/>} />
-            <Route path="update_Profil" element={<Modifier_Profil/>} />
+          <Route
+            path="/dashbord"
+            element={
+              <>
+                {" "}
+                <Index />{" "}
+              </>
+            }
+          >
+            <Route path="ajout" element={<AjouterTaches />} />
+            <Route path="all_taches" element={<AfficherTaches />} />
+            <Route path="update/:id" element={<ModiferTache />} />
+            <Route path="profil" element={<Profil />} />
+            <Route path="update_Profil" element={<Modifier_Profil />} />
+            {privilege === "Admin" && (
+              <Route path="statistique" element={<StatistiqueAdmin />} />
+            )}
+            {privilege === "Developpeur" && (
+              <Route path="statistique" element={<StatistiquUser />} />
+            )}
+            <Route path="projet" element={<AfficherProjet />} />
+            <Route path="ajouter" element={<AjouterProjet />} />
           </Route>
         </Routes>
       </BrowserRouter>

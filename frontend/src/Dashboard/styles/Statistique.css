@@ -1,0 +1,79 @@
+.statistique {
+  /* border: 2px solid red; */
+  padding: 20px;
+  margin: 10px;
+
+  & .s1 {
+    display: flex;
+    justify-content: space-between;
+
+    & .sg {
+      height: 100px;
+      width: 400px;
+      padding: 30px;
+      background-color: rgb(230, 33, 33);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    & .sg:hover {
+      background-color: rgb(65, 180, 180);
+    }
+
+    & .sd {
+      width: 400px;
+      background-color: black;
+      color: white;
+      padding: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    & .sd:hover {
+        background-color: rgb(45, 32, 235);
+      }
+  }
+}
+
+.statistique2 {
+  /* border: 2px solid gray; */
+  padding: 20px;
+  margin: 10px;
+
+  & .s2 {
+    display: flex;
+    justify-content: space-between;
+
+    & .sg {
+      height: 100px;
+      width: 400px;
+      padding: 30px;
+      background-color: rgb(119, 8, 8);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    & .sg:hover {
+      background-color: rgb(45, 32, 235);
+    }
+
+    & .sd {
+      width: 400px;
+      background-color: rgb(53, 39, 39);
+      color: white;
+      padding: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      font-weight: 100px;
+      cursor: pointer;
+    }
+
+    & .sd:hover {
+      background-color: rgb(65, 180, 180);
+    }
+  }
+}

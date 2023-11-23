@@ -5,13 +5,13 @@ const {
   getOneTaches,
   deleteOneTache,
   UpdateTache,
-  getAllTaches
+  getAllTaches,
 } = require("../controlleurs/tache_contoller");
 
 router.route("/add").post(createTache);
 router.route("/:id").get(getOneTaches);
-router.route("/:id").delete(deleteOneTache)
-router.route("/:id").put(UpdateTache)
-router.route("/").get(getAllTaches)
+router.route("/:id").delete(deleteOneTache);
+router.route("/:id").put(UpdateTache);
+router.route("/").get(getAllTaches);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const Utilisateur = require("../models/users_model");
 const upload = require("../images/uploads");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 // Creation et enregistrement d'un utilisateur
 const createUser = async (req, res) => {
@@ -21,6 +22,12 @@ const createUser = async (req, res) => {
     console.log(error);
     return res.status(200).json({ status: "erreur", erreur: error.message });
   }
+};
+
+// Recuprer tous les utilisateur enregistés
+const getAllUsers = async (req, res) => {
+  const user = await Utilisateur.find();
+  res.send(user);
 };
 
 const getOneUser = (req, res) => {
@@ -112,4 +119,5 @@ module.exports = {
   getOneUser,
   findUser,
   UpdateUser,
+  getAllUsers,
 };

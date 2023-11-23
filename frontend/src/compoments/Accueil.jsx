@@ -50,7 +50,7 @@ export default function Accueil() {
             Gerer les tâches d'API
           </button>
         </Link>
-        <Link to="/dashbord">
+        <Link to="/dashbord/statistique">
           <button
             type="button"
             style={{

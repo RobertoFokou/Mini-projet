@@ -10,12 +10,12 @@ import Paper from "@mui/material/Paper";
 import { isEmpty } from "../../Services/utils";
 import { useSelector } from "react-redux";
 // import Taches from "./Taches";
-import TachesBd from "./TachesAPI";
+import ProjetBd from "./ProjetsAPI";
 
-export default function AfficherTaches() {
+export default function AfficherProjet() {
   // const user = JSON.parse(localStorage.getItem("login"));
-  const tasks = useSelector((state) => state.tacheReducerAPI);
-  localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
+  const tasks = useSelector((state) => state.projetReducer);
+  localStorage.setItem("projet", JSON.stringify(tasks));
   return (
     <div className="App">
       <h1>
@@ -38,7 +38,7 @@ export default function AfficherTaches() {
             Retour
           </button>
         </Link>
-        <Link to="/dashbord/ajout">
+        <Link to="/dashbord/ajouter">
           <button
             type="button"
             style={{
@@ -60,10 +60,10 @@ export default function AfficherTaches() {
           <Table>
             <TableHead style={{ backgroundColor: "red" }}>
               <TableRow>
-                <TableCell style={{ color: "white" }}>Titre</TableCell>
-                <TableCell style={{ color: "white" }}>Oringine</TableCell>
-                <TableCell style={{ color: "white" }}>Details </TableCell>
-                <TableCell style={{ color: "white" }}>Durée</TableCell>
+                <TableCell style={{ color: "white" }}>Nom du Projet</TableCell>
+                <TableCell style={{ color: "white" }}>Description </TableCell>
+                <TableCell style={{ color: "white" }}>Date Création</TableCell>
+                <TableCell style={{ color: "white" }}>Date Livraison</TableCell>
                 <TableCell style={{ color: "white" }}>Auteur</TableCell>
                 <TableCell style={{ color: "white" }}>supprimer</TableCell>
                 <TableCell style={{ color: "white" }}>Modifier</TableCell>
@@ -72,12 +72,12 @@ export default function AfficherTaches() {
             <TableBody>
               {!isEmpty(tasks) &&
                 tasks.map((e) => (
-                  <TachesBd
+                  <ProjetBd
                     key={e.id}
-                    titre={e.titre}
-                    auteur={e.auteur}
+                    description={e.nom}
+                    dateCreation={e.dateCreation}
+                    dateLivraison={e.dateLivraison}
                     details={e.details}
-                    duree={e.duree}
                     origine={e.developpeur.nom}
                     taskId={e._id}
                     // supp={deletetTaches}

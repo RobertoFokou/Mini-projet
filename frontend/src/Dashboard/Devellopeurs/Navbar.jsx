@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 import logo from "../../images/logo.jpeg";
 export default function Navbar() {
+  const user = JSON.parse(localStorage.getItem("login"));
+  let privilege = user?.privilege;
   const navigate = useNavigate();
   function deconnecter() {
     navigate("/");
@@ -20,6 +22,30 @@ export default function Navbar() {
           <p>GateWayTACHES</p>
         </div>
         <ul>
+          {privilege === "Admin" && (
+            <Link to="statistique">
+              <li
+                style={{
+                  backgroundColor: selectedItem === 20 ? "red" : "#05153f",
+                }}
+                onClick={() => setSelectedItem(20)}
+              >
+                <i className="fa-solid fa-car"></i>Statistiques
+              </li>
+            </Link>
+          )}
+          {privilege === "Developpeur" && (
+            <Link to="statistique">
+              <li
+                style={{
+                  backgroundColor: selectedItem === 3 ? "red" : "#05153f",
+                }}
+                onClick={() => setSelectedItem(3)}
+              >
+                <i className="fa-solid fa-car"></i>Statistiques
+              </li>
+            </Link>
+          )}
           <Link to="all_taches" onClick={() => setSelectedItem(2)}>
             <li
               style={{
@@ -30,14 +56,14 @@ export default function Navbar() {
               <i className="fa-solid fa-user-secret"></i>Accueil
             </li>
           </Link>
-          <Link to="ajout">
+          <Link to="projet" onClick={() => setSelectedItem(9)}>
             <li
               style={{
-                backgroundColor: selectedItem === 3 ? "red" : "#05153f",
+                backgroundColor: selectedItem === 9 ? "red" : "#05153f",
               }}
-              onClick={() => setSelectedItem(3)}
+              onClick={() => setSelectedItem(9)}
             >
-              <i className="fa-solid fa-car"></i>Ajouter
+              <i class="fa-solid fa-layer-group"></i>Projets
             </li>
           </Link>
           <Link to="profil">
