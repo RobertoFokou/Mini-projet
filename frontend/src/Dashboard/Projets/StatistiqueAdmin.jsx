@@ -1,17 +1,37 @@
 import React from "react";
 import "../styles/Statistique.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 export default function StatistiqueAdmin() {
   const user = useSelector((state) => state.tacheUserAPI);
+  const tasks = useSelector((state) => state.projetReducer);
+  localStorage.setItem("projet", JSON.stringify(tasks));
   return (
     <div>
+      <Link to="/index">
+        <button
+          type="button"
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "8px",
+            color: "blue",
+            fontSize: "14px",
+            margin: "10px",
+          }}
+        >
+          Retour
+        </button>
+      </Link>
       <div className="statistique">
         <div className="s1">
-          <div className="sg">
-            <p>Nombre total de Projets :</p>
-            <br />
-            <span>20</span>
-          </div>
+          <Link to="/dashbord/projet">
+            <div className="sg">
+              <p>Nombre total de Projets :</p>
+              <br />
+              <span>{tasks.length}</span>
+            </div>
+          </Link>
 
           <div className="sd">
             <p>Nombre total d'utilisateurs :</p>

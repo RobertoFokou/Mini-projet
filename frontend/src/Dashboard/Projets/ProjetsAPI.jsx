@@ -3,6 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Button from "@mui/material/Button";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -116,9 +117,7 @@ export default function ProjetBd({
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && (
-          <span onDoubleClick={() => setShow(true)}>{details}</span>
-        )}
+        {!show && <span onDoubleClick={() => setShow(true)}>{details}</span>}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
@@ -133,7 +132,9 @@ export default function ProjetBd({
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && <span onDoubleClick={() => setShow(true)}>{dateCreation}</span>}
+        {!show && (
+          <span onDoubleClick={() => setShow(true)}>{dateCreation}</span>
+        )}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
@@ -183,7 +184,7 @@ export default function ProjetBd({
       </TableCell>
       <TableCell>
         {!show && (
-          <Link to={"/dashbord/update/" + taskId}>
+          <Link to={"/dashbord/modifier/" + taskId}>
             <ModeEditIcon style={{ cursor: "pointer" }} />
           </Link>
         )}
@@ -194,7 +195,18 @@ export default function ProjetBd({
         )}
       </TableCell>
       <TableCell>
-        <span>voir plus</span>
+        <Link to="/dashbord/statistique">
+          <Button
+            className="btn"
+            variant="contained"
+            type="submit"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            voir plus
+          </Button>
+        </Link>
       </TableCell>
     </TableRow>
   );

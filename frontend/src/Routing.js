@@ -20,6 +20,7 @@ import StatistiqueAdmin from "./Dashboard/Projets/StatistiqueAdmin";
 import StatistiquUser from "./Dashboard/Projets/StatistiqueUtilisateur";
 import AfficherProjet from "./Dashboard/Projets/AfficherProjets";
 import AjouterProjet from "./Dashboard/Projets/AjouterProjet";
+import ModiferProjet from "./Dashboard/Projets/ModifierProjet";
 
 export default function Routing() {
   const user = JSON.parse(localStorage.getItem("login"));
@@ -66,6 +67,7 @@ export default function Routing() {
             <Route path="ajout" element={<AjouterTaches />} />
             <Route path="all_taches" element={<AfficherTaches />} />
             <Route path="update/:id" element={<ModiferTache />} />
+            <Route path="modifier/:id" element={<ModiferProjet />} />
             <Route path="profil" element={<Profil />} />
             <Route path="update_Profil" element={<Modifier_Profil />} />
             {privilege === "Admin" && (

@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Statistique.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 export default function StatistiquUser() {
   const tasks = useSelector((state) => state.projetReducer);
   localStorage.setItem("projet", JSON.stringify(tasks));
@@ -8,11 +9,13 @@ export default function StatistiquUser() {
     <div>
       <div className="statistique">
         <div className="s1">
-          <div className="sg">
-            <p>Nombre de projets crées:</p>
-            <br />
-            <span>{tasks.length}</span>
-          </div>
+          <Link to="/dashbord/projet">
+            <div className="sg">
+              <p>Nombre total de Projets :</p>
+              <br />
+              <span>{tasks.length}</span>
+            </div>
+          </Link>
 
           <div className="sd">
             <p>

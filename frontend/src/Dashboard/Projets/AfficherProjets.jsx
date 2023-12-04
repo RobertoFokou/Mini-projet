@@ -23,7 +23,7 @@ export default function AfficherProjet() {
         <span style={{ color: "red" }}> {tasks.length}</span>
       </h1>
       <div>
-        <Link to="/index">
+        <Link to="/dashbord/statistique">
           <button
             type="button"
             style={{
