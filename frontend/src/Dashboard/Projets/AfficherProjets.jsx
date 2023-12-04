@@ -19,7 +19,7 @@ export default function AfficherProjet() {
   return (
     <div className="App">
       <h1>
-        Nombre total de tâche :{" "}
+        Nombre total de projets :{" "}
         <span style={{ color: "red" }}> {tasks.length}</span>
       </h1>
       <div>
@@ -49,7 +49,7 @@ export default function AfficherProjet() {
               fontSize: "14px",
             }}
           >
-            Ajouter une donnée
+            Ajouter un projet
           </button>
         </Link>
         <br />
@@ -67,6 +67,7 @@ export default function AfficherProjet() {
                 <TableCell style={{ color: "white" }}>Auteur</TableCell>
                 <TableCell style={{ color: "white" }}>supprimer</TableCell>
                 <TableCell style={{ color: "white" }}>Modifier</TableCell>
+                <TableCell style={{ color: "white" }}>Details</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -75,9 +76,9 @@ export default function AfficherProjet() {
                   <ProjetBd
                     key={e.id}
                     description={e.nom}
+                    details={e.details}
                     dateCreation={e.dateCreation}
                     dateLivraison={e.dateLivraison}
-                    details={e.details}
                     origine={e.developpeur.nom}
                     taskId={e._id}
                     // supp={deletetTaches}

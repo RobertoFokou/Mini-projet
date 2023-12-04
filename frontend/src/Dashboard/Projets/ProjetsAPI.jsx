@@ -90,7 +90,7 @@ export default function ProjetBd({
           <TextField
             className="input-field"
             id="outlined-basic"
-            label="Titre : "
+            label="Nom du prjet : "
             variant="outlined"
             type="date"
             value={updateTitre}
@@ -99,7 +99,7 @@ export default function ProjetBd({
           />
         )}
         {!show && (
-          <span onDoubleClick={() => setShow(true)}>{dateCreation}</span>
+          <span onDoubleClick={() => setShow(true)}>{description}</span>
         )}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
@@ -117,7 +117,7 @@ export default function ProjetBd({
           />
         )}
         {!show && (
-          <span onDoubleClick={() => setShow(true)}>{description}</span>
+          <span onDoubleClick={() => setShow(true)}>{details}</span>
         )}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
@@ -133,7 +133,7 @@ export default function ProjetBd({
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && <span onDoubleClick={() => setShow(true)}>{details}</span>}
+        {!show && <span onDoubleClick={() => setShow(true)}>{dateCreation}</span>}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
@@ -192,6 +192,9 @@ export default function ProjetBd({
             <AssignmentTurnedInIcon />
           </span>
         )}
+      </TableCell>
+      <TableCell>
+        <span>voir plus</span>
       </TableCell>
     </TableRow>
   );

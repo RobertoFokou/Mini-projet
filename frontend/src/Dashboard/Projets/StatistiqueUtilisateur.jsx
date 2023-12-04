@@ -1,14 +1,17 @@
 import React from "react";
 import "../styles/Statistique.css";
+import { useSelector } from "react-redux";
 export default function StatistiquUser() {
+  const tasks = useSelector((state) => state.projetReducer);
+  localStorage.setItem("projet", JSON.stringify(tasks));
   return (
     <div>
       <div className="statistique">
         <div className="s1">
           <div className="sg">
-            <p>Nombre de pro crées:</p>
+            <p>Nombre de projets crées:</p>
             <br />
-            <span>20</span>
+            <span>{tasks.length}</span>
           </div>
 
           <div className="sd">

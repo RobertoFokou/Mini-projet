@@ -17,7 +17,7 @@ export default function Accueil() {
   const data = JSON.parse(localStorage.getItem("login"));
   return (
     <div className="App">
-      <p>Bienvenue monsieur <strong>{data.prenom}</strong></p>
+      {/* <p>Bienvenue monsieur <strong>{data?.prenom}</strong></p> */}
       <h2>Liste des Taches </h2>
       <div>
         <Link to="/ajouter">

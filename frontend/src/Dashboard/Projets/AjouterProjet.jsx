@@ -11,7 +11,6 @@ import { addProjets, getProjets } from "../../actions/projets.actions";
 
 export default function AjouterProjet() {
   const user = JSON.parse(localStorage.getItem("login"));
-  const nom = user.nom;
   // console.log(nom);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,14 +24,19 @@ export default function AjouterProjet() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    if (description === "" || dateCreation === "" || dateLivraison === "" || details === "") {
+    if (
+      description === "" ||
+      dateCreation === "" ||
+      dateLivraison === "" ||
+      details === ""
+    ) {
       setBad(true);
       setGood(false);
     } else {
       setBad(false);
       setGood(true);
       const newTaches = {
-        description: description,
+        nom: description,
         dateCreation: dateCreation,
         dateLivraison: dateLivraison,
         details: details,
@@ -44,7 +48,7 @@ export default function AjouterProjet() {
         .then((res) => {
           console.log("nouvelle tache ajoutée avec succès");
           dispatch(addProjets(res.data));
-          dispatch(getProjets())
+          dispatch(getProjets());
         })
         .catch((error) => {
           console.log({
@@ -53,7 +57,7 @@ export default function AjouterProjet() {
           });
         });
       setTimeout(() => {
-        navigate("/dashbord/all_taches");
+        navigate("/dashbord/projet");
         window.location.reload();
       }, 1000);
     }
@@ -70,12 +74,23 @@ export default function AjouterProjet() {
         <TextField
           className="input-field"
           id="outlined-basic"
-          label="Titre : "
+          label="Nom du projet:"
           variant="outlined"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+         <br />
+        <TextField
+          className="input-field"
+          id="outlined-basic"
+          label="Description : "
+          variant="outlined"
+          type="text"
+          value={details}
+          onChange={(e) => setDeatails(e.target.value)}
+        />
+         <br />
         <TextField
           className="input-field"
           id="outlined-basic"
@@ -94,15 +109,6 @@ export default function AjouterProjet() {
           value={dateLivraison}
           onChange={(e) => setDateLivraison(e.target.value)}
         />
-        <TextField
-          className="input-field"
-          id="outlined-basic"
-          label="Description : "
-          variant="outlined"
-          type="text"
-          value={details}
-          onChange={(e) =>setDeatails(e.target.value)}
-        />
         <br />
         <Button
           className="btn"
@@ -113,7 +119,7 @@ export default function AjouterProjet() {
           Ajouter
         </Button>
         <br />
-        <Link to="/dashbord/all_taches">
+        <Link to="/dashbord/projet">
           <Button
             className="btn"
             variant="contained"
