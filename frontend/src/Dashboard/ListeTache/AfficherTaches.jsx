@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,19 +9,30 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { isEmpty } from "../../Services/utils";
 import { useSelector } from "react-redux";
-import TachesBd from "./TachesAPI";
+import TachesProjet from "./TacheListe";
 
-export default function AfficherTaches() {
-  const tasks = useSelector((state) => state.tacheReducerAPI);
-  localStorage.setItem("dataSelectAPI", JSON.stringify(tasks));
+export default function AfficherTachesProjet() {
+  const tasks = useSelector((state) => state.ListeTachesReducer);
+  localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
+  const params = useParams();
+  const id = params.id;
+  console.log(id);
+  const dataSelect = JSON.parse(localStorage.getItem("projet"));
+  console.log(dataSelect);
+  const dataId = dataSelect.filter((el) => el._id === id)[0];
+  console.log(dataId);
+  localStorage.setItem("projetSelect", JSON.stringify(dataId));
+  const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
+  console.log(dataIdSelect);
+
   return (
     <div className="App">
       <h1>
-        Nombre total de tâche :{" "}
-        <span style={{ color: "red" }}> {tasks.length}</span>
+        vous etes sur le projet  :{" "}
+        <span style={{ color: "red" }}> {dataIdSelect.nom}</span>
       </h1>
       <div>
-        <Link to="/index">
+        <Link to="/dashbord/projet">
           <button
             type="button"
             style={{
@@ -36,7 +47,7 @@ export default function AfficherTaches() {
             Retour
           </button>
         </Link>
-        <Link to="/dashbord/ajout">
+        <Link to="/dashbord/ajouterTachePrpjet">
           <button
             type="button"
             style={{
@@ -70,13 +81,13 @@ export default function AfficherTaches() {
             <TableBody>
               {!isEmpty(tasks) &&
                 tasks.map((e) => (
-                  <TachesBd
+                  <TachesProjet
                     key={e.id}
                     titre={e.titre}
                     auteur={e.auteur}
                     details={e.details}
                     duree={e.duree}
-                    origine={e.developpeur.nom}
+                    origine={e.projet.nom}
                     taskId={e._id}
                     // supp={deletetTaches}
                   />

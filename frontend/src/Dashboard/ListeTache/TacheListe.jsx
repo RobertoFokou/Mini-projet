@@ -3,54 +3,52 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import Button from "@mui/material/Button";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "../styles/TachesAPI.css";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import {
-  deleteProjets,
-  editProjets,
-  getProjets,
-} from "../../actions/projets.actions";
+  deleteTachesProjet,
+  editTachesProjet,
+  getTachesProjet,
+} from "../../actions/ListeTaches.action";
 
-export default function ProjetBd({
-  description,
-  dateCreation,
-  dateLivraison,
+export default function TachesProjet({
+  titre,
+  auteur,
   details,
+  duree,
   origine,
   taskId,
 }) {
   const dispatch = useDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [updateTitre, setUpdateTitre] = useState(dateCreation);
+  const [updateTitre, setUpdateTitre] = useState(titre);
   const [updateDetails, setUpdateDetail] = useState(details);
-  const [updateDuree, setUpdateDuree] = useState(dateLivraison);
-  const [updateAuteur, setUpdateAuteur] = useState(description);
+  const [updateDuree, setUpdateDuree] = useState(duree);
+  const [updateAuteur, setUpdateAuteur] = useState(auteur);
   const [show, setShow] = useState(false);
-  const [rowIndex, setRowIndex] = useState(0);
+
   const resetForm = () => {
-    setUpdateTitre(dateCreation);
+    setUpdateTitre(titre);
     setUpdateDetail(details);
-    setUpdateDuree(dateLivraison);
-    setUpdateAuteur(description);
+    setUpdateDuree(duree);
+    setUpdateAuteur(auteur);
     setShow(false);
-    setRowIndex(0);
   };
   const handleUpdate = async (e) => {
     e.preventDefault();
     const updateTaches = {
-      dateCreation: updateTitre,
-      description: updateAuteur,
+      titre: updateTitre,
+      auteur: updateAuteur,
       details: updateDetails,
-      dateLivraison: updateDuree,
+      duree: updateDuree,
       id: taskId,
     };
-    await dispatch(editProjets(updateTaches));
-    dispatch(getProjets());
+    await dispatch(editTachesProjet(updateTaches));
+    dispatch(getTachesProjet());
     window.location.reload();
     resetForm();
   };
@@ -61,7 +59,7 @@ export default function ProjetBd({
 
   const removeItem = (id) => {
     axios
-      .delete(`http://localhost:5000/api/projets/${id}`)
+      .delete(`http://localhost:5000/api/tachesProjet/${id}`)
       .then((res) => {
         console.log("suppression reussie");
         console.log(id);
@@ -76,8 +74,8 @@ export default function ProjetBd({
   const handleConfirmDelete = () => {
     removeItem(taskId);
     window.location.reload();
-    dispatch(deleteProjets(taskId));
-    dispatch(getProjets());
+    dispatch(deleteTachesProjet(taskId));
+    dispatch(getTachesProjet());
     setConfirmDelete(false);
   };
 
@@ -86,23 +84,21 @@ export default function ProjetBd({
   };
 
   return (
-    <TableRow className={rowIndex % 2 === 0 ? "blue-row" : "gray-row"}>
+    <TableRow>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
           <TextField
             className="input-field"
             id="outlined-basic"
-            label="Nom du prjet : "
+            label="Titre : "
             variant="outlined"
-            type="date"
+            type="text"
             value={updateTitre}
             onChange={(e) => setUpdateTitre(e.target.value)}
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && (
-          <span onDoubleClick={() => setShow(true)}>{description}</span>
-        )}
+        {!show && <span onDoubleClick={() => setShow(true)}>{titre}</span>}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {" "}
@@ -118,7 +114,7 @@ export default function ProjetBd({
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && <span onDoubleClick={() => setShow(true)}>{details}</span>}
+        {!show && <span onDoubleClick={() => setShow(true)}>{auteur}</span>}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
@@ -133,9 +129,7 @@ export default function ProjetBd({
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && (
-          <span onDoubleClick={() => setShow(true)}>{dateCreation}</span>
-        )}
+        {!show && <span onDoubleClick={() => setShow(true)}>{details}</span>}
       </TableCell>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
@@ -144,15 +138,13 @@ export default function ProjetBd({
             id="outlined-basic"
             label="Durée "
             variant="outlined"
-            type="date"
+            type="number"
             value={updateDuree}
             onChange={(e) => setUpdateDuree(e.target.value)}
             // onBlur={() => setShow(false)}
           />
         )}
-        {!show && (
-          <span onDoubleClick={() => setShow(true)}>{dateLivraison}</span>
-        )}
+        {!show && <span onDoubleClick={() => setShow(true)}>{duree}</span>}
       </TableCell>
       <TableCell>{origine}</TableCell>
       <TableCell>
@@ -185,7 +177,7 @@ export default function ProjetBd({
       </TableCell>
       <TableCell>
         {!show && (
-          <Link to={"/dashbord/modifier/" + taskId}>
+          <Link to={"/dashbord/update/" + taskId}>
             <ModeEditIcon style={{ cursor: "pointer" }} />
           </Link>
         )}
@@ -194,20 +186,6 @@ export default function ProjetBd({
             <AssignmentTurnedInIcon />
           </span>
         )}
-      </TableCell>
-      <TableCell>
-        <Link to={"/dashbord/listeTache/" + taskId}>
-          <Button
-            className="btn"
-            variant="contained"
-            type="submit"
-            style={{
-              cursor: "pointer",
-            }}
-          >
-             Taches
-          </Button>
-        </Link>
       </TableCell>
     </TableRow>
   );

@@ -21,6 +21,8 @@ import StatistiquUser from "./Dashboard/Projets/StatistiqueUtilisateur";
 import AfficherProjet from "./Dashboard/Projets/AfficherProjets";
 import AjouterProjet from "./Dashboard/Projets/AjouterProjet";
 import ModiferProjet from "./Dashboard/Projets/ModifierProjet";
+import AfficherTachesProjet from "./Dashboard/ListeTache/AfficherTaches";
+import AjouterTachesProjets from "./Dashboard/ListeTache/AjouterTache";
 
 export default function Routing() {
   const user = JSON.parse(localStorage.getItem("login"));
@@ -78,6 +80,8 @@ export default function Routing() {
             )}
             <Route path="projet" element={<AfficherProjet />} />
             <Route path="ajouter" element={<AjouterProjet />} />
+            <Route path="listeTache/:id" element={<AfficherTachesProjet />} />
+            <Route path="ajouterTachePrpjet" element={<AjouterTachesProjets />} />
           </Route>
         </Routes>
       </BrowserRouter>

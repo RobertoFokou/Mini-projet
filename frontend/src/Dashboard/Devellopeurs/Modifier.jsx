@@ -10,10 +10,10 @@ export default function ModiferTache() {
   const params = useParams();
   const id = params.id;
   const dataSelect = JSON.parse(localStorage.getItem("dataSelectAPI"));
-  console.log(dataSelect);
+  // console.log(dataSelect);
   const dataId = dataSelect.filter((el) => el._id === id)[0];
 
-  // console.log(dataId)
+  console.log(dataId)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [auteur, setAuteur] = useState(dataId?.auteur);

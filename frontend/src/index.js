@@ -10,6 +10,7 @@ import { getTaches } from "./actions/tache.action";
 import { getAllTachesAPI, getTachesAPI } from "./actions/API_taches";
 import { getAllUsersAPI } from "./actions/API_user";
 import { getAllProjets, getProjets } from "./actions/projets.actions";
+import { getAllTachesProjet, getTachesProjet } from "./actions/ListeTaches.action";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -21,9 +22,11 @@ if (privilege === "Admin") {
   store.dispatch(getAllTachesAPI());
   store.dispatch(getAllUsersAPI());
   store.dispatch(getAllProjets())
+  store.dispatch(getAllTachesProjet())
 } else {
   store.dispatch(getTachesAPI());
   store.dispatch(getProjets())
+  store.dispatch(getTachesProjet())
 }
 
 store.dispatch(getTaches());

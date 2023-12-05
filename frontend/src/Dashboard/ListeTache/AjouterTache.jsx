@@ -2,52 +2,64 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 import "../styles/Ajouter.css";
 import { useDispatch } from "react-redux";
-import { editProjets, getProjets } from "../../actions/projets.actions";
+import { baseURL } from "../../Services/utils";
+import { addTachesProjet, getTachesProjet } from "../../actions/ListeTaches.action";
 
-export default function ModiferProjet() {
-  const params = useParams();
-  const id = params.id;
-  console.log(id);
-  const dataSelect = JSON.parse(localStorage.getItem("projet"));
-  // console.log(dataSelect);
-  const dataId = dataSelect.filter((el) => el._id === id)[0];
-
-  console.log(dataId)
+export default function AjouterTachesProjets() {
+  const projet = JSON.parse(localStorage.getItem("projetSelect"));
+  // console.log(nom);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [description, setDescription] = useState(dataId?.nom);
-  const [dateCreation, setDateCreation] = useState(dataId?.dateCreation);
-  const [dateLivraison, setDateLivraison] = useState(dataId?.dateLivraison);
-  const [details, setDeatails] = useState(dataId?.details);
+  const [auteur, setAuteur] = useState("");
+  const [titre, setTitre] = useState("");
+  const [duree, setDuree] = useState();
+  const [details, setDeatails] = useState("");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  // const [edit, setEdit] = useState(false);
 
+  const handleChangeDuree = (e) =>{
+    let value = e.target.value
+    if(value < 0){
+      value = 0
+    }
+    setDuree(value)
+  }
   const handleClick = async (e) => {
     e.preventDefault();
-    if (
-      description === "" ||
-      dateCreation === "" ||
-      dateLivraison === "" ||
-      details === ""
-    ) {
+    if (titre === "" || auteur === "" || duree === "" || details === "") {
       setBad(true);
       setGood(false);
     } else {
       setBad(false);
       setGood(true);
-      const updateTaches = {
-        nom: description,
-        dateCreation: dateCreation,
-        dateLivraison: dateLivraison,
+      const newTaches = {
+        titre: titre,
+        auteur: auteur,
         details: details,
-        id: id,
+        duree: duree,
+        projet: projet._id,
       };
-      await dispatch(editProjets(updateTaches));
-      dispatch(getProjets());
+
+      await axios
+        .post(`${baseURL}/tachesProjet/add`, newTaches)
+        .then((res) => {
+          console.log("nouvelle tache ajoutée avec succès");
+          dispatch(addTachesProjet(res.data));
+          dispatch(getTachesProjet())
+        })
+        .catch((error) => {
+          console.log({
+            error: error,
+            msg: "erreur lors de la sauvagarde de la nouvelle tache",
+          });
+        });
       setTimeout(() => {
         navigate("/dashbord/projet");
+        window.location.reload();
       }, 1000);
     }
   };
@@ -55,20 +67,33 @@ export default function ModiferProjet() {
   return (
     <div className="add">
       <form action="">
-        {good && <span className="good">Tâche mise à jour avec succès</span>}
+        {good && (
+          <span className="good">Nouvelle tache ajoutée avec succès</span>
+        )}
         {bad && <span className="bad">Veillez renseigner tous les champs</span>}
         <br />
         <TextField
           className="input-field"
           id="outlined-basic"
+          label="Titre : "
           variant="outlined"
           type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={titre}
+          onChange={(e) => setTitre(e.target.value)}
         />
         <TextField
           className="input-field"
           id="outlined-basic"
+          label="Auteur : "
+          variant="outlined"
+          type="text"
+          value={auteur}
+          onChange={(e) => setAuteur(e.target.value)}
+        />
+        <TextField
+          className="input-field"
+          id="outlined-basic"
+          label="Details : "
           variant="outlined"
           type="text"
           value={details}
@@ -77,18 +102,11 @@ export default function ModiferProjet() {
         <TextField
           className="input-field"
           id="outlined-basic"
+          label="Durée : "
           variant="outlined"
-          type="date"
-          value={dateCreation}
-          onChange={(e) => setDateCreation(e.target.value)}
-        />
-        <TextField
-          className="input-field"
-          id="outlined-basic"
-          variant="outlined"
-          type="date"
-          value={dateLivraison}
-          onChange={(e) => setDateLivraison(e.target.value)}
+          type="number"
+          value={duree}
+          onChange={handleChangeDuree}
         />
         <br />
         <Button
@@ -97,7 +115,7 @@ export default function ModiferProjet() {
           onClick={handleClick}
           style={{ cursor: "pointer" }}
         >
-          Valider les modifications
+          Ajouter
         </Button>
         <br />
         <Link to="/dashbord/projet">
