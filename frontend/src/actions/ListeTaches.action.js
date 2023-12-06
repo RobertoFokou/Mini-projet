@@ -8,12 +8,14 @@ export const GETONE_TACHE_PROJET = "GETONE_TACHE_PROJET";
 export const DELETE_TACHE_PROJET = "DELETE_TACHE_PROJET";
 
 const user = JSON.parse(localStorage.getItem("login"));
-const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
-const id2 = dataIdSelect._id;
+// const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
+// const id2 = dataIdSelect._id;
 const id = user?._id;
+console.log(id);
+// console.log(id2);
 export const getTachesProjet = () => {
   return (dispatch) => {
-    return axios.get(`http://localhost:5000/api/tachesProjet/${id}/${id2}`).then((res) => {
+    return axios.get(`http://localhost:5000/api/tachesProjet/${id}`).then((res) => {
       console.log(res.data);
       dispatch({ type: GET_TACHE_PROJET , payload: res.data });
     });
@@ -23,7 +25,7 @@ export const getTachesProjet = () => {
 export const getAllTachesProjet = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/tachesProjet/`).then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       dispatch({ type: GETALL_TACHE_PROJET , payload: res.data });
     });
   };
@@ -54,7 +56,7 @@ export const editTachesProjet = (data) => {
     return axios
       .put(`http://localhost:5000/api/tachesProjet/${data.id}`, data)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({ type: EDIT_TACHE_PROJET , payload: data });
       });
   };

@@ -177,7 +177,7 @@ export default function TachesProjet({
       </TableCell>
       <TableCell>
         {!show && (
-          <Link to={"/dashbord/update/" + taskId}>
+          <Link to={"/dashbord/modifierTachePrpjet/" + taskId}>
             <ModeEditIcon style={{ cursor: "pointer" }} />
           </Link>
         )}

@@ -6,10 +6,14 @@ const ListeTache = new mongoose.Schema({
   details: String,
   duree: Number,
   auteur: String,
-  statut : {type: String, default: "Backlog"},
+  statut: { type: String, default: "Backlog" },
   projet: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "projet",
+  },
+  developpeur: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "utilisateurs",
   },
 });
 

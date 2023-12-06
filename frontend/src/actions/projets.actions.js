@@ -12,7 +12,7 @@ const id = user?._id;
 export const getProjets = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/projets/${id}`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       dispatch({ type: GET_PROJET, payload: res.data });
     });
   };
@@ -21,7 +21,7 @@ export const getProjets = () => {
 export const getAllProjets = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/projets/`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       dispatch({ type: GETALL_PROJET, payload: res.data });
     });
   };

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import "../styles/Ajouter.css";
 import { useDispatch } from "react-redux";
 import { baseURL } from "../../Services/utils";
-import { addTachesProjet, getTachesProjet } from "../../actions/ListeTaches.action";
+import { addTachesProjet, getAllTachesProjet } from "../../actions/ListeTaches.action";
 
 export default function AjouterTachesProjets() {
   const projet = JSON.parse(localStorage.getItem("projetSelect"));
+  const user = JSON.parse(localStorage.getItem("login"));
   // console.log(nom);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ export default function AjouterTachesProjets() {
         details: details,
         duree: duree,
         projet: projet._id,
+        developpeur: user._id,
       };
 
       await axios
@@ -49,7 +51,7 @@ export default function AjouterTachesProjets() {
         .then((res) => {
           console.log("nouvelle tache ajoutée avec succès");
           dispatch(addTachesProjet(res.data));
-          dispatch(getTachesProjet())
+          dispatch(getAllTachesProjet())
         })
         .catch((error) => {
           console.log({
@@ -118,7 +120,7 @@ export default function AjouterTachesProjets() {
           Ajouter
         </Button>
         <br />
-        <Link to="/dashbord/projet">
+        <Link to="/dashbord/listeTache">
           <Button
             className="btn"
             variant="contained"

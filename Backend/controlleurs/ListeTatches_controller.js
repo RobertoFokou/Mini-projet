@@ -1,31 +1,48 @@
-const Liste_Taches = require("../models/ListeTaches_model");
+const ListeTaches = require("../models/ListeTaches_model");
 
 // Creation et enregistrement d'une tache
 const createTacheProjet = (req, res) => {
-  const tache = new Liste_Taches(req.body);
+  const tache = new ListeTaches(req.body);
   tache
     .save()
     .then((data) => {
-      console.log("nouvelle tache enregistré avec succès");
-      data.populate("projet").then((result) => {
-        res.status(201).send(result);
-      });
+      console.log("Nouvelle tâche enregistrée avec succès");
+      // Vérifier si les références existent avant d'appeler populate
+      if (data.projet && data.developpeur) {
+        data
+          .populate("projet")
+          .populate("developpeur")
+          .execPopulate()
+          .then((result) => {
+            res.status(201).send(result);
+          });
+      } else {
+        res.status(201).send(data);
+      }
     })
     .catch((error) => {
-      res.send({ error: error, msg: "tache pas enregistré" });
+      res.send({ error: error, msg: "Tâche non enregistrée" });
     });
 };
 
 // Afficher toutes les taches en fonction d'un utilisateur et d'un projet unique
 const getOneTachesProjet = async (req, res) => {
   const id = req.params.id;
-  const tache = await Liste_Taches.find({ projet: id }).populate("projet");
+  const id2 = req.params.id2;
+  const tache = await ListeTaches.find({
+    projet: id,
+    developpeur: id,
+  })
+    .populate("projet")
+    .populate("developpeur");
   res.send(tache);
 };
 
 //Afficher toutes les taches de la base de donnée
 const getAllTachesProjet = async (req, res) => {
-  const tache = await Liste_Taches.find().populate("projet");
+  const tache = await ListeTaches.find()
+    .populate("projet")
+    .populate("developpeur");
   res.send(tache);
 };
 
@@ -34,7 +51,7 @@ const deleteOneTacheProjet = async (req, res) => {
   const tacheId = req.params.id;
   console.log(tacheId);
   try {
-    await Liste_Taches.findByIdAndRemove(tacheId);
+    await ListeTaches.findByIdAndRemove(tacheId);
     console.log("suppression éffectuée avec success");
     return res.status(200).json({ msg: "delete successfully" });
   } catch (error) {
@@ -48,7 +65,7 @@ const UpdateTacheProjet = async (req, res) => {
   const tacheId = req.params.id;
   const data = req.body;
   try {
-    const tache = await Liste_Taches.findById(tacheId);
+    const tache = await ListeTaches.findById(tacheId);
     if (!tache) {
       console.log("aucune tache trouvée à cet identifiant");
       return res.status(400).json({ Error });
