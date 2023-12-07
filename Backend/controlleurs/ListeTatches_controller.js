@@ -7,7 +7,6 @@ const createTacheProjet = (req, res) => {
     .save()
     .then((data) => {
       console.log("Nouvelle tâche enregistrée avec succès");
-      // Vérifier si les références existent avant d'appeler populate
       if (data.projet && data.developpeur) {
         data
           .populate("projet")
@@ -31,7 +30,7 @@ const getOneTachesProjet = async (req, res) => {
   const id2 = req.params.id2;
   const tache = await ListeTaches.find({
     projet: id,
-    developpeur: id,
+    developpeur: id2,
   })
     .populate("projet")
     .populate("developpeur");

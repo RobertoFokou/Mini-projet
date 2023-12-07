@@ -6,7 +6,7 @@ const ListeTache = new mongoose.Schema({
   details: String,
   duree: Number,
   auteur: String,
-  statut: { type: String, default: "Backlog" },
+  statut: String ,
   projet: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "projet",

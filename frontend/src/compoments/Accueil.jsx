@@ -14,7 +14,7 @@ import TaskContext from "./TaskContext";
 export default function Accueil() {
   // const taches = useSelector((state) => state.tacheReducer);
   const { tache, deleteTask } = useContext(TaskContext);
-  const data = JSON.parse(localStorage.getItem("login"));
+  // const data = JSON.parse(localStorage.getItem("login"));
   return (
     <div className="App">
       {/* <p>Bienvenue monsieur <strong>{data?.prenom}</strong></p> */}

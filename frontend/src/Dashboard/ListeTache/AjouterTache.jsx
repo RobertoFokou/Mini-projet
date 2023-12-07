@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Select, MenuItem } from "@mui/material";
 import axios from "axios";
 import "../styles/Ajouter.css";
 import { useDispatch } from "react-redux";
 import { baseURL } from "../../Services/utils";
-import { addTachesProjet, getAllTachesProjet } from "../../actions/ListeTaches.action";
+import {
+  addTachesProjet,
+  getAllTachesProjet,
+} from "../../actions/ListeTaches.action";
 
 export default function AjouterTachesProjets() {
   const projet = JSON.parse(localStorage.getItem("projetSelect"));
@@ -18,20 +22,30 @@ export default function AjouterTachesProjets() {
   const [titre, setTitre] = useState("");
   const [duree, setDuree] = useState();
   const [details, setDeatails] = useState("");
+  const [statut, setStatut] = useState("Backlog");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
-  // const [edit, setEdit] = useState(false);
 
-  const handleChangeDuree = (e) =>{
-    let value = e.target.value
-    if(value < 0){
-      value = 0
-    }
-    setDuree(value)
+  function handleChoix(e) {
+    setStatut(e.target.value);
   }
+
+  const handleChangeDuree = (e) => {
+    let value = e.target.value;
+    if (value < 0) {
+      value = 0;
+    }
+    setDuree(value);
+  };
   const handleClick = async (e) => {
     e.preventDefault();
-    if (titre === "" || auteur === "" || duree === "" || details === "") {
+    if (
+      titre === "" ||
+      auteur === "" ||
+      duree === "" ||
+      details === "" ||
+      statut === ""
+    ) {
       setBad(true);
       setGood(false);
     } else {
@@ -41,6 +55,7 @@ export default function AjouterTachesProjets() {
         titre: titre,
         auteur: auteur,
         details: details,
+        statut: statut,
         duree: duree,
         projet: projet._id,
         developpeur: user._id,
@@ -51,7 +66,7 @@ export default function AjouterTachesProjets() {
         .then((res) => {
           console.log("nouvelle tache ajoutée avec succès");
           dispatch(addTachesProjet(res.data));
-          dispatch(getAllTachesProjet())
+          dispatch(getAllTachesProjet());
         })
         .catch((error) => {
           console.log({
@@ -101,6 +116,15 @@ export default function AjouterTachesProjets() {
           value={details}
           onChange={(e) => setDeatails(e.target.value)}
         />
+        <br />
+        <br />
+        <Select value={statut} onChange={handleChoix} style={{ width: "100%" }}>
+          <MenuItem value={"Backlog"}>Backlog</MenuItem>
+          <MenuItem value={"A traiter"}>A traiter</MenuItem>
+          <MenuItem value={"En cours"}>En cours</MenuItem>
+          <MenuItem value={"En Test"}>En Test</MenuItem>
+          <MenuItem value={"Terminer"}>Terminer</MenuItem>{" "}
+        </Select>
         <TextField
           className="input-field"
           id="outlined-basic"
@@ -120,7 +144,7 @@ export default function AjouterTachesProjets() {
           Ajouter
         </Button>
         <br />
-        <Link to="/dashbord/listeTache">
+        <Link to="/dashbord/projet">
           <Button
             className="btn"
             variant="contained"

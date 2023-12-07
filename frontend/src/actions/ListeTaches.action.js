@@ -6,6 +6,7 @@ export const ADD_TACHE_PROJET = "ADD_TACHE_PROJET";
 export const EDIT_TACHE_PROJET = "EDIT_TACHE_PROJET";
 export const GETONE_TACHE_PROJET = "GETONE_TACHE_PROJET";
 export const DELETE_TACHE_PROJET = "DELETE_TACHE_PROJET";
+export const UPDATE_TACHE_STATUT = "UPDATE_TACHE_STATUT";
 
 const user = JSON.parse(localStorage.getItem("login"));
 // const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
@@ -15,10 +16,12 @@ console.log(id);
 // console.log(id2);
 export const getTachesProjet = () => {
   return (dispatch) => {
-    return axios.get(`http://localhost:5000/api/tachesProjet/${id}`).then((res) => {
-      console.log(res.data);
-      dispatch({ type: GET_TACHE_PROJET , payload: res.data });
-    });
+    return axios
+      .get(`http://localhost:5000/api/tachesProjet/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        dispatch({ type: GET_TACHE_PROJET, payload: res.data });
+      });
   };
 };
 
@@ -26,17 +29,19 @@ export const getAllTachesProjet = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/tachesProjet/`).then((res) => {
       console.log(res.data);
-      dispatch({ type: GETALL_TACHE_PROJET , payload: res.data });
+      dispatch({ type: GETALL_TACHE_PROJET, payload: res.data });
     });
   };
 };
 
 export const getOneTachesProjet = (id) => {
   return (dispatch) => {
-    return axios.get(`http://localhost:5000/api/tachesProjet/${id}`).then((res) => {
-      // console.log(res.data);
-      dispatch({ type: GETONE_TACHE_PROJET , payload: res.data });
-    });
+    return axios
+      .get(`http://localhost:5000/api/tachesProjet/${id}`)
+      .then((res) => {
+        // console.log(res.data);
+        dispatch({ type: GETONE_TACHE_PROJET, payload: res.data });
+      });
   };
 };
 
@@ -46,7 +51,7 @@ export const addTachesProjet = (data) => {
       .post("http://localhost:5000/api/tachesProjet/add", data)
       .then((res) => {
         // console.log(res.data);
-        dispatch({ type: ADD_TACHE_PROJET , payload: data });
+        dispatch({ type: ADD_TACHE_PROJET, payload: data });
       });
   };
 };
@@ -57,7 +62,7 @@ export const editTachesProjet = (data) => {
       .put(`http://localhost:5000/api/tachesProjet/${data.id}`, data)
       .then((res) => {
         // console.log(res.data);
-        dispatch({ type: EDIT_TACHE_PROJET , payload: data });
+        dispatch({ type: EDIT_TACHE_PROJET, payload: data });
       });
   };
 };
@@ -68,7 +73,20 @@ export const deleteTachesProjet = (dataId) => {
       .delete(`http://localhost:5000/api/tachesProjet/${dataId}`)
       .then((res) => {
         // console.log(res.data);
-        dispatch({ type: DELETE_TACHE_PROJET , payload: dataId });
+        dispatch({ type: DELETE_TACHE_PROJET, payload: dataId });
       });
+  };
+};
+
+// GESTION DU DEPLACEMENT DES TACHES
+export const updateTacheStatut = (taskId, newStatut) => {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_TACHE_STATUT,
+      payload: {
+        taskId,
+        newStatut,
+      },
+    });
   };
 };
