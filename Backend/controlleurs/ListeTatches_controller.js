@@ -6,7 +6,6 @@ const createTacheProjet = (req, res) => {
   tache
     .save()
     .then((data) => {
-      console.log("Nouvelle tâche enregistrée avec succès");
       if (data.projet && data.developpeur) {
         data
           .populate("projet")
@@ -48,7 +47,6 @@ const getAllTachesProjet = async (req, res) => {
 // supprimer une tache
 const deleteOneTacheProjet = async (req, res) => {
   const tacheId = req.params.id;
-  console.log(tacheId);
   try {
     await ListeTaches.findByIdAndRemove(tacheId);
     console.log("suppression éffectuée avec success");

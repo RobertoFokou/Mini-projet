@@ -6,8 +6,6 @@ export const ADD_TACHE_PROJET = "ADD_TACHE_PROJET";
 export const EDIT_TACHE_PROJET = "EDIT_TACHE_PROJET";
 export const GETONE_TACHE_PROJET = "GETONE_TACHE_PROJET";
 export const DELETE_TACHE_PROJET = "DELETE_TACHE_PROJET";
-export const UPDATE_TACHE_STATUT = "UPDATE_TACHE_STATUT";
-
 const user = JSON.parse(localStorage.getItem("login"));
 // const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
 // const id2 = dataIdSelect._id;
@@ -78,15 +76,3 @@ export const deleteTachesProjet = (dataId) => {
   };
 };
 
-// GESTION DU DEPLACEMENT DES TACHES
-export const updateTacheStatut = (taskId, newStatut) => {
-  return (dispatch) => {
-    dispatch({
-      type: UPDATE_TACHE_STATUT,
-      payload: {
-        taskId,
-        newStatut,
-      },
-    });
-  };
-};

@@ -50,7 +50,6 @@ const getOneUser = (req, res) => {
 };
 
 const findUser = async function (req, res) {
-  console.log(req.body);
   const { unique, password } = req.body;
   const payload =
     typeof unique === "string" ? { email: unique } : { telephone: unique };
@@ -75,9 +74,8 @@ const findUser = async function (req, res) {
         res.status(200).send({
           data: { Utilisateur: user, token: token },
           message: "success",
-        }),
-        console.log(token)
-      );
+        })
+      )
     } else {
       return res.status(200).json({
         error: "Numéro de téléphone, e-mail ou mot de passe incorrect",

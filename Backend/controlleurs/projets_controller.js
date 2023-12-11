@@ -6,7 +6,7 @@ const createProjet = async (req, res) => {
   await projet
     .save()
     .then((data) => {
-      console.log("nouveau projet enregistré avec succès");
+      // console.log("nouveau projet enregistré avec succès");
       data.populate("developpeur").then((result) => {
         res.status(201).send(result);
       });
@@ -32,7 +32,6 @@ const getAllProjets = async (req, res) => {
 // supprimer un projet
 const deleteOneProjet = async (req, res) => {
   const projetId = req.params.id;
-  console.log(projetId);
   try {
     await Projet.findByIdAndRemove(projetId);
     console.log("suppression éffectuée avec success");

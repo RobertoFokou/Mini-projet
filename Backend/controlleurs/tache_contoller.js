@@ -6,7 +6,7 @@ const createTache  = (req, res) => {
   tache
     .save()
     .then((data) => {
-      console.log("nouvelle tache enregistré avec succès");
+      // console.log("nouvelle tache enregistré avec succès");
       data.populate("developpeur").then((result) => {
         res.status(201).send(result);
       });
@@ -32,7 +32,6 @@ const getAllTaches = async (req, res) =>{
 
 // supprimer une tache
 const deleteOneTache = async (req, res) => {
-  const tacheId = req.params.id;
   console.log(tacheId);
   try {
     await Tache.findByIdAndRemove(tacheId);
