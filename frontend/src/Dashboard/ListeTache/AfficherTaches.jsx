@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,29 +9,27 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Select, MenuItem } from "@mui/material";
 import { isEmpty } from "../../Services/utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import { DndProvider } from "react-dnd";
 // import { HTML5Backend } from "react-dnd-html5-backend";
 import TachesProjet from "./TacheListe";
 import TacheKanban from "./TacheKanban";
-import { updateTacheStatut } from "../../actions/Types_Actions";
+// import { updateTacheStatut } from "../../actions/Types_Actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 export default function AfficherTachesProjet() {
-  const dispatch = useDispatch();
-  const deplacerTache = (taskId, newStatut) => {
-    dispatch(updateTacheStatut(taskId, newStatut));
-    const tacheDeplacee = tacheProjetSelect.find(
-      (tache) => tache._id === taskId
-    );
-    if (tacheDeplacee) {
-      // Mettez à jour le statut de la tâche
-      const tacheMiseAJour = { ...tacheDeplacee, statut: newStatut };
-      // console.log(tacheMiseAJour);
-      // console.log(tacheDeplacee);
-      dispatch(updateTacheStatut(tacheMiseAJour));
-    }
-  };
+  // const dispatch = useDispatch();
+  // const deplacerTache = (taskId, newStatut) => {
+  //   dispatch(updateTacheStatut(taskId, newStatut));
+  //   const tacheDeplacee = data.find((tache) => tache._id === taskId);
+  //   if (tacheDeplacee) {
+  //     // Mettez à jour le statut de la tâche
+  //     const tacheMiseAJour = { ...tacheDeplacee, statut: newStatut };
+  //     // console.log(tacheMiseAJour);
+  //     // console.log(tacheDeplacee);
+  //     dispatch(updateTacheStatut(tacheMiseAJour));
+  //   }
+  // };
 
   const [choix, setChoix] = useState("Liste");
   const [isKanban, setIsKanban] = useState(true);
@@ -50,17 +48,28 @@ export default function AfficherTachesProjet() {
 
   // Filter les taches et afficher les taches en fonction du projet
   const tasks = useSelector((state) => state.ListeTachesReducer);
-  localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
-  const id2 = params.id;
-  // const tacheProjetSelect = tasks.filter((el) => el.projet?._id === id2);
-  const tacheProjetSelect = useSelector((state) =>
-    state.ListeTachesReducer.filter((el) => el.projet?._id === id2)
-  );
-   const [data, setData] = useState(tacheProjetSelect);
-  localStorage.setItem("tacheProjetSelect", JSON.stringify(tacheProjetSelect));
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
+    const id2 = params.id;
+    const tacheProjetSelect = tasks.filter((el) => el.projet?._id === id2);
+    localStorage.setItem(
+      "tacheProjetSelect",
+      JSON.stringify(tacheProjetSelect)
+    );
+    const storedData = localStorage.getItem("tacheProjetSelect");
+
+    console.log("executed", tacheProjetSelect);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setData(parsedData);
+    }
+  }, [tasks, params.id]);
 
   console.log(data);
 
+  // Fonction pour gérer le porté deposé
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
@@ -75,61 +84,100 @@ export default function AfficherTachesProjet() {
       return;
     }
 
-    const sourceColumn = tacheProjetSelect.find(
-      (el) => el.statut === source.droppableId
+    console.log("destination: ", destination);
+    console.log("source: ", source);
+    console.log("draggableId", draggableId);
+    console.log("source.index", source.index);
+    console.log("source.droppableId", source.droppableId);
+    console.log("destination.index", destination.index);
+    console.log(data);
+
+    // Pour connaitre la colonne dans laquelle on se trouve
+    const dataColumn = data.filter(
+      (tache) => tache.statut === source.droppableId
     );
-    const destinationColumn = tacheProjetSelect.find(
-      (el) => el.statut === destination.droppableId
-    );
+    console.log("colonne ou on a bougée une tache", dataColumn);
 
-    if (sourceColumn === destinationColumn) {
-      // Si la source et la destination sont les mêmes colonnes
-      const newTacheIds = Array.from(sourceColumn._id);
-      newTacheIds.splice(source.index, 1);
-      newTacheIds.splice(destination.index, 0, draggableId);
+    // pour avoir la tâche bougé dans la colonne oû on se trouve
+    const column = dataColumn.find((el) => el._id === draggableId);
+    console.log("tâche bougée", column);
 
-      const updatedColumn = {
-        ...sourceColumn,
-        _id: newTacheIds,
-      };
+    // Trouver l'index de l'élément "column" dans le tableau "dataColumn"
+    const columnIndex = dataColumn.findIndex((el) => el._id === draggableId);
 
-      const newTacheProjetSelect = tacheProjetSelect.map((column) =>
-        column.statut === sourceColumn.statut ? updatedColumn : column
-      );
+    // Vérifier si l'élément a été trouvé avant de le supprimer
+    if (columnIndex !== -1) {
+      // Utiliser la méthode splice() pour supprimer l'élément à l'index columnIndex
+      const newDataColumn = [...dataColumn]; // Créer une copie du tableau dataColumn
+      const removedItem = newDataColumn.splice(columnIndex, 1); // Supprimer 1 élément à l'index columnIndex
+      console.log("Nouveau tableau dataColumn après la suppression:", newDataColumn);
+      console.log(" dataColumn après la removedItem :",removedItem);
 
-      setData(newTacheProjetSelect);
-      console.log(newTacheProjetSelect);
+      // Vérifier si destination.index est valide pour insérer l'élément supprimé
+      if (destination.index >= 0 && destination.index <= newDataColumn.length) {
+        // Utiliser la méthode splice() pour insérer l'élément supprimé à la nouvelle position
+        newDataColumn.splice(destination.index, 0, removedItem[0]);
+
+        console.log(
+          "Nouveau tableau dataColumn après la suppression et le déplacement :",
+          newDataColumn
+        );
+      } else {
+        console.log(
+          "La nouvelle position de destination.index n'est pas valide."
+        );
+      }
     } else {
-      // Si la source et la destination sont des colonnes différentes
-      const sourceTacheIds = Array.from(sourceColumn._id);
-      sourceTacheIds.splice(source.index, 1);
-
-      const destinationTacheIds = Array.from(destinationColumn._id);
-      destinationTacheIds.splice(destination.index, 0, draggableId);
-
-      const updatedSourceColumn = {
-        ...sourceColumn,
-        _id: sourceTacheIds,
-      };
-
-      const updatedDestinationColumn = {
-        ...destinationColumn,
-        _id: destinationTacheIds,
-      };
-
-      const newTacheProjetSelect = tacheProjetSelect.map((column) => {
-        if (column.statut === sourceColumn.statut) {
-          return updatedSourceColumn;
-        } else if (column.statut === destinationColumn.statut) {
-          return updatedDestinationColumn;
-        } else {
-          return column;
-        }
-      });
-
-      setData(newTacheProjetSelect);
+      console.log("Élément non trouvé dans le tableau dataColumn.");
     }
+
+    // utilisons filter() pour créer un nouveau tableau updatedDataColumn qui exclut l'élément column
+    // const updatedDataColumn = dataColumn.filter((el) => el._id !== draggableId);
+    // console.log("colonne après suppression", updatedDataColumn);
+
+    // const newPosition = source.destination;
+    // updatedDataColumn.splice(newPosition, 1, column);
+    // console.log("colonne après suppression et ajout", updatedDataColumn);
+
+    //  Ajouter cet element à la nouvelle position
+    //  const removedElement = dataColumn.splice(source.index , 1);
+    //  console.log("removedElement",removedElement);
+
+    // On récupère les ids de tous les élément de dataColumn
+    // const newTaskIds = dataColumn.map((task) => task._id);
+    // console.log(newTaskIds);
+
+    // const newTacheId = Array.from(
+    //   newTaskIds.filter((id) => id !== draggableId)
+    // );
+    // console.log(newTacheId);
+    // suppression de l'element du tableu
+    // const deletetTaches = dataColumn.splice(source.index, 1)[0];
+    // console.log(deletetTaches);
+    // console.log(dataColumn);
+    // Ajout de l'element dans la nouvelle position
+    // dataColumn.splice(destination.index, 0, column);
+    // console.log(column);
+
+    // const newColums = {
+    //   ...column,
+    //   newTaskIds: newTacheId,
+    // };
+
+    // const newState = {
+    //   ...data,
+    //   [newColums._id]: newColums,
+    // };
+    // const newColumsArray = Object.values(newColums);
+    // const newStateArray = Object.values(newState);
+    // console.log(data);
+    // console.log(newColumsArray);
+    // console.log(newStateArray);
+
+    // setData(newStateArray);
+    return;
   };
+
   return (
     <div className="App">
       <h1>
@@ -139,7 +187,7 @@ export default function AfficherTachesProjet() {
       <br />
       <h2>
         Ce projet contient :{" "}
-        <span style={{ color: "red" }}> {tacheProjetSelect.length}</span> Taches
+        <span style={{ color: "red" }}> {data.length}</span> Taches
       </h2>
       <br />
       <div>
@@ -213,8 +261,8 @@ export default function AfficherTachesProjet() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!isEmpty(tacheProjetSelect) &&
-                  tacheProjetSelect.map((e) => (
+                {!isEmpty(data) &&
+                  data.map((e) => (
                     <TachesProjet
                       key={e.id}
                       titre={e.titre}
@@ -231,7 +279,7 @@ export default function AfficherTachesProjet() {
           </TableContainer>
         </div>
       ) : (
-        <div style={{ cursor: "pointer" }}>
+        <div>
           <TableContainer component={Paper}>
             <Table>
               <TableHead style={{ backgroundColor: "#05153f" }}>
@@ -245,15 +293,19 @@ export default function AfficherTachesProjet() {
               </TableHead>
               <TableBody>
                 <DragDropContext onDragEnd={onDragEnd}>
-                  <TableRow>
-                    <TableCell>
+                  <TableRow
+                    style={{ border: "2px solid red", borderRadius: "2px" }}
+                  >
+                    <TableCell
+                      style={{ border: "2px solid lightgrey", width: "20%" }}
+                    >
                       <Droppable droppableId="Backlog">
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tacheProjetSelect
+                            {data
                               .filter((tache) => tache.statut === "Backlog")
                               .map((tache, index) => (
                                 <TacheKanban
@@ -265,20 +317,23 @@ export default function AfficherTachesProjet() {
                                   statut={tache.statut}
                                   taskId={tache._id}
                                   index={index}
+                                  // deplacerTache={deplacerTache}
                                 />
                               ))}
                           </div>
                         )}
                       </Droppable>
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      style={{ border: "2px solid lightgrey", width: "20%" }}
+                    >
                       <Droppable droppableId="A traiter">
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tacheProjetSelect
+                            {data
                               .filter((tache) => tache.statut === "A traiter")
                               .map((tache, index) => (
                                 <TacheKanban
@@ -290,20 +345,23 @@ export default function AfficherTachesProjet() {
                                   statut={tache.statut}
                                   taskId={tache._id}
                                   index={index}
+                                  // deplacerTache={deplacerTache}
                                 />
                               ))}
                           </div>
                         )}
                       </Droppable>
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      style={{ border: "2px solid lightgrey", width: "20%" }}
+                    >
                       <Droppable droppableId="En cours">
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tacheProjetSelect
+                            {data
                               .filter((tache) => tache.statut === "En cours")
                               .map((tache, index) => (
                                 <TacheKanban
@@ -315,20 +373,23 @@ export default function AfficherTachesProjet() {
                                   statut={tache.statut}
                                   taskId={tache._id}
                                   index={index}
+                                  // deplacerTache={deplacerTache}
                                 />
                               ))}
                           </div>
                         )}
                       </Droppable>
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      style={{ border: "2px solid lightgrey", width: "20%" }}
+                    >
                       <Droppable droppableId="En test">
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tacheProjetSelect
+                            {data
                               .filter((tache) => tache.statut === "En Test")
                               .map((tache, index) => (
                                 <TacheKanban
@@ -340,20 +401,23 @@ export default function AfficherTachesProjet() {
                                   statut={tache.statut}
                                   taskId={tache._id}
                                   index={index}
+                                  // deplacerTache={deplacerTache}
                                 />
                               ))}
                           </div>
                         )}
                       </Droppable>
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      style={{ border: "2px solid lightgrey", width: "20%" }}
+                    >
                       <Droppable droppableId="Terminer">
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tacheProjetSelect
+                            {data
                               .filter((tache) => tache.statut === "Terminer")
                               .map((tache, index) => (
                                 <TacheKanban
@@ -365,6 +429,7 @@ export default function AfficherTachesProjet() {
                                   statut={tache.statut}
                                   taskId={tache._id}
                                   index={index}
+                                  // deplacerTache={deplacerTache}
                                 />
                               ))}
                           </div>

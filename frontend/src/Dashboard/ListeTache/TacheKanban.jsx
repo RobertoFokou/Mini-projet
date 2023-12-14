@@ -22,10 +22,10 @@ const TacheKanban = ({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Card style={{ justifyContent: "space-between" }}>
+          <Card style={{ border: "2px solid lightgrey", marginTop: "5px"}}>
             <CardContent>
               <Typography variant="h6" component="div">
-                {index + 1}. {titre}
+                {index}. {titre}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Objectifs: {auteur}
