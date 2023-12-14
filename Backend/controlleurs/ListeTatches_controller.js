@@ -1,4 +1,5 @@
 const ListeTaches = require("../models/ListeTaches_model");
+const { ObjectId } = require("mongoose");
 
 // Creation et enregistrement d'une tache
 const createTacheProjet = (req, res) => {
@@ -38,12 +39,29 @@ const getOneTachesProjet = async (req, res) => {
 
 //Afficher toutes les taches de la base de donnée
 const getAllTachesProjet = async (req, res) => {
-  const tache = await ListeTaches.find()
-    .populate("projet")
-    .populate("developpeur");
-  res.send(tache);
-};
+  const id = req.params.id;
+  // console.log(id);
+  // console.log(ObjectId(id));
+  try {
+    const taches = await ListeTaches
+      .find({projet: id})
+      .populate("developpeur")
+      .populate("projet");
 
+    const finalTab = {}
+
+    taches.forEach((task) => {
+      finalTab[task.statut] = finalTab[task.statut] ? [...finalTab[task.statut], task] : [task]
+    })
+
+    res.send(finalTab);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Une erreur s'est produite lors de la récupération des tâches.");
+  }
+};
 // supprimer une tache
 const deleteOneTacheProjet = async (req, res) => {
   const tacheId = req.params.id;

@@ -12,6 +12,6 @@ router.route("/add").post(createTacheProjet);
 router.route("/:id/:id2").get(getOneTachesProjet);
 router.route("/:id").delete(deleteOneTacheProjet);
 router.route("/:id").put(UpdateTacheProjet);
-router.route("/").get(getAllTachesProjet);
+router.route("/:id").get(getAllTachesProjet);
 
 module.exports = router;

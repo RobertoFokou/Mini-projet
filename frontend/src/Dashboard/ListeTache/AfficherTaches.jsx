@@ -18,6 +18,7 @@ import TacheKanban from "./TacheKanban";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 export default function AfficherTachesProjet() {
+  // window.location.reload();
   // const dispatch = useDispatch();
   // const deplacerTache = (taskId, newStatut) => {
   //   dispatch(updateTacheStatut(taskId, newStatut));
@@ -48,26 +49,33 @@ export default function AfficherTachesProjet() {
 
   // Filter les taches et afficher les taches en fonction du projet
   const tasks = useSelector((state) => state.ListeTachesReducer);
-  const [data, setData] = useState([]);
+  console.log(tasks);
+  const [data, setData] = useState({});
 
-  useEffect(() => {
-    localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
-    const id2 = params.id;
-    const tacheProjetSelect = tasks.filter((el) => el.projet?._id === id2);
-    localStorage.setItem(
-      "tacheProjetSelect",
-      JSON.stringify(tacheProjetSelect)
-    );
-    const storedData = localStorage.getItem("tacheProjetSelect");
+  const id2 = params.id;
+  console.log(id2);
+  localStorage.setItem("idProjet", JSON.stringify(id2));
 
-    console.log("executed", tacheProjetSelect);
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setData(parsedData);
-    }
-  }, [tasks, params.id]);
+  // useEffect(() => {
+  //   console.log(tasks);
+  //   localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
+  //   const id2 = params.id;
+  //   console.log(id2);
+  //   const tacheProjetSelect = tasks.filter((el) => el.projet?._id === id2);
+  //   console.log( "taches correspondant au projet", tacheProjetSelect);
+  //   localStorage.setItem(
+  //     "tacheProjetSelect",
+  //     JSON.stringify(tacheProjetSelect)
+  //   );
+  //   const storedData = localStorage.getItem("tacheProjetSelect");
 
-  console.log(data);
+  //   console.log("executed", tacheProjetSelect);
+  //   if (storedData) {
+  //     const parsedData = JSON.parse(storedData);
+  //     setData(parsedData);
+  //   }
+  // }, [tasks, params.id]);
+  // console.log(data);
 
   // Fonction pour gérer le porté deposé
   const onDragEnd = (result) => {
@@ -92,6 +100,8 @@ export default function AfficherTachesProjet() {
     console.log("destination.index", destination.index);
     console.log(data);
 
+    const newData = [...data];
+    console.log(" tableau copié", newData);
     // Pour connaitre la colonne dans laquelle on se trouve
     const dataColumn = data.filter(
       (tache) => tache.statut === source.droppableId
@@ -99,7 +109,8 @@ export default function AfficherTachesProjet() {
     console.log("colonne ou on a bougée une tache", dataColumn);
 
     // pour avoir la tâche bougé dans la colonne oû on se trouve
-    const column = dataColumn.find((el) => el._id === draggableId);
+    const column = newData.find((el) => el._id === draggableId);
+
     console.log("tâche bougée", column);
 
     // Trouver l'index de l'élément "column" dans le tableau "dataColumn"
@@ -110,8 +121,7 @@ export default function AfficherTachesProjet() {
       // Utiliser la méthode splice() pour supprimer l'élément à l'index columnIndex
       const newDataColumn = [...dataColumn]; // Créer une copie du tableau dataColumn
       const removedItem = newDataColumn.splice(columnIndex, 1); // Supprimer 1 élément à l'index columnIndex
-      console.log("Nouveau tableau dataColumn après la suppression:", newDataColumn);
-      console.log(" dataColumn après la removedItem :",removedItem);
+      console.log(" dataColumn après la suppression :", removedItem);
 
       // Vérifier si destination.index est valide pour insérer l'élément supprimé
       if (destination.index >= 0 && destination.index <= newDataColumn.length) {
@@ -131,49 +141,6 @@ export default function AfficherTachesProjet() {
       console.log("Élément non trouvé dans le tableau dataColumn.");
     }
 
-    // utilisons filter() pour créer un nouveau tableau updatedDataColumn qui exclut l'élément column
-    // const updatedDataColumn = dataColumn.filter((el) => el._id !== draggableId);
-    // console.log("colonne après suppression", updatedDataColumn);
-
-    // const newPosition = source.destination;
-    // updatedDataColumn.splice(newPosition, 1, column);
-    // console.log("colonne après suppression et ajout", updatedDataColumn);
-
-    //  Ajouter cet element à la nouvelle position
-    //  const removedElement = dataColumn.splice(source.index , 1);
-    //  console.log("removedElement",removedElement);
-
-    // On récupère les ids de tous les élément de dataColumn
-    // const newTaskIds = dataColumn.map((task) => task._id);
-    // console.log(newTaskIds);
-
-    // const newTacheId = Array.from(
-    //   newTaskIds.filter((id) => id !== draggableId)
-    // );
-    // console.log(newTacheId);
-    // suppression de l'element du tableu
-    // const deletetTaches = dataColumn.splice(source.index, 1)[0];
-    // console.log(deletetTaches);
-    // console.log(dataColumn);
-    // Ajout de l'element dans la nouvelle position
-    // dataColumn.splice(destination.index, 0, column);
-    // console.log(column);
-
-    // const newColums = {
-    //   ...column,
-    //   newTaskIds: newTacheId,
-    // };
-
-    // const newState = {
-    //   ...data,
-    //   [newColums._id]: newColums,
-    // };
-    // const newColumsArray = Object.values(newColums);
-    // const newStateArray = Object.values(newState);
-    // console.log(data);
-    // console.log(newColumsArray);
-    // console.log(newStateArray);
-
     // setData(newStateArray);
     return;
   };
@@ -187,7 +154,8 @@ export default function AfficherTachesProjet() {
       <br />
       <h2>
         Ce projet contient :{" "}
-        <span style={{ color: "red" }}> {data.length}</span> Taches
+        <span style={{ color: "red" }}> {Object.keys(tasks).length}</span>{" "}
+        Taches
       </h2>
       <br />
       <div>
@@ -261,19 +229,21 @@ export default function AfficherTachesProjet() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!isEmpty(data) &&
-                  data.map((e) => (
-                    <TachesProjet
-                      key={e.id}
-                      titre={e.titre}
-                      auteur={e.auteur}
-                      details={e.details}
-                      duree={e.duree}
-                      origine={e.statut}
-                      taskId={e._id}
-                      // supp={deletetTaches}
-                    />
-                  ))}
+                {!isEmpty(tasks) &&
+                  Object.keys(tasks).map((e) => {
+                    return tasks[e].map((task) => (
+                      <TachesProjet
+                        key={task._id}
+                        titre={task.titre}
+                        auteur={task.auteur}
+                        details={task.details}
+                        duree={task.duree}
+                        origine={task.statut}
+                        taskId={task._id}
+                        // supp={deletetTaches}
+                      />
+                    ));
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -284,47 +254,43 @@ export default function AfficherTachesProjet() {
             <Table>
               <TableHead style={{ backgroundColor: "#05153f" }}>
                 <TableRow>
-                  <TableCell style={{ color: "white" }}>Backlog</TableCell>
-                  <TableCell style={{ color: "white" }}>A traiter</TableCell>
-                  <TableCell style={{ color: "white" }}>En cours </TableCell>
-                  <TableCell style={{ color: "white" }}>En Test</TableCell>
-                  <TableCell style={{ color: "white" }}>Terminer</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <DragDropContext onDragEnd={onDragEnd}>
                   <TableRow
-                    style={{ border: "2px solid red", borderRadius: "2px" }}
+                  // style={{ border: "2px solid red", borderRadius: "2px" }}
                   >
-                    <TableCell
-                      style={{ border: "2px solid lightgrey", width: "20%" }}
-                    >
-                      <Droppable droppableId="Backlog">
-                        {(Provider) => (
-                          <div
-                            {...Provider.droppableProps}
-                            ref={Provider.innerRef}
-                          >
-                            {data
-                              .filter((tache) => tache.statut === "Backlog")
-                              .map((tache, index) => (
-                                <TacheKanban
-                                  key={tache._id}
-                                  titre={tache.titre}
-                                  auteur={tache.auteur}
-                                  details={tache.details}
-                                  duree={tache.duree}
-                                  statut={tache.statut}
-                                  taskId={tache._id}
-                                  index={index}
-                                  // deplacerTache={deplacerTache}
-                                />
-                              ))}
-                          </div>
-                        )}
-                      </Droppable>
-                    </TableCell>
-                    <TableCell
+                    <TableBody>
+                      {!isEmpty(tasks) &&
+                        Object.keys(tasks).map((e) => (
+                          <>
+                          <p>{e}</p>
+                          <Droppable droppableId={e}>
+                            {(Provider) => (
+                              <div
+                                {...Provider.droppableProps}
+                                ref={Provider.innerRef}
+                              >
+                                {tasks[e].map((task) => (
+                                  <TacheKanban
+                                    key={task._id}
+                                    titre={task.titre}
+                                    auteur={task.auteur}
+                                    details={task.details}
+                                    duree={task.duree}
+                                    statut={task.statut}
+                                    taskId={task._id}
+                                    // supp={deletetTaches}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </Droppable>
+                          </>
+                        ))}
+                    </TableBody>
+                    {/* <TableCell
                       style={{ border: "2px solid lightgrey", width: "20%" }}
                     >
                       <Droppable droppableId="A traiter">
@@ -351,91 +317,7 @@ export default function AfficherTachesProjet() {
                           </div>
                         )}
                       </Droppable>
-                    </TableCell>
-                    <TableCell
-                      style={{ border: "2px solid lightgrey", width: "20%" }}
-                    >
-                      <Droppable droppableId="En cours">
-                        {(Provider) => (
-                          <div
-                            {...Provider.droppableProps}
-                            ref={Provider.innerRef}
-                          >
-                            {data
-                              .filter((tache) => tache.statut === "En cours")
-                              .map((tache, index) => (
-                                <TacheKanban
-                                  key={tache._id}
-                                  titre={tache.titre}
-                                  auteur={tache.auteur}
-                                  details={tache.details}
-                                  duree={tache.duree}
-                                  statut={tache.statut}
-                                  taskId={tache._id}
-                                  index={index}
-                                  // deplacerTache={deplacerTache}
-                                />
-                              ))}
-                          </div>
-                        )}
-                      </Droppable>
-                    </TableCell>
-                    <TableCell
-                      style={{ border: "2px solid lightgrey", width: "20%" }}
-                    >
-                      <Droppable droppableId="En test">
-                        {(Provider) => (
-                          <div
-                            {...Provider.droppableProps}
-                            ref={Provider.innerRef}
-                          >
-                            {data
-                              .filter((tache) => tache.statut === "En Test")
-                              .map((tache, index) => (
-                                <TacheKanban
-                                  key={tache._id}
-                                  titre={tache.titre}
-                                  auteur={tache.auteur}
-                                  details={tache.details}
-                                  duree={tache.duree}
-                                  statut={tache.statut}
-                                  taskId={tache._id}
-                                  index={index}
-                                  // deplacerTache={deplacerTache}
-                                />
-                              ))}
-                          </div>
-                        )}
-                      </Droppable>
-                    </TableCell>
-                    <TableCell
-                      style={{ border: "2px solid lightgrey", width: "20%" }}
-                    >
-                      <Droppable droppableId="Terminer">
-                        {(Provider) => (
-                          <div
-                            {...Provider.droppableProps}
-                            ref={Provider.innerRef}
-                          >
-                            {data
-                              .filter((tache) => tache.statut === "Terminer")
-                              .map((tache, index) => (
-                                <TacheKanban
-                                  key={tache._id}
-                                  titre={tache.titre}
-                                  auteur={tache.auteur}
-                                  details={tache.details}
-                                  duree={tache.duree}
-                                  statut={tache.statut}
-                                  taskId={tache._id}
-                                  index={index}
-                                  // deplacerTache={deplacerTache}
-                                />
-                              ))}
-                          </div>
-                        )}
-                      </Droppable>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 </DragDropContext>
               </TableBody>
