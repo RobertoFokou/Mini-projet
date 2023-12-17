@@ -7,15 +7,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, Grid, Card, CardContent } from "@mui/material";
 import { isEmpty } from "../../Services/utils";
-import { useSelector } from "react-redux";
+// import { Grid, Card, CardContent } from '@material-ui/core';
+
 // import { DndProvider } from "react-dnd";
 // import { HTML5Backend } from "react-dnd-html5-backend";
 import TachesProjet from "./TacheListe";
 import TacheKanban from "./TacheKanban";
 // import { updateTacheStatut } from "../../actions/Types_Actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import axios from "axios";
 
 export default function AfficherTachesProjet() {
   // window.location.reload();
@@ -47,34 +49,31 @@ export default function AfficherTachesProjet() {
   localStorage.setItem("projetSelect", JSON.stringify(dataId));
   const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
 
-  // Filter les taches et afficher les taches en fonction du projet
-  const tasks = useSelector((state) => state.ListeTachesReducer);
-  console.log(tasks);
   const [data, setData] = useState({});
 
   const id2 = params.id;
   console.log(id2);
   localStorage.setItem("idProjet", JSON.stringify(id2));
+  useEffect(() => {
+    const idProjet = JSON.parse(localStorage.getItem("idProjet"));
+    console.log(idProjet);
+    axios
+      .get(`http://localhost:5000/api/tachesProjet/${idProjet}`)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("tacheIdProjetSelect", JSON.stringify(res.data));
+        const updatedTasks = JSON.parse(
+          localStorage.getItem("tacheIdProjetSelect")
+        );
+        // Mettre à jour la constante "tasks" avec les nouvelles données
+        setTasks(updatedTasks);
+      });
+  }, []);
 
-  // useEffect(() => {
-  //   console.log(tasks);
-  //   localStorage.setItem("ListeTachesProjet", JSON.stringify(tasks));
-  //   const id2 = params.id;
-  //   console.log(id2);
-  //   const tacheProjetSelect = tasks.filter((el) => el.projet?._id === id2);
-  //   console.log( "taches correspondant au projet", tacheProjetSelect);
-  //   localStorage.setItem(
-  //     "tacheProjetSelect",
-  //     JSON.stringify(tacheProjetSelect)
-  //   );
-  //   const storedData = localStorage.getItem("tacheProjetSelect");
-
-  //   console.log("executed", tacheProjetSelect);
-  //   if (storedData) {
-  //     const parsedData = JSON.parse(storedData);
-  //     setData(parsedData);
-  //   }
-  // }, [tasks, params.id]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tacheIdProjetSelect"))
+  );
+  console.log(tasks);
   // console.log(data);
 
   // Fonction pour gérer le porté deposé
@@ -250,79 +249,49 @@ export default function AfficherTachesProjet() {
         </div>
       ) : (
         <div>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead style={{ backgroundColor: "#05153f" }}>
-                <TableRow>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <TableRow
-                  // style={{ border: "2px solid red", borderRadius: "2px" }}
-                  >
-                    <TableBody>
-                      {!isEmpty(tasks) &&
-                        Object.keys(tasks).map((e) => (
-                          <>
-                          <p>{e}</p>
-                          <Droppable droppableId={e}>
-                            {(Provider) => (
-                              <div
-                                {...Provider.droppableProps}
-                                ref={Provider.innerRef}
-                              >
-                                {tasks[e].map((task) => (
-                                  <TacheKanban
-                                    key={task._id}
-                                    titre={task.titre}
-                                    auteur={task.auteur}
-                                    details={task.details}
-                                    duree={task.duree}
-                                    statut={task.statut}
-                                    taskId={task._id}
-                                    // supp={deletetTaches}
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          </Droppable>
-                          </>
-                        ))}
-                    </TableBody>
-                    {/* <TableCell
-                      style={{ border: "2px solid lightgrey", width: "20%" }}
-                    >
-                      <Droppable droppableId="A traiter">
+          <Grid
+            container
+            spacing={2}
+            style={{
+              border: "1px solid lightgrey",
+              display: "flex",
+              gap: "20px",
+              borderRadius: "10px",
+            }}
+          >
+            <DragDropContext onDragEnd={onDragEnd}>
+              {Object.keys(tasks).map((e) => (
+                <Grid style={{ display: "flex", gap: "50px" }}>
+                  <Card>
+                    <CardContent>
+                      <p>{e}</p>
+                      <Droppable droppableId={e}>
                         {(Provider) => (
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {data
-                              .filter((tache) => tache.statut === "A traiter")
-                              .map((tache, index) => (
-                                <TacheKanban
-                                  key={tache._id}
-                                  titre={tache.titre}
-                                  auteur={tache.auteur}
-                                  details={tache.details}
-                                  duree={tache.duree}
-                                  statut={tache.statut}
-                                  taskId={tache._id}
-                                  index={index}
-                                  // deplacerTache={deplacerTache}
-                                />
-                              ))}
+                            {tasks[e].map((task) => (
+                              <TacheKanban
+                                key={task._id}
+                                titre={task.titre}
+                                auteur={task.auteur}
+                                details={task.details}
+                                duree={task.duree}
+                                statut={task.statut}
+                                taskId={task._id}
+                                // supp={deletetTaches}
+                              />
+                            ))}
                           </div>
                         )}
                       </Droppable>
-                    </TableCell> */}
-                  </TableRow>
-                </DragDropContext>
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </DragDropContext>
+          </Grid>
         </div>
       )}
     </div>
