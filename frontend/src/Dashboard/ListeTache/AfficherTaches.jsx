@@ -24,7 +24,7 @@ export default function AfficherTachesProjet() {
   // const dispatch = useDispatch();
   // const deplacerTache = (taskId, newStatut) => {
   //   dispatch(updateTacheStatut(taskId, newStatut));
-  //   const tacheDeplacee = data.find((tache) => tache._id === taskId);
+  //   const tacheDeplacee = tasks.find((tache) => tache._id === taskId);
   //   if (tacheDeplacee) {
   //     // Mettez à jour le statut de la tâche
   //     const tacheMiseAJour = { ...tacheDeplacee, statut: newStatut };
@@ -99,16 +99,16 @@ export default function AfficherTachesProjet() {
     console.log("destination.index", destination.index);
     console.log(data);
 
-    const newData = [...data];
-    console.log(" tableau copié", newData);
+    // const newData = [...data];
+    const newData = { ...tasks };
+    console.log(" tableau d'objet copié", newData);
+
     // Pour connaitre la colonne dans laquelle on se trouve
-    const dataColumn = data.filter(
-      (tache) => tache.statut === source.droppableId
-    );
+    const dataColumn = newData[source.droppableId]
     console.log("colonne ou on a bougée une tache", dataColumn);
 
     // pour avoir la tâche bougé dans la colonne oû on se trouve
-    const column = newData.find((el) => el._id === draggableId);
+    const column = dataColumn.find((el) => el._id === draggableId);
 
     console.log("tâche bougée", column);
 
@@ -116,14 +116,14 @@ export default function AfficherTachesProjet() {
     const columnIndex = dataColumn.findIndex((el) => el._id === draggableId);
 
     // Vérifier si l'élément a été trouvé avant de le supprimer
-    if (columnIndex !== -1) {
-      // Utiliser la méthode splice() pour supprimer l'élément à l'index columnIndex
+      // Utilisons la méthode splice() pour supprimer l'élément à l'index columnIndex
       const newDataColumn = [...dataColumn]; // Créer une copie du tableau dataColumn
       const removedItem = newDataColumn.splice(columnIndex, 1); // Supprimer 1 élément à l'index columnIndex
-      console.log(" dataColumn après la suppression :", removedItem);
+      console.log(" élément supprimé :", removedItem);
+      console.log(" dataColumn après la suppression :", newDataColumn);
+
 
       // Vérifier si destination.index est valide pour insérer l'élément supprimé
-      if (destination.index >= 0 && destination.index <= newDataColumn.length) {
         // Utiliser la méthode splice() pour insérer l'élément supprimé à la nouvelle position
         newDataColumn.splice(destination.index, 0, removedItem[0]);
 
@@ -131,16 +131,10 @@ export default function AfficherTachesProjet() {
           "Nouveau tableau dataColumn après la suppression et le déplacement :",
           newDataColumn
         );
-      } else {
-        console.log(
-          "La nouvelle position de destination.index n'est pas valide."
-        );
-      }
-    } else {
-      console.log("Élément non trouvé dans le tableau dataColumn.");
-    }
 
-    // setData(newStateArray);
+        newData[source.droppableId] = newDataColumn
+
+        setTasks({...newData})
     return;
   };
 
@@ -249,17 +243,19 @@ export default function AfficherTachesProjet() {
         </div>
       ) : (
         <div>
-          <Grid
-            container
-            spacing={2}
-            style={{
-              border: "1px solid lightgrey",
-              display: "flex",
-              gap: "20px",
-              borderRadius: "10px",
-            }}
-          >
-            <DragDropContext onDragEnd={onDragEnd}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Grid
+              container
+              spacing={2}
+              style={{
+                border: "1px solid lightgrey",
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              {" "}
               {Object.keys(tasks).map((e) => (
                 <Grid style={{ display: "flex", gap: "50px" }}>
                   <Card>
@@ -271,7 +267,7 @@ export default function AfficherTachesProjet() {
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
                           >
-                            {tasks[e].map((task) => (
+                            {tasks[e].map((task, index) => (
                               <TacheKanban
                                 key={task._id}
                                 titre={task.titre}
@@ -280,6 +276,7 @@ export default function AfficherTachesProjet() {
                                 duree={task.duree}
                                 statut={task.statut}
                                 taskId={task._id}
+                                index={index}
                                 // supp={deletetTaches}
                               />
                             ))}
@@ -290,8 +287,8 @@ export default function AfficherTachesProjet() {
                   </Card>
                 </Grid>
               ))}
-            </DragDropContext>
-          </Grid>
+            </Grid>
+          </DragDropContext>
         </div>
       )}
     </div>

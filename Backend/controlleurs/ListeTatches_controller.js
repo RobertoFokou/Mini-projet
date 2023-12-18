@@ -1,4 +1,5 @@
 const ListeTaches = require("../models/ListeTaches_model");
+const Status = require("../models/status")
 const { ObjectId } = require("mongoose");
 
 // Creation et enregistrement d'une tache
@@ -40,18 +41,22 @@ const getOneTachesProjet = async (req, res) => {
 //Afficher toutes les taches de la base de donnée
 const getAllTachesProjet = async (req, res) => {
   const id = req.params.id;
-  // console.log(id);
-  // console.log(ObjectId(id));
   try {
     const taches = await ListeTaches
       .find({projet: id})
       .populate("developpeur")
       .populate("projet");
 
+    const statuts = await Status.find({}, { _id: 0 });
+      console.log('====================================');
+      console.log(statuts);
+      console.log('====================================');
+
     const finalTab = {}
 
     taches.forEach((task) => {
       finalTab[task.statut] = finalTab[task.statut] ? [...finalTab[task.statut], task] : [task]
+      console.log(task.statut);
     })
 
     res.send(finalTab);
