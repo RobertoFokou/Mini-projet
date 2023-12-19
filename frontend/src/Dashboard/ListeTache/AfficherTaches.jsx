@@ -49,93 +49,87 @@ export default function AfficherTachesProjet() {
   localStorage.setItem("projetSelect", JSON.stringify(dataId));
   const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
 
-  const [data, setData] = useState({});
+  // const [data, setData] = useState({});
 
   const id2 = params.id;
-  console.log(id2);
-  localStorage.setItem("idProjet", JSON.stringify(id2));
   useEffect(() => {
-    const idProjet = JSON.parse(localStorage.getItem("idProjet"));
-    console.log(idProjet);
     axios
-      .get(`http://localhost:5000/api/tachesProjet/${idProjet}`)
+      .get(`http://localhost:5000/api/tachesProjet/${id2}`)
       .then((res) => {
-        console.log(res.data);
-        localStorage.setItem("tacheIdProjetSelect", JSON.stringify(res.data));
-        const updatedTasks = JSON.parse(
-          localStorage.getItem("tacheIdProjetSelect")
-        );
         // Mettre à jour la constante "tasks" avec les nouvelles données
-        setTasks(updatedTasks);
+        const data = res.data;
+        setTasks(data);
       });
-  }, []);
+  }, [id2]);
 
-  const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tacheIdProjetSelect"))
-  );
+  const [tasks, setTasks] = useState({});
   console.log(tasks);
+  // Object.keys(tasks).map((e) => {
+  //   console.log(e);
+  //   tasks[e].map((tasks) =>{
+  //     console.log(tasks);
+  //   })
+  // });
   // console.log(data);
 
   // Fonction pour gérer le porté deposé
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-
+  
     if (!destination) {
       return;
     }
-
+  
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
       return;
     }
-
-    console.log("destination: ", destination);
-    console.log("source: ", source);
-    console.log("draggableId", draggableId);
-    console.log("source.index", source.index);
-    console.log("source.droppableId", source.droppableId);
-    console.log("destination.index", destination.index);
-    console.log(data);
-
-    // const newData = [...data];
+  
     const newData = { ...tasks };
-    console.log(" tableau d'objet copié", newData);
+  
+    const sourceColumn = newData[source.droppableId];
+  
+    const destinationColumn = newData[destination.droppableId];
+  
+    if (sourceColumn === destinationColumn) {
 
-    // Pour connaitre la colonne dans laquelle on se trouve
-    const dataColumn = newData[source.droppableId]
-    console.log("colonne ou on a bougée une tache", dataColumn);
-
-    // pour avoir la tâche bougé dans la colonne oû on se trouve
-    const column = dataColumn.find((el) => el._id === draggableId);
-
-    console.log("tâche bougée", column);
-
-    // Trouver l'index de l'élément "column" dans le tableau "dataColumn"
-    const columnIndex = dataColumn.findIndex((el) => el._id === draggableId);
-
-    // Vérifier si l'élément a été trouvé avant de le supprimer
-      // Utilisons la méthode splice() pour supprimer l'élément à l'index columnIndex
-      const newDataColumn = [...dataColumn]; // Créer une copie du tableau dataColumn
-      const removedItem = newDataColumn.splice(columnIndex, 1); // Supprimer 1 élément à l'index columnIndex
-      console.log(" élément supprimé :", removedItem);
-      console.log(" dataColumn après la suppression :", newDataColumn);
-
-
-      // Vérifier si destination.index est valide pour insérer l'élément supprimé
-        // Utiliser la méthode splice() pour insérer l'élément supprimé à la nouvelle position
-        newDataColumn.splice(destination.index, 0, removedItem[0]);
-
-        console.log(
-          "Nouveau tableau dataColumn après la suppression et le déplacement :",
-          newDataColumn
-        );
-
-        newData[source.droppableId] = newDataColumn
-
-        setTasks({...newData})
-    return;
+      const columnIndex = sourceColumn.findIndex((el) => el._id === draggableId);
+  
+      const newDataSourceColumn = [...sourceColumn];
+      const removedItem = newDataSourceColumn.splice(columnIndex, 1);
+  
+      if (destinationColumn.length === 0) {
+        newDataSourceColumn.push(removedItem[0]);
+      } else {
+        newDataSourceColumn.splice(destination.index, 0, removedItem[0]);
+      }
+  
+      newData[source.droppableId] = newDataSourceColumn;
+  
+      setTasks({ ...newData });
+      return;
+    } else {
+  
+      const columnIndex = sourceColumn.findIndex((el) => el._id === draggableId);
+  
+      const newDataSourceColumn = [...sourceColumn];
+      const newDataSourceDestination = [...destinationColumn];
+  
+      const removedItem = newDataSourceColumn.splice(columnIndex, 1);;
+  
+      if (destinationColumn.length === 0) {
+        newDataSourceDestination.push(removedItem[0]);
+      } else {
+        newDataSourceDestination.splice(destination.index, 0, removedItem[0]);
+      }
+  
+      newData[destination.droppableId] = newDataSourceDestination;
+      newData[source.droppableId] = newDataSourceColumn;
+      setTasks({ ...newData });
+      return;
+    }
   };
 
   return (
@@ -251,14 +245,14 @@ export default function AfficherTachesProjet() {
                 border: "1px solid lightgrey",
                 display: "flex",
                 justifyContent: "space-between",
-                gap: "20px",
+                // gap: "10px",
                 borderRadius: "10px",
               }}
             >
               {" "}
               {Object.keys(tasks).map((e) => (
-                <Grid style={{ display: "flex", gap: "50px" }}>
-                  <Card>
+                <Grid>
+                  <Card style={{ width: "15vw" }}>
                     <CardContent>
                       <p>{e}</p>
                       <Droppable droppableId={e}>
@@ -266,6 +260,13 @@ export default function AfficherTachesProjet() {
                           <div
                             {...Provider.droppableProps}
                             ref={Provider.innerRef}
+                            style={{
+                              display: "flex",
+                              // overflow: "auto",
+                              alignItems: "center",
+                              padding: "10px 15px 0",
+                              flexDirection: "column"
+                            }}
                           >
                             {tasks[e].map((task, index) => (
                               <TacheKanban

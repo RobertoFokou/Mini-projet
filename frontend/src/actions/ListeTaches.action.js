@@ -13,7 +13,6 @@ const user = JSON.parse(localStorage.getItem("login"));
 // const id2 = params.id;
 // console.log(id2);
 const id = user?._id;
-console.log(id);
 // console.log(id2);
 export const getTachesProjet = () => {
   return (dispatch) => {
@@ -27,7 +26,6 @@ export const getTachesProjet = () => {
 };
 
 const idProjet = JSON.parse(localStorage.getItem("idProjet"));
-console.log(idProjet);
 export const getAllTachesProjet = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/tachesProjet/${idProjet}`).then((res) => {
