@@ -1,3 +1,4 @@
+const { sortArray } = require("../helpers");
 const ListeTaches = require("../models/ListeTaches_model");
 const Status = require("../models/status");
 const { ObjectId } = require("mongoose");
@@ -46,24 +47,15 @@ const getAllTachesProjet = async (req, res) => {
       .populate("developpeur")
       .populate("projet");
 
-    const statuts = await Status.findOne({}, { _id: 0 });
-    // console.log(statuts);
+    let retObj = sortArray("statut", taches, [
+      "Backlog",
+      "A Traiter",
+      "En Cours",
+      "En Test",
+      "Terminer",
+    ]);
 
-    const finalTab = {};
-    taches.forEach((task) => {
-      finalTab[task.statut] = finalTab[task.statut]
-        ? [...finalTab[task.statut], task]
-        : [task];
-    });
-
-    // Ajouter les statuts manquants
-    // statuts.forEach((statut) => {
-    //   if (!finalTab[statut.statuts]) {
-    //     finalTab[statut.statuts] = statuts;
-    //   }
-    // });
-
-    res.send(finalTab);
+    res.send(retObj);
   } catch (error) {
     console.error(error);
     res
@@ -71,6 +63,7 @@ const getAllTachesProjet = async (req, res) => {
       .send("Une erreur s'est produite lors de la récupération des tâches.");
   }
 };
+
 // supprimer une tache
 const deleteOneTacheProjet = async (req, res) => {
   const tacheId = req.params.id;
