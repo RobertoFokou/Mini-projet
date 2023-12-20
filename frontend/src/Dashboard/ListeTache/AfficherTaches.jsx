@@ -53,78 +53,79 @@ export default function AfficherTachesProjet() {
 
   const id2 = params.id;
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/tachesProjet/${id2}`)
-      .then((res) => {
-        // Mettre à jour la constante "tasks" avec les nouvelles données
-        const data = res.data;
-        setTasks(data);
-      });
+    axios.get(`http://localhost:5000/api/tachesProjet/${id2}`).then((res) => {
+      // Mettre à jour la constante "tasks" avec les nouvelles données
+      const data = res.data;
+      setTasks(data);
+    });
   }, [id2]);
 
   const [tasks, setTasks] = useState({});
   console.log(tasks);
-  // Object.keys(tasks).map((e) => {
-  //   console.log(e);
-  //   tasks[e].map((tasks) =>{
-  //     console.log(tasks);
-  //   })
-  // });
-  // console.log(data);
+  const tailleBacklog = tasks["Backlog"]?.length;
+  const tailleATraiter = tasks["A Traiter"]?.length;
+  const tailleCours = tasks["En Cours"]?.length;
+  const tailleTest = tasks["En Test"]?.length;
+  const tailleTerminer = tasks["Terminer"]?.length;
+  const finalTaille =
+    tailleBacklog + tailleATraiter + tailleCours + tailleTest + tailleTerminer;
+
 
   // Fonction pour gérer le porté deposé
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-  
+
     if (!destination) {
       return;
     }
-  
+
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
       return;
     }
-  
-    const newData = { ...tasks };
-  
-    const sourceColumn = newData[source.droppableId];
-  
-    const destinationColumn = newData[destination.droppableId];
-  
-    if (sourceColumn === destinationColumn) {
 
-      const columnIndex = sourceColumn.findIndex((el) => el._id === draggableId);
-  
+    const newData = { ...tasks };
+
+    const sourceColumn = newData[source.droppableId];
+
+    const destinationColumn = newData[destination.droppableId];
+
+    if (sourceColumn === destinationColumn) {
+      const columnIndex = sourceColumn.findIndex(
+        (el) => el._id === draggableId
+      );
+
       const newDataSourceColumn = [...sourceColumn];
       const removedItem = newDataSourceColumn.splice(columnIndex, 1);
-  
+
       if (destinationColumn.length === 0) {
         newDataSourceColumn.push(removedItem[0]);
       } else {
         newDataSourceColumn.splice(destination.index, 0, removedItem[0]);
       }
-  
+
       newData[source.droppableId] = newDataSourceColumn;
-  
+
       setTasks({ ...newData });
       return;
     } else {
-  
-      const columnIndex = sourceColumn.findIndex((el) => el._id === draggableId);
-  
+      const columnIndex = sourceColumn.findIndex(
+        (el) => el._id === draggableId
+      );
+
       const newDataSourceColumn = [...sourceColumn];
       const newDataSourceDestination = [...destinationColumn];
-  
-      const removedItem = newDataSourceColumn.splice(columnIndex, 1);;
-  
+
+      const removedItem = newDataSourceColumn.splice(columnIndex, 1);
+
       if (destinationColumn.length === 0) {
         newDataSourceDestination.push(removedItem[0]);
       } else {
         newDataSourceDestination.splice(destination.index, 0, removedItem[0]);
       }
-  
+
       newData[destination.droppableId] = newDataSourceDestination;
       newData[source.droppableId] = newDataSourceColumn;
       setTasks({ ...newData });
@@ -141,7 +142,7 @@ export default function AfficherTachesProjet() {
       <br />
       <h2>
         Ce projet contient :{" "}
-        <span style={{ color: "red" }}> {Object.keys(tasks).length}</span>{" "}
+        <span style={{ color: "red" }}> {finalTaille}</span>{" "}
         Taches
       </h2>
       <br />
@@ -245,7 +246,8 @@ export default function AfficherTachesProjet() {
                 border: "1px solid lightgrey",
                 display: "flex",
                 justifyContent: "space-between",
-                // gap: "10px",
+                backgroundColor:"rgb(210, 210, 230)",
+                padding: "10px",
                 borderRadius: "10px",
               }}
             >
@@ -265,7 +267,7 @@ export default function AfficherTachesProjet() {
                               // overflow: "auto",
                               alignItems: "center",
                               padding: "10px 15px 0",
-                              flexDirection: "column"
+                              flexDirection: "column",
                             }}
                           >
                             {tasks[e].map((task, index) => (

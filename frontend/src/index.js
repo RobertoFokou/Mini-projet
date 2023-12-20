@@ -22,11 +22,9 @@ if (privilege === "Admin") {
   store.dispatch(getAllTachesAPI());
   store.dispatch(getAllUsersAPI());
   store.dispatch(getAllProjets())
-  // store.dispatch(getAllTachesProjet())
 } else {
   store.dispatch(getTachesAPI());
   store.dispatch(getProjets())
-    // store.dispatch(getAllTachesProjet())
 }
 
 store.dispatch(getTaches());

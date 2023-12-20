@@ -9,10 +9,11 @@ export const DELETE_TACHE_API = "DELETE_TACHE_API";
 
 const user = JSON.parse(localStorage.getItem("login"));
 const id = user?._id;
+console.log(id);
 export const getTachesAPI = () => {
   return (dispatch) => {
     return axios.get(`http://localhost:5000/api/taches/${id}`).then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       dispatch({ type: GET_TACHE_API, payload: res.data });
     });
   };

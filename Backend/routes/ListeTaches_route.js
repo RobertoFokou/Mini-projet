@@ -9,7 +9,7 @@ const {
 } = require("../controlleurs/ListeTatches_controller");
 
 router.route("/add").post(createTacheProjet);
-router.route("/:id/:id2").get(getOneTachesProjet);
+router.route("/userTaches/:id").get(getOneTachesProjet);
 router.route("/:id").delete(deleteOneTacheProjet);
 router.route("/:id").put(UpdateTacheProjet);
 router.route("/:id").get(getAllTachesProjet);

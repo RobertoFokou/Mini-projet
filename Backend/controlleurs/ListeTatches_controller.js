@@ -29,14 +29,26 @@ const createTacheProjet = (req, res) => {
 // Afficher toutes les taches en fonction d'un utilisateur et d'un projet unique
 const getOneTachesProjet = async (req, res) => {
   const id = req.params.id;
-  const id2 = req.params.id2;
-  const tache = await ListeTaches.find({
-    projet: id,
-    developpeur: id2,
-  })
-    .populate("projet")
-    .populate("developpeur");
-  res.send(tache);
+  try {
+    const taches = await ListeTaches.find({developpeur: id})
+      .populate("developpeur")
+      .populate("projet");
+
+    let retObj = sortArray("statut", taches, [
+      "Backlog",
+      "A Traiter",
+      "En Cours",
+      "En Test",
+      "Terminer",
+    ]);
+
+    res.send(retObj);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Une erreur s'est produite lors de la récupération des tâches.");
+  }
 };
 
 //Afficher toutes les taches de la base de donnée

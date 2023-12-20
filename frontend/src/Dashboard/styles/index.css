@@ -17,15 +17,17 @@
       & .head_info {
         position: absolute;
         top: 0;
-        width:82%;
+        width:83%;
         height: 10vh;
       }
   
       & .section_clients {
         /* border: 2px solid red; */
+        background-color: rgb(212, 221, 230);
         overflow: auto;
-        margin-top: 100px;
+        margin-top: 92px;
         padding: 10px;
+        height: 81.5%;
         width:98%;
       }
     }

@@ -19,11 +19,11 @@ export default function Navbar() {
       <div>
         <div className="logo">
           <img src={logo} alt="logo" />
-          <p>GateWayTACHES</p>
+          <p>GateWayTaches</p>
         </div>
         <ul>
           {privilege === "Admin" && (
-            <Link to="statistique">
+            <Link to="statistique" style={{ textDecoration: "none" }}>
               <li
                 style={{
                   backgroundColor: selectedItem === 20 ? "red" : "#05153f",
@@ -35,7 +35,7 @@ export default function Navbar() {
             </Link>
           )}
           {privilege === "Developpeur" && (
-            <Link to="statistique">
+            <Link to="statistique" style={{textDecoration: "none"}}>
               <li
                 style={{
                   backgroundColor: selectedItem === 3 ? "red" : "#05153f",
@@ -46,7 +46,11 @@ export default function Navbar() {
               </li>
             </Link>
           )}
-          <Link to="all_taches" onClick={() => setSelectedItem(2)}>
+          <Link
+            to="all_taches"
+            onClick={() => setSelectedItem(2)}
+            style={{ textDecoration: "none" }}
+          >
             <li
               style={{
                 backgroundColor: selectedItem === 2 ? "red" : "#05153f",
@@ -56,7 +60,11 @@ export default function Navbar() {
               <i className="fa-solid fa-user-secret"></i>Accueil
             </li>
           </Link>
-          <Link to="projet" onClick={() => setSelectedItem(9)}>
+          <Link
+            to="projet"
+            onClick={() => setSelectedItem(9)}
+            style={{ textDecoration: "none" }}
+          >
             <li
               style={{
                 backgroundColor: selectedItem === 9 ? "red" : "#05153f",
@@ -66,7 +74,7 @@ export default function Navbar() {
               <i class="fa-solid fa-layer-group"></i>Projets
             </li>
           </Link>
-          <Link to="profil">
+          <Link to="profil" style={{ textDecoration: "none" }}>
             <li
               style={{
                 backgroundColor: selectedItem === 6 ? "red" : "#05153f",
@@ -85,6 +93,10 @@ export default function Navbar() {
           <li id="premium" onClick={deconnecter}>
             <i className="fa-solid fa-share-from-square"></i>Deconnexion
           </li>
+          <div className="info">
+            <span>version 1.0.0</span>
+            <span>2023-2024</span>
+          </div>
         </ul>
       </div>
     </div>

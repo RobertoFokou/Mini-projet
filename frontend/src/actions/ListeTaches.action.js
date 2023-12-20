@@ -7,11 +7,7 @@ export const EDIT_TACHE_PROJET = "EDIT_TACHE_PROJET";
 export const GETONE_TACHE_PROJET = "GETONE_TACHE_PROJET";
 export const DELETE_TACHE_PROJET = "DELETE_TACHE_PROJET";
 const user = JSON.parse(localStorage.getItem("login"));
-// const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
-// const id2 = dataIdSelect._id;
-//  const params = useParams();
-// const id2 = params.id;
-// console.log(id2);
+
 const id = user?._id;
 // console.log(id2);
 export const getTachesProjet = () => {
@@ -35,10 +31,11 @@ export const getAllTachesProjet = () => {
   };
 };
 
-export const getOneTachesProjet = (id) => {
+// Recupérer toutes les taches de la base de donnée
+export const getOneTachesProjet = () => {
   return (dispatch) => {
     return axios
-      .get(`http://localhost:5000/api/tachesProjet/${id}`)
+      .get(`http://localhost:5000/api/tachesProjet/`)
       .then((res) => {
         console.log(res.data);
         dispatch({ type: GETONE_TACHE_PROJET, payload: res.data });

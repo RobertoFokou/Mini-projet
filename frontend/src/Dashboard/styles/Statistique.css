@@ -1,82 +1,64 @@
 .statistique {
   /* border: 2px solid red; */
-  padding: 20px;
-  margin: 10px;
-  :link{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 15px;
+  :link {
     text-decoration: none;
   }
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
 
-  & .s1 {
+  & .sg1 {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+    background-color: white;
+    color: rgb(33, 32, 32);
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
 
-    & .sg {
-      height: 100px;
-      width: 400px;
-      padding: 30px;
-      background-color: rgb(230, 33, 33);
-      color: white;
-      font-size: 20px;
+    & .projet {
+      background-color:rgb(212, 221, 230);
+      text-align: center;
+      width: 30px;
+      height: 30px;
+      padding-top: 5px;
+      border-radius: 50px;
+      padding: 10px;
+    }
+
+    span{
       font-weight: bold;
-      cursor: pointer;
+      font-size: 25px;
     }
+  }
 
-    & .sg:hover {
-      background-color: rgb(65, 180, 180);
-    }
+  & .sg1:hover {
+    background-color: rgb(65, 180, 180);
+    color: white;
 
-    & .sd {
-      width: 400px;
+    .projet{
+      color: red;
       background-color: black;
-      color: white;
-      padding: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    & .sd:hover {
-        background-color: rgb(45, 32, 235);
-      }
-  }
-}
-
-.statistique2 {
-  /* border: 2px solid gray; */
-  padding: 20px;
-  margin: 10px;
-
-  & .s2 {
-    display: flex;
-    justify-content: space-between;
-
-    & .sg {
-      height: 100px;
-      width: 400px;
-      padding: 30px;
-      background-color: rgb(119, 8, 8);
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    & .sg:hover {
-      background-color: rgb(45, 32, 235);
-    }
-
-    & .sd {
-      width: 400px;
-      background-color: rgb(53, 39, 39);
-      color: white;
-      padding: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      font-weight: 100px;
-      cursor: pointer;
-    }
-
-    & .sd:hover {
-      background-color: rgb(65, 180, 180);
     }
   }
 }
+
+.animation{
+  padding: 10px;
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  & .ag{
+    background-color: white;
+    width: 50%;
+    border-radius: 5px;
+  }
+}
+
