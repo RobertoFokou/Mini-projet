@@ -4,16 +4,27 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "../styles/Ajouter.css";
 import { useDispatch } from "react-redux";
-import { editTachesProjet, getAllTachesProjet } from "../../actions/ListeTaches.action";
+import {
+  editTachesProjet,
+  getAllTachesProjet,
+} from "../../actions/ListeTaches.action";
+import { Select, MenuItem } from "@mui/material";
 
 export default function ModiferTacheProjet() {
   const params = useParams();
   const id = params.id;
   const dataSelect = JSON.parse(localStorage.getItem("tacheProjetSelect"));
-  // console.log(dataSelect);
-  const dataId = dataSelect.filter((el) => el._id === id)[0];
+  const keys = Object.keys(dataSelect);
+  let filteredData = [];
 
-  console.log(dataId)
+  keys.forEach((key) => {
+    filteredData = filteredData.concat(
+      dataSelect[key].filter((el) => el._id === id)
+    );
+  });
+
+  const dataId = filteredData[0];
+  console.log(dataId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [auteur, setAuteur] = useState(dataId?.auteur);
@@ -22,7 +33,11 @@ export default function ModiferTacheProjet() {
   const [details, setDeatails] = useState(dataId?.details);
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  const [statut, setStatut] = useState(dataId?.statut);
 
+  function handleChoix(e) {
+    setStatut(e.target?.value);
+  }
   const handleClick = async (e) => {
     e.preventDefault();
     if (titre === "" || auteur === "" || duree === "" || details === "") {
@@ -76,6 +91,13 @@ export default function ModiferTacheProjet() {
           value={details}
           onChange={(e) => setDeatails(e.target.value)}
         />
+        <Select value={statut} onChange={handleChoix} style={{ width: "100%" }}>
+          <MenuItem value={"Backlog"}>Backlog</MenuItem>
+          <MenuItem value={"A traiter"}>A traiter</MenuItem>
+          <MenuItem value={"En cours"}>En cours</MenuItem>
+          <MenuItem value={"En Test"}>En Test</MenuItem>
+          <MenuItem value={"Terminer"}>Terminer</MenuItem>{" "}
+        </Select>
         <TextField
           className="input-field"
           id="outlined-basic"

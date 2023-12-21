@@ -47,11 +47,13 @@ export default function StatistiqueAdmin() {
             <p>Total de Projets</p>
           </div>
         </Link>
+        <Link to="/dashbord/user">
         <div className="sg1">
           <i class="fa-solid fa-laptop-code projet"></i>
           <span>{user.length}</span>
           <p>Total d'utilisateurs</p>
         </div>
+        </Link>
 
         <div className="sg1">
           <i class="fa-solid fa-laptop-code projet"></i>

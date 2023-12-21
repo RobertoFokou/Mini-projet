@@ -9,10 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Select, MenuItem, Grid, Card, CardContent } from "@mui/material";
 import { isEmpty } from "../../Services/utils";
-// import { Grid, Card, CardContent } from '@material-ui/core';
-
-// import { DndProvider } from "react-dnd";
-// import { HTML5Backend } from "react-dnd-html5-backend";
 import TachesProjet from "./TacheListe";
 import TacheKanban from "./TacheKanban";
 // import { updateTacheStatut } from "../../actions/Types_Actions";
@@ -62,6 +58,7 @@ export default function AfficherTachesProjet() {
 
   const [tasks, setTasks] = useState({});
   console.log(tasks);
+  localStorage.setItem("tacheProjetSelect", JSON.stringify(tasks))
   const tailleBacklog = tasks["Backlog"]?.length;
   const tailleATraiter = tasks["A Traiter"]?.length;
   const tailleCours = tasks["En Cours"]?.length;
