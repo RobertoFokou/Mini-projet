@@ -15,25 +15,24 @@ export default function ModiferTacheProjet() {
   const id = params.id;
   const dataSelect = JSON.parse(localStorage.getItem("tacheProjetSelect"));
   const keys = Object.keys(dataSelect);
-  let filteredData = [];
+  let dataFilter = [];
 
   keys.forEach((key) => {
-    filteredData = filteredData.concat(
+    dataFilter = dataFilter.concat(
       dataSelect[key].filter((el) => el._id === id)
     );
   });
-
-  const dataId = filteredData[0];
+  const dataId = dataFilter[0];
   console.log(dataId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [auteur, setAuteur] = useState(dataId?.auteur);
-  const [titre, setTitre] = useState(dataId?.titre);
-  const [duree, setDuree] = useState(dataId?.duree);
-  const [details, setDeatails] = useState(dataId?.details);
+  const [auteur, setAuteur] = useState(dataId?.auteur ?? "");
+  const [titre, setTitre] = useState(dataId?.titre ?? "");
+  const [duree, setDuree] = useState(dataId?.duree ?? "");
+  const [details, setDeatails] = useState(dataId?.details ?? "");
+  const [statut, setStatut] = useState(dataId?.statut ?? "");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
-  const [statut, setStatut] = useState(dataId?.statut);
 
   function handleChoix(e) {
     setStatut(e.target?.value);
@@ -50,6 +49,7 @@ export default function ModiferTacheProjet() {
         titre: titre,
         auteur: auteur,
         details: details,
+        statut:statut,
         duree: duree,
         id: id,
       };
@@ -93,8 +93,8 @@ export default function ModiferTacheProjet() {
         />
         <Select value={statut} onChange={handleChoix} style={{ width: "100%" }}>
           <MenuItem value={"Backlog"}>Backlog</MenuItem>
-          <MenuItem value={"A traiter"}>A traiter</MenuItem>
-          <MenuItem value={"En cours"}>En cours</MenuItem>
+          <MenuItem value={"A Traiter"}>A Traiter</MenuItem>
+          <MenuItem value={"En Cours"}>En Cours</MenuItem>
           <MenuItem value={"En Test"}>En Test</MenuItem>
           <MenuItem value={"Terminer"}>Terminer</MenuItem>{" "}
         </Select>

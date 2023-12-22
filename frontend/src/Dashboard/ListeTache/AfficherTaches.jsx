@@ -14,22 +14,13 @@ import TacheKanban from "./TacheKanban";
 // import { updateTacheStatut } from "../../actions/Types_Actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import {
+  editTachesProjet,
+  getAllTachesProjet,
+} from "../../actions/ListeTaches.action";
 export default function AfficherTachesProjet() {
-  // window.location.reload();
-  // const dispatch = useDispatch();
-  // const deplacerTache = (taskId, newStatut) => {
-  //   dispatch(updateTacheStatut(taskId, newStatut));
-  //   const tacheDeplacee = tasks.find((tache) => tache._id === taskId);
-  //   if (tacheDeplacee) {
-  //     // Mettez à jour le statut de la tâche
-  //     const tacheMiseAJour = { ...tacheDeplacee, statut: newStatut };
-  //     // console.log(tacheMiseAJour);
-  //     // console.log(tacheDeplacee);
-  //     dispatch(updateTacheStatut(tacheMiseAJour));
-  //   }
-  // };
-
+  const dispatch = useDispatch();
   const [choix, setChoix] = useState("Liste");
   const [isKanban, setIsKanban] = useState(true);
 
@@ -45,8 +36,6 @@ export default function AfficherTachesProjet() {
   localStorage.setItem("projetSelect", JSON.stringify(dataId));
   const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
 
-  // const [data, setData] = useState({});
-
   const id2 = params.id;
   useEffect(() => {
     axios.get(`http://localhost:5000/api/tachesProjet/${id2}`).then((res) => {
@@ -57,16 +46,22 @@ export default function AfficherTachesProjet() {
   }, [id2]);
 
   const [tasks, setTasks] = useState({});
-  console.log(tasks);
-  localStorage.setItem("tacheProjetSelect", JSON.stringify(tasks))
-  const tailleBacklog = tasks["Backlog"]?.length;
-  const tailleATraiter = tasks["A Traiter"]?.length;
-  const tailleCours = tasks["En Cours"]?.length;
-  const tailleTest = tasks["En Test"]?.length;
-  const tailleTerminer = tasks["Terminer"]?.length;
-  const finalTaille =
-    tailleBacklog + tailleATraiter + tailleCours + tailleTest + tailleTerminer;
+  localStorage.setItem("tacheProjetSelect", JSON.stringify(tasks));
+  // const tailleBacklog = tasks["Backlog"]?.length;
+  // const tailleATraiter = tasks["A Traiter"]?.length;
+  // const tailleCours = tasks["En Cours"]?.length;
+  // const tailleTest = tasks["En Test"]?.length;
+  // const tailleTerminer = tasks["Terminer"]?.length;
+  // const finalTaille =
+  //   tailleBacklog + tailleATraiter + tailleCours + tailleTest + tailleTerminer;
 
+  let finalTaille = 0;
+  for (const key in tasks) {
+    if (tasks.hasOwnProperty(key)) {
+      const taille = tasks[key]?.length;
+      finalTaille += taille || 0;
+    }
+  }
 
   // Fonction pour gérer le porté deposé
   const onDragEnd = (result) => {
@@ -90,12 +85,13 @@ export default function AfficherTachesProjet() {
     const destinationColumn = newData[destination.droppableId];
 
     if (sourceColumn === destinationColumn) {
+      // Trouver l'index de l'élément bougé"
       const columnIndex = sourceColumn.findIndex(
         (el) => el._id === draggableId
       );
 
-      const newDataSourceColumn = [...sourceColumn];
-      const removedItem = newDataSourceColumn.splice(columnIndex, 1);
+      const newDataSourceColumn = [...sourceColumn]; //copie du tableau source
+      const removedItem = newDataSourceColumn.splice(columnIndex, 1); //Supprimer 1 élément à l'index columnIndex
 
       if (destinationColumn.length === 0) {
         newDataSourceColumn.push(removedItem[0]);
@@ -111,6 +107,17 @@ export default function AfficherTachesProjet() {
       const columnIndex = sourceColumn.findIndex(
         (el) => el._id === draggableId
       );
+      // Recherchons la tache qui a été déplacé
+      const dataDeplacer = sourceColumn.find((el) => el._id === draggableId);
+
+      dataDeplacer.statut = destination.droppableId;
+
+      const updateTaches = {
+        statut: destination.droppableId,
+        id: dataDeplacer._id,
+      };
+      dispatch(editTachesProjet(updateTaches));
+      dispatch(getAllTachesProjet());
 
       const newDataSourceColumn = [...sourceColumn];
       const newDataSourceDestination = [...destinationColumn];
@@ -139,8 +146,7 @@ export default function AfficherTachesProjet() {
       <br />
       <h2>
         Ce projet contient :{" "}
-        <span style={{ color: "red" }}> {finalTaille}</span>{" "}
-        Taches
+        <span style={{ color: "red" }}> {finalTaille}</span> Taches
       </h2>
       <br />
       <div>
@@ -243,7 +249,7 @@ export default function AfficherTachesProjet() {
                 border: "1px solid lightgrey",
                 display: "flex",
                 justifyContent: "space-between",
-                backgroundColor:"rgb(210, 210, 230)",
+                backgroundColor: "rgb(210, 210, 230)",
                 padding: "10px",
                 borderRadius: "10px",
               }}

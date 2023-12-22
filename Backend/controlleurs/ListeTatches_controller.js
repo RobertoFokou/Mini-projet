@@ -102,7 +102,7 @@ const UpdateTacheProjet = async (req, res) => {
     tache.set(data);
     tache.updateOne({ _id: tacheId }, data);
     await tache.save();
-    console.log("la tâche a été mise à jour avec succès");
+    // console.log("la tâche a été mise à jour avec succès");
     res.status(200).json(tache);
   } catch (error) {
     console.log(error);
