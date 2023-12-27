@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Button from "@mui/material/Button";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "../styles/TachesAPI.css";
 import { TextField } from "@mui/material";
@@ -206,6 +206,20 @@ export default function ProjetBd({
             }}
           >
              Taches
+          </Button>
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={"/dashbord/membres/" + taskId}>
+          <Button
+            className="btn"
+            variant="contained"
+            type="submit"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+             Membres
           </Button>
         </Link>
       </TableCell>

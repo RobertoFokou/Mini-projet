@@ -21,7 +21,7 @@ export default function AllUsers() {
         <span style={{ color: "red" }}> {user.length}</span>
       </h1>
       <div>
-        <Link to="/index">
+        <Link to="/dashbord/projet">
           <button
             type="button"
             style={{

@@ -101,7 +101,9 @@ export default function AfficherProjet() {
                   <TableCell style={{ color: "white" }}>Auteur</TableCell>
                   <TableCell style={{ color: "white" }}>supprimer</TableCell>
                   <TableCell style={{ color: "white" }}>Modifier</TableCell>
-                  <TableCell style={{ color: "white" }}>Details</TableCell>
+                  <TableCell style={{ color: "white" }}>Taches</TableCell>
+                  <TableCell style={{ color: "white" }}>Memrbres</TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>

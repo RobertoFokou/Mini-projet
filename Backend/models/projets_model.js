@@ -5,7 +5,7 @@ const projet = new mongoose.Schema({
     details: String,
     dateCreation: String,
     dateLivraison: String,
-    menbers: [],
+    members: [],
     developpeur: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "utilisateurs",

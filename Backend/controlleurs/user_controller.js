@@ -3,6 +3,7 @@ const upload = require("../images/uploads");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const Projet = require("../models/projets_model");
 
 // Creation et enregistrement d'un utilisateur
 const createUser = async (req, res) => {
@@ -30,27 +31,91 @@ const getAllUsers = async (req, res) => {
   res.send(user);
 };
 
-const getOneUser = (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  Utilisateur.findOne({
-    $or: [{ telephone: id }, { email: id }],
-  })
-    .then((Utilisateur) => {
-      console.log(Utilisateur);
-      if (Utilisateur) {
-        return res.status(200).json({ Utilisateur });
+// Recuprer tous les utilisateur appartenant à un projet
+const getUserProjet = (req, res) => {
+  const idArray = req.params.id.split(",").map((id) => id.replace(/"/g, "")); // Supprimez les guillemets autour des ID
+
+  Utilisateur.find({ _id: { $in: idArray } })
+    .then((utilisateurs) => {
+      if (utilisateurs.length > 0) {
+        return res.status(200).send({ utilisateurs, message: "success" });
       } else {
-        return res.status(400).json({ err: "user inexistant" });
+        return res
+          .status(200)
+          .json({ err: "utilisateurs inexistants", message: "echec" });
       }
     })
-    .catch((Error) => {
-      return res.status(400).json({ err: "user not found" });
+    .catch((error) => {
+      console.log(error);
+      return res
+        .status(400)
+        .json({ error: "Erreur lors de la recherche des utilisateurs" });
     });
 };
 
+// Rechercher un utilisateur et ajouter son l'ajouter à un projet
+const getOneUser = (req, res) => {
+  const unique = req.body;
+  const id = req.params.id;
+  console.log(id);
+  console.log(unique);
+  Utilisateur.findOne({ email: unique.email })
+    .then((utilisateur) => {
+      if (utilisateur) {
+        const userId = utilisateur._id;
+
+        Projet.findById(id)
+          .then((projet) => {
+            if (projet) {
+              // Vérifier si l'ID de l'utilisateur existe déjà dans le tableau members
+              if (projet.members.includes(userId)) {
+                return res
+                  .status(200)
+                  .json({ message: "L'utilisateur est déjà membre du projet" });
+              }
+
+              projet.members.push(userId); // Ajouter l'ID de l'utilisateur dans le tableau members
+              projet
+                .save()
+                .then((projetUpdated) => {
+                  return res.status(200).send({
+                    utilisateur,
+                    projet: projetUpdated,
+                    message: "success",
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  return res
+                    .status(500)
+                    .json({ error: "Erreur lors de la mise à jour du projet" });
+                });
+            } else {
+              return res.status(404).json({ message: "Projet non trouvé" });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            return res
+              .status(500)
+              .json({ error: "Erreur lors de la recherche du projet" });
+          });
+      } else {
+        return res
+          .status(200)
+          .json({ err: "Utilisateur inexistant", message: "echec" });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(400).json({ error: "Utilisateur non trouvé" });
+    });
+};
+
+// Connexion de l'utilisateur via l'email ou telephone et d'un password
 const findUser = async function (req, res) {
   const { unique, password } = req.body;
+  console.log(req.body);
   const payload =
     typeof unique === "string" ? { email: unique } : { telephone: unique };
   try {
@@ -70,12 +135,10 @@ const findUser = async function (req, res) {
         { expiresIn: "24h" }
       );
       res.cookie("token", token);
-      return (
-        res.status(200).send({
-          data: { Utilisateur: user, token: token },
-          message: "success",
-        })
-      )
+      return res.status(200).send({
+        data: { Utilisateur: user, token: token },
+        message: "success",
+      });
     } else {
       return res.status(200).json({
         error: "Numéro de téléphone, e-mail ou mot de passe incorrect",
@@ -118,4 +181,5 @@ module.exports = {
   findUser,
   UpdateUser,
   getAllUsers,
+  getUserProjet,
 };
