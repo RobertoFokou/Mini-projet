@@ -10,6 +10,7 @@ const TacheKanban = ({
   details,
   duree,
   statut,
+  membre,
   taskId,
   index,
   deplacerTache,
@@ -25,7 +26,7 @@ const TacheKanban = ({
           <Card style={{ border: "2px solid lightgrey", marginTop: "5px" }}>
             <CardContent>
               <Typography variant="h6" component="div">
-                 {titre}
+                {titre}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Objectifs: {auteur}
@@ -35,6 +36,12 @@ const TacheKanban = ({
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Durée: {duree}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                concerné: 
+                <span style={{ fontWeight: "bold", color: "red" }}>
+                  {membre}
+                </span>
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Statut: {statut}

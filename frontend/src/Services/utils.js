@@ -8,3 +8,5 @@ export const isEmpty = (value) => {
   };
 
   export const baseURL ='http://localhost:5000/api'
+
+  export const baseRoot = 'http://localhost:5000'

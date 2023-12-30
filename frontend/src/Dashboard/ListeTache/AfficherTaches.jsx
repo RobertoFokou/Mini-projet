@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Select, MenuItem, Grid, Card, CardContent } from "@mui/material";
-import { isEmpty } from "../../Services/utils";
+import { baseURL, isEmpty } from "../../Services/utils";
 import TachesProjet from "./TacheListe";
 import TacheKanban from "./TacheKanban";
 // import { updateTacheStatut } from "../../actions/Types_Actions";
@@ -21,6 +21,8 @@ import {
 } from "../../actions/ListeTaches.action";
 export default function AfficherTachesProjet() {
   const dispatch = useDispatch();
+  const [data, setData] = useState([])
+
   const [choix, setChoix] = useState("Liste");
   const [isKanban, setIsKanban] = useState(true);
 
@@ -35,7 +37,10 @@ export default function AfficherTachesProjet() {
   const dataId = dataSelect.filter((el) => el._id === id)[0];
   localStorage.setItem("projetSelect", JSON.stringify(dataId));
   const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
+  const membre = dataIdSelect.members;
+  localStorage.setItem("memberTache", JSON.stringify(membre));
 
+  // recuperer toutes les taches du projet
   const id2 = params.id;
   useEffect(() => {
     axios.get(`http://localhost:5000/api/tachesProjet/${id2}`).then((res) => {
@@ -45,7 +50,22 @@ export default function AfficherTachesProjet() {
     });
   }, [id2]);
 
+  // recuperer tous les membre du projet
+  const idMember = JSON.parse(localStorage.getItem("memberTache"));
+  console.log(idMember);
+  useEffect(() => {
+    if (idMember.length > 0) {
+      axios.get(`${baseURL}/users/getUserProjet/${idMember}`).then((res) => {
+        // Mettre à jour la constante "tasks" avec les nouvelles données
+        const data = res.data.utilisateurs;
+        setData(data);
+      });
+    }
+  }, []);
+  localStorage.setItem("membre", JSON.stringify(data));
+  console.log(data);
   const [tasks, setTasks] = useState({});
+  console.log(tasks);
   localStorage.setItem("tacheProjetSelect", JSON.stringify(tasks));
   // const tailleBacklog = tasks["Backlog"]?.length;
   // const tailleATraiter = tasks["A Traiter"]?.length;
@@ -215,6 +235,7 @@ export default function AfficherTachesProjet() {
                   <TableCell style={{ color: "white" }}>Details </TableCell>
                   <TableCell style={{ color: "white" }}>Durée</TableCell>
                   <TableCell style={{ color: "white" }}>Statut</TableCell>
+                  <TableCell style={{ color: "white" }}>Membres</TableCell>
                   <TableCell style={{ color: "white" }}>supprimer</TableCell>
                   <TableCell style={{ color: "white" }}>Modifier</TableCell>
                 </TableRow>
@@ -230,6 +251,7 @@ export default function AfficherTachesProjet() {
                         details={task.details}
                         duree={task.duree}
                         origine={task.statut}
+                        membre={task.member}
                         taskId={task._id}
                         // supp={deletetTaches}
                       />
@@ -280,6 +302,7 @@ export default function AfficherTachesProjet() {
                                 auteur={task.auteur}
                                 details={task.details}
                                 duree={task.duree}
+                                membre={task.member}
                                 statut={task.statut}
                                 taskId={task._id}
                                 index={index}

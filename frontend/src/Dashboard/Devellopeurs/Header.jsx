@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/header.css";
 export default function Header() {
   const user = JSON.parse(localStorage.getItem("login"));
+  console.log(user.photo);
   return (
     <div className="global">
       <div className="welcome">

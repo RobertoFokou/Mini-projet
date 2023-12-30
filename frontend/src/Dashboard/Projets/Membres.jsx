@@ -4,11 +4,9 @@ import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import "../styles/TachesAPI.css";
-import {
-  deleteTachesAPI,
-  getTachesAPI,
-} from "../../actions/API_taches";
+import { deleteTachesAPI, getTachesAPI } from "../../actions/API_taches";
 import axios from "axios";
+import { baseRoot } from "../../Services/utils";
 
 export default function MembreBd({
   nom,
@@ -19,7 +17,7 @@ export default function MembreBd({
   photo,
   taskId,
 }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDeleteClick = () => {
@@ -59,7 +57,19 @@ export default function MembreBd({
       <TableCell>{numero}</TableCell>
       <TableCell>{email}</TableCell>
       <TableCell>{privilege}</TableCell>
-      <TableCell>{photo}</TableCell>
+      <TableCell>
+        {" "}
+        <img
+          src={`${baseRoot}/${photo}`}
+          style={{
+            width: "40px",
+            height: "40px",
+            flexShrink: "0",
+            borderRadius: "50px",
+          }}
+          alt=""
+        />{" "}
+      </TableCell>
       <TableCell>
         {confirmDelete ? (
           <div className="dialog-overlay" onClick={handleCancelDelete}>

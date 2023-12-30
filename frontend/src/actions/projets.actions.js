@@ -1,6 +1,8 @@
 import axios from "axios";
+import { baseURL } from "../Services/utils";
 
 export const GET_PROJET = "GET_PROJET";
+export const GET_MEMBER_PROJET = "GET_MEMBER_PROJET";
 export const GETALL_PROJET = "GETALL_PROJET";
 export const ADD_PROJET = "ADD_PROJET";
 export const EDIT_PROJET = "EDIT_PROJET";
@@ -65,6 +67,18 @@ export const deleteProjets = (dataId) => {
       .then((res) => {
         // console.log(res.data);
         dispatch({ type: DELETE_PROJET, payload: dataId });
+      });
+  };
+};
+
+const idMembre = JSON.parse(localStorage.getItem("idMembre"));
+export const getMememberProjets = () => {
+  return (dispatch) => {
+    return axios
+      .get(`${baseURL}/users/getUserProjet/${idMembre}`)
+      .then((res) => {
+        console.log(res.data);
+        dispatch({ type: GET_MEMBER_PROJET, payload: res.data });
       });
   };
 };

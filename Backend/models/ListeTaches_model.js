@@ -7,6 +7,7 @@ const ListeTache = new mongoose.Schema({
   duree: Number,
   auteur: String,
   statut: String ,
+  member: String,
   projet: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "projet",

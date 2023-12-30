@@ -13,9 +13,11 @@ import "../styles/TachesAPI.css";
 import MembreBd from "./Membres";
 import axios from "axios";
 import { TextField } from "@mui/material";
+// import { getMememberProjets } from "../../actions/projets.actions";
 
 export default function AfficherMembre() {
   const [confirmSeach, setConfirmSeach] = useState(false);
+  const [data, setData] = useState([])
   const [email, setEmail] = useState("");
   const [champVide, setChampVide] = useState(false);
   const [error, setError] = useState(false);
@@ -23,20 +25,30 @@ export default function AfficherMembre() {
   const [message2, setMessage2] = useState(false);
   const user = useSelector((state) => state.tacheUserAPI);
   localStorage.setItem("dataSelectAPI", JSON.stringify(user));
-  const dataIdSelect = JSON.parse(localStorage.getItem("projetSelect"));
-  console.log(dataIdSelect);
-  const idMember = dataIdSelect.members
-  console.log(idMember);
-  useEffect(() => {
-    axios.get(`${baseURL}/users/getUserProjet/${idMember}`).then((res) => {
-      // Mettre à jour la constante "tasks" avec les nouvelles données
-      const data = res.data;
-      console.log(data);
-    });
-  }, [idMember]);
+
+  // const dispatch = useDispatch()
   const params = useParams();
+  const id2 = params.id;
+  const dataSelect = JSON.parse(localStorage.getItem("projet"));
+  const dataId = dataSelect.filter((el) => el._id === id2)[0];
+  localStorage.setItem("projetMembre", JSON.stringify(dataId));
+  const dataIdSelect = JSON.parse(localStorage.getItem("projetMembre"));
+  const idMember = dataIdSelect.members;
+  console.log(idMember);
+   // recuperer tous les membre du projet
+  localStorage.setItem("idMembre", JSON.stringify(idMember));
+  useEffect(() => {
+    if (idMember.length > 0) {
+      axios.get(`${baseURL}/users/getUserProjet/${idMember}`).then((res) => {
+        // Mettre à jour la constante "tasks" avec les nouvelles données
+        const data = res.data.utilisateurs;
+        setData(data)
+        localStorage.setItem("membre", JSON.stringify(data));
+      });
+    }
+  }, []);
+  console.log(data);
   const id = params.id;
-  console.log(id);
   const handleSeachClick = () => {
     setConfirmSeach(true);
   };
@@ -65,6 +77,11 @@ export default function AfficherMembre() {
         if (res.data.message === "success") {
           setMessage(true);
           setError(false);
+          // dispatch(getMememberProjets())
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          
         } else if (
           res.data.message === "L'utilisateur est déjà membre du projet"
         ) {
@@ -74,13 +91,13 @@ export default function AfficherMembre() {
         } else {
           setError(true);
           setMessage(false);
-          setMessage2(false)
+          setMessage2(false);
         }
       });
     } else {
       setChampVide(true);
       setMessage(false);
-      setMessage2(false)
+      setMessage2(false);
     }
   }
 
@@ -88,7 +105,7 @@ export default function AfficherMembre() {
     <div className="App">
       <h1>
         Nombre total de membres :{" "}
-        <span style={{ color: "red" }}> {user.length}</span>
+        <span style={{ color: "red" }}> {data.length}</span>
       </h1>
       <div
         style={{
@@ -163,7 +180,9 @@ export default function AfficherMembre() {
                     <span style={{ color: "#1bbd7e" }}>utilisateur trouvé</span>
                   )}
                   {message2 && (
-                    <span style={{ color: "#1bbd7e" }}>L'utilisateur est déjà membre du projet</span>
+                    <span style={{ color: "#1bbd7e" }}>
+                      L'utilisateur est déjà membre du projet
+                    </span>
                   )}
                   <TextField
                     required
@@ -214,10 +233,10 @@ export default function AfficherMembre() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!isEmpty(user) &&
-                user.map((e) => (
+              {!isEmpty(data) &&
+                data.map((e) => (
                   <MembreBd
-                    key={e.id}
+                    key={e._id}
                     nom={e.nom}
                     prenom={e.prenom}
                     numero={e.telephone}

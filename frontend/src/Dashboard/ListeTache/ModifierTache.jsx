@@ -9,8 +9,10 @@ import {
   getAllTachesProjet,
 } from "../../actions/ListeTaches.action";
 import { Select, MenuItem } from "@mui/material";
+import { isEmpty } from "../../Services/utils";
 
 export default function ModiferTacheProjet() {
+  const data = JSON.parse(localStorage.getItem("membre"));
   const params = useParams();
   const id = params.id;
   const dataSelect = JSON.parse(localStorage.getItem("tacheProjetSelect"));
@@ -33,10 +35,16 @@ export default function ModiferTacheProjet() {
   const [statut, setStatut] = useState(dataId?.statut ?? "");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  const [member, setMember] = useState("Ajouter un membre");
 
   function handleChoix(e) {
     setStatut(e.target?.value);
   }
+
+  function handleMember(e) {
+    setMember(e.target.value);
+  }
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (titre === "" || auteur === "" || duree === "" || details === "") {
@@ -49,8 +57,9 @@ export default function ModiferTacheProjet() {
         titre: titre,
         auteur: auteur,
         details: details,
-        statut:statut,
+        statut: statut,
         duree: duree,
+        member: member,
         id: id,
       };
       await dispatch(editTachesProjet(updateTaches));
@@ -97,6 +106,21 @@ export default function ModiferTacheProjet() {
           <MenuItem value={"En Cours"}>En Cours</MenuItem>
           <MenuItem value={"En Test"}>En Test</MenuItem>
           <MenuItem value={"Terminer"}>Terminer</MenuItem>{" "}
+        </Select>
+        <Select
+          value={member}
+          onChange={handleMember}
+          style={{ width: "100%" }}
+        >
+          {!isEmpty(data) ? (
+            data.map((data) => (
+              <MenuItem value={data.nom + " " + data.prenom}>
+                {data.nom}-{data.prenom}
+              </MenuItem>
+            ))
+          ) : (
+            <option value="">Aucun nom disponible</option>
+          )}
         </Select>
         <TextField
           className="input-field"

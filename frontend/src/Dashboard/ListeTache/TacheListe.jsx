@@ -19,6 +19,7 @@ export default function TachesProjet({
   titre,
   auteur,
   details,
+  membre,
   duree,
   origine,
   taskId,
@@ -147,6 +148,7 @@ export default function TachesProjet({
         {!show && <span onDoubleClick={() => setShow(true)}>{duree}</span>}
       </TableCell>
       <TableCell>{origine}</TableCell>
+      <TableCell>{membre}</TableCell>
       <TableCell>
         {confirmDelete ? (
           <div className="dialog-overlay" onClick={handleCancelDelete}>

@@ -6,7 +6,7 @@ import { Select, MenuItem } from "@mui/material";
 import axios from "axios";
 import "../styles/Ajouter.css";
 import { useDispatch } from "react-redux";
-import { baseURL } from "../../Services/utils";
+import { baseURL, isEmpty } from "../../Services/utils";
 import {
   addTachesProjet,
   getAllTachesProjet,
@@ -15,6 +15,8 @@ import {
 export default function AjouterTachesProjets() {
   const projet = JSON.parse(localStorage.getItem("projetSelect"));
   const user = JSON.parse(localStorage.getItem("login"));
+  const data = JSON.parse(localStorage.getItem("membre"));
+  console.log(data);
   // console.log(nom);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,11 +25,16 @@ export default function AjouterTachesProjets() {
   const [duree, setDuree] = useState();
   const [details, setDeatails] = useState("");
   const [statut, setStatut] = useState("Backlog");
+  const [member, setMember] = useState("Ajouter un membre");
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
 
   function handleChoix(e) {
     setStatut(e.target.value);
+  }
+
+  function handleMember(e) {
+    setMember(e.target.value);
   }
 
   const handleChangeDuree = (e) => {
@@ -56,6 +63,7 @@ export default function AjouterTachesProjets() {
         auteur: auteur,
         details: details,
         statut: statut,
+        member: member,
         duree: duree,
         projet: projet._id,
         developpeur: user._id,
@@ -125,6 +133,22 @@ export default function AjouterTachesProjets() {
           <MenuItem value={"En Test"}>En Test</MenuItem>
           <MenuItem value={"Terminer"}>Terminer</MenuItem>{" "}
         </Select>
+        {/* champs pour choisir la personne à qui sera attribué la tâche */}
+
+        <Select
+          value={member}
+          onChange={handleMember}
+          style={{ width: "100%" }}
+        >
+          {!isEmpty(data) ? (
+            data.map((data) => (
+              <MenuItem value={data.nom +" "+ data.prenom}>{data.nom}-{data.prenom}</MenuItem>
+            ))
+          ) : (
+            <option value="">Aucun nom disponible</option>
+          )}
+        </Select>
+
         <TextField
           className="input-field"
           id="outlined-basic"
