@@ -7,8 +7,8 @@ export default function Header() {
     <div className="global">
       <div className="welcome">
         <div className="seach">
-          <input type="texte" placeholder="rechercher"></input>
-          <i className="fa-solid fa-magnifying-glass"></i>
+          {/* <input type="texte" placeholder="rechercher"></input>
+          <i className="fa-solid fa-magnifying-glass"></i> */}
         </div>
 
         <div className="profil">
@@ -16,7 +16,7 @@ export default function Header() {
             <i className="fa-solid fa-bell"></i>
             <i className="fa-solid fa-message"></i>
           </div>
-          <p style={{ margin: "10px", color: "white" }}>
+          <p style={{ margin: "10px", color: " #7a7e8f;" }}>
             {" "}
             <strong>{user?.nom + " "}</strong>
             <strong>{user?.prenom}</strong>

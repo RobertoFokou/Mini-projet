@@ -21,7 +21,7 @@ import {
 } from "../../actions/ListeTaches.action";
 export default function AfficherTachesProjet() {
   const dispatch = useDispatch();
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   const [choix, setChoix] = useState("Liste");
   const [isKanban, setIsKanban] = useState(true);
@@ -137,7 +137,7 @@ export default function AfficherTachesProjet() {
         id: dataDeplacer._id,
       };
       dispatch(editTachesProjet(updateTaches));
-      dispatch(getAllTachesProjet());
+      // dispatch(getAllTachesProjet());
 
       const newDataSourceColumn = [...sourceColumn];
       const newDataSourceDestination = [...destinationColumn];
@@ -158,91 +158,154 @@ export default function AfficherTachesProjet() {
   };
 
   return (
-    <div className="App">
-      <h1>
-        vous êtes sur le projet :{" "}
-        <span style={{ color: "red" }}> {dataIdSelect.nom}</span>
-      </h1>
-      <br />
-      <h2>
-        Ce projet contient :{" "}
-        <span style={{ color: "red" }}> {finalTaille}</span> Taches
-      </h2>
-      <br />
-      <div>
-        <Link to="/dashbord/projet">
-          <button
-            type="button"
+    <div style={{ marginTop: "20px" }}>
+      <div
+        style={{
+          // border: "2px solid red",
+          marginTop: "20px",
+          display: "flex",
+          alignItems: "center",
+          padding: "10px 5px",
+        }}
+      >
+        <div>
+          <Link to="/dashbord/projet">
+            <i
+              class="fa-solid fa-circle-arrow-left"
+              style={{ cursor: "pointer", fontSize: "20px" }}
+            ></i>
+          </Link>
+          <span
             style={{
               border: "none",
-              cursor: "pointer",
               padding: "8px",
-              color: "blue",
-              fontSize: "14px",
-              margin: "10px",
+              color: "black",
+              fontSize: "18px",
+              fontWeight: "bold",
+              // margin: "10px",
             }}
           >
-            Retour
-          </button>
-        </Link>
-        <Link to="/dashbord/ajouterTachePrpjet">
-          <button
-            type="button"
-            style={{
-              border: "none",
-              cursor: "pointer",
-              padding: "8px",
-              color: "blue",
-              fontSize: "14px",
-            }}
-          >
-            Ajouter une Tache
-          </button>
-        </Link>
-        <br />
-        <br />
+            Taches du projet: <br /><br/>
+            <span
+              style={{
+                // border: "2px solid red",
+                marginLeft: "30px",
+                // backgroundColor:"black",
+                // color:"white"
+              }}
+            >
+              {dataIdSelect.nom}
+            </span>
+          </span>
+        </div>
         <div
           style={{
             width: "10%",
             marginLeft: "20%",
-            marginTop: "-60px",
+            marginLeft: "65%",
             display: "flex",
             gap: "40px",
           }}
         >
           <p>Mode d'affichage : </p>
-          <Select
-            value={choix}
-            onChange={handleChoix}
-            style={{ width: "100%" }}
-          >
-            <MenuItem value={"Liste"}>Liste</MenuItem>
-            <MenuItem value={"Kanban"}>Kanban</MenuItem>
-          </Select>
+          <div>
+            {" "}
+            <Select
+              value={choix}
+              onChange={handleChoix}
+              style={{ width: "100%" }}
+            >
+              <MenuItem value={"Liste"}>Liste</MenuItem>
+              <MenuItem value={"Kanban"}>Kanban</MenuItem>
+            </Select>
+          </div>
         </div>
+        <br />
+        <br />
       </div>
-      <br />
-      <br />
-
       {isKanban ? (
-        <div>
+        <div style={{ borderRadius: "8px", backgroundColor: "white" }}>
+          <div
+            style={{
+              // border: "2px solid red",
+              padding: "20px 10px",
+              display: "flex",
+              gap: "20px",
+            }}
+          >
+            {/* Ajout d'un new peojet */}
+            <div>
+              <Link to="/dashbord/ajouterTachePrpjet">
+                <button
+                  className="btn"
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "3px",
+                    // padding: "13px",
+                  }}
+                >
+                  Créer une nouvelle tache
+                </button>
+              </Link>
+            </div>{" "}
+            {/* Importation et exportation de projet */}
+            <div>
+              <button
+                className="btn"
+                style={{
+                  cursor: "pointer",
+                  borderRadius: "3px",
+                  // padding: "10px",
+                }}
+              >
+                Importer une liste de tache
+              </button>
+            </div>{" "}
+            {/* Rechercher un projet */}
+            <div className="seach">
+              <input type="texte" placeholder="Rechercher...."></input>
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </div>
+            {/* Nombre de projets trouvés */}
+            <div
+              style={{
+                // border: "2px solid yellow",
+                marginLeft: "25%",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <span
+                style={{
+                  color: "black",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  // border: "2px solid red",
+                  margin: "auto 0",
+                }}
+              >
+                {finalTaille} tache trouvées
+              </span>
+            </div>
+          </div>
           <TableContainer component={Paper}>
             <Table>
-              <TableHead style={{ backgroundColor: "red" }}>
+              <TableHead style={{ backgroundColor: "#fafafa" }}>
                 <TableRow>
-                  <TableCell style={{ color: "white" }}>Nom</TableCell>
-                  <TableCell style={{ color: "white" }}>Objectifs</TableCell>
-                  <TableCell style={{ color: "white" }}>Details </TableCell>
-                  <TableCell style={{ color: "white" }}>Durée</TableCell>
-                  <TableCell style={{ color: "white" }}>Statut</TableCell>
-                  <TableCell style={{ color: "white" }}>Membres</TableCell>
-                  <TableCell style={{ color: "white" }}>supprimer</TableCell>
-                  <TableCell style={{ color: "white" }}>Modifier</TableCell>
+                  <TableCell style={{ color: "black" }}>Nom</TableCell>
+                  <TableCell style={{ color: "black" }}>Objectifs</TableCell>
+                  <TableCell style={{ color: "black" }}>Details </TableCell>
+                  <TableCell style={{ color: "black" }}>Durée</TableCell>
+                  <TableCell style={{ color: "black" }}>Statut</TableCell>
+                  <TableCell style={{ color: "black" }}>Membres</TableCell>
+                  <TableCell style={{ color: "black" }}>supprimer</TableCell>
+                  <TableCell style={{ color: "black" }}>Modifier</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {!isEmpty(tasks) &&
-                  Object.keys(tasks).map((e) => {
+                  Object.keys(tasks).map((e, index) => {
                     return tasks[e].map((task) => (
                       <TachesProjet
                         key={task._id}
@@ -253,6 +316,10 @@ export default function AfficherTachesProjet() {
                         origine={task.statut}
                         membre={task.member}
                         taskId={task._id}
+                        // style={{
+                        //   backgroundColor:
+                        //     index % 2 === 0 ? "white" : "lightgray",
+                        // }}
                         // supp={deletetTaches}
                       />
                     ));

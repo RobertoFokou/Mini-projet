@@ -1,15 +1,18 @@
 .container {
   font-family: sans-serif;
-  background-color: #05153f;
+  background-color: #1f8baa;
   color: white;
   /* width: 15vw; */
   height: 100vh;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  /* border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px; */
 
   & .logo{
     display: flex;
     gap: 10px;
+    /* border: 2px solid red; */
+    padding: 10px 0;
+    background-color: white;
 
     & img{
       width: 50px;
@@ -17,10 +20,12 @@
       flex-shrink: 0;
       margin-top: 10px;
       border-radius: 50px;
+      border: 1px solid bisque;
     }
 
     & p{
       margin-top: 30px;
+      color: blue;
     }
   }
 
@@ -32,7 +37,7 @@
     display: flex;
     gap: 10px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
 
     & i {
       font-size: 20px;
@@ -41,8 +46,8 @@
 
 
   & li:hover {
-    background-color: rgb(17, 236, 9);
-    color: rgb(8, 238, 219);
+    background-color: #0f0f0f;
+    color: white;
     border-top-left-radius: 50px;
     border-top-right-radius: -20px;
     border-bottom-left-radius: 50px;
@@ -55,7 +60,7 @@
     color: red;
     font-size: 20px;
     font-weight: bold;
-    border-bottom-right-radius: 10px;
+    /* border-bottom-right-radius: 10px; */
     margin-top: 50%;
   }
 

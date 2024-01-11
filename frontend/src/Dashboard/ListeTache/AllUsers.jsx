@@ -56,15 +56,15 @@ export default function AllUsers() {
       <div>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead style={{ backgroundColor: "red" }}>
+            <TableHead style={{ backgroundColor: "#fafafa" }}>
               <TableRow>
-                <TableCell style={{ color: "white" }}>Nom</TableCell>
-                <TableCell style={{ color: "white" }}>Prenom</TableCell>
-                <TableCell style={{ color: "white" }}>Numéro </TableCell>
-                <TableCell style={{ color: "white" }}>email</TableCell>
-                <TableCell style={{ color: "white" }}>Privilège</TableCell>
-                <TableCell style={{ color: "white" }}>photo</TableCell>
-                <TableCell style={{ color: "white" }}>Bloquer</TableCell>
+                <TableCell style={{ color: "black" }}>Nom</TableCell>
+                <TableCell style={{ color: "black" }}>Prenom</TableCell>
+                <TableCell style={{ color: "black" }}>Numéro </TableCell>
+                <TableCell style={{ color: "black" }}>email</TableCell>
+                <TableCell style={{ color: "black" }}>Privilège</TableCell>
+                <TableCell style={{ color: "black" }}>photo</TableCell>
+                <TableCell style={{ color: "black" }}>Bloquer</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

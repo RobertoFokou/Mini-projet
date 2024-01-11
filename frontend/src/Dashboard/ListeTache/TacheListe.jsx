@@ -23,6 +23,7 @@ export default function TachesProjet({
   duree,
   origine,
   taskId,
+  style
 }) {
   const dispatch = useDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -85,7 +86,7 @@ export default function TachesProjet({
   };
 
   return (
-    <TableRow>
+    <TableRow style={style}>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
           <TextField

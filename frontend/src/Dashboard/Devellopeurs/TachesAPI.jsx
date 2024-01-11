@@ -84,7 +84,7 @@ export default function TachesBd({
   };
 
   return (
-    <TableRow>
+    <TableRow className="toucher" >
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
           <TextField

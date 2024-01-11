@@ -23,6 +23,7 @@ export default function ProjetBd({
   details,
   origine,
   taskId,
+  style,
 }) {
   const dispatch = useDispatch();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -31,14 +32,14 @@ export default function ProjetBd({
   const [updateDuree, setUpdateDuree] = useState(dateLivraison);
   const [updateAuteur, setUpdateAuteur] = useState(description);
   const [show, setShow] = useState(false);
-  const [rowIndex, setRowIndex] = useState(0);
+  // const [rowIndex, setRowIndex] = useState(0);
   const resetForm = () => {
     setUpdateTitre(dateCreation);
     setUpdateDetail(details);
     setUpdateDuree(dateLivraison);
     setUpdateAuteur(description);
     setShow(false);
-    setRowIndex(0);
+    // setRowIndex(0);
   };
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -86,7 +87,7 @@ export default function ProjetBd({
   };
 
   return (
-    <TableRow className={rowIndex % 2 === 0 ? "blue-row" : "gray-row"}>
+    <TableRow className="toucher" style={style}>
       <TableCell style={{ cursor: "pointer" }}>
         {show && (
           <TextField
@@ -156,6 +157,37 @@ export default function ProjetBd({
       </TableCell>
       <TableCell>{origine}</TableCell>
       <TableCell>
+        <Link to={"/dashbord/listeTache/" + taskId}>
+          <Button
+            className="btn"
+            variant="contained"
+            type="submit"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Taches
+          </Button>
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link to={"/dashbord/membres/" + taskId}>
+          <Button
+            className="btn"
+            variant="contained"
+            type="submit"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Membres
+          </Button>
+        </Link>
+      </TableCell>
+      {/* Action requises */}
+      <TableCell
+       
+      >
         {confirmDelete ? (
           <div className="dialog-overlay" onClick={handleCancelDelete}>
             <div className="dialog-content">
@@ -178,50 +210,20 @@ export default function ProjetBd({
           </div>
         ) : (
           <DeleteIcon
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", color: "red" }}
             onClick={handleDeleteClick}
           />
         )}
-      </TableCell>
-      <TableCell>
         {!show && (
           <Link to={"/dashbord/modifier/" + taskId}>
-            <ModeEditIcon style={{ cursor: "pointer" }} />
+             <ModeEditIcon style={{ cursor: "pointer" }} />
           </Link>
         )}
         {show && (
-          <span style={{ cursor: "pointer" }} onClick={handleUpdate}>
+          <span  className="edit" style={{ cursor: "pointer" }} onClick={handleUpdate}>
             <AssignmentTurnedInIcon />
           </span>
         )}
-      </TableCell>
-      <TableCell>
-        <Link to={"/dashbord/listeTache/" + taskId}>
-          <Button
-            className="btn"
-            variant="contained"
-            type="submit"
-            style={{
-              cursor: "pointer",
-            }}
-          >
-             Taches
-          </Button>
-        </Link>
-      </TableCell>
-      <TableCell>
-        <Link to={"/dashbord/membres/" + taskId}>
-          <Button
-            className="btn"
-            variant="contained"
-            type="submit"
-            style={{
-              cursor: "pointer",
-            }}
-          >
-             Membres
-          </Button>
-        </Link>
       </TableCell>
     </TableRow>
   );

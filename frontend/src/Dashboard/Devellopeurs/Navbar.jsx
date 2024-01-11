@@ -26,11 +26,11 @@ export default function Navbar() {
             <Link to="statistique" style={{ textDecoration: "none" }}>
               <li
                 style={{
-                  backgroundColor: selectedItem === 20 ? "red" : "#05153f",
+                  backgroundColor: selectedItem === 20 ? "red" : "#1f8baa",
                 }}
                 onClick={() => setSelectedItem(20)}
               >
-                <i className="fa-solid fa-car"></i>Statistiques
+                <i className="fa-solid fa-car"></i>Statistiques Globales
               </li>
             </Link>
           )}
@@ -38,7 +38,7 @@ export default function Navbar() {
             <Link to="statistique" style={{textDecoration: "none"}}>
               <li
                 style={{
-                  backgroundColor: selectedItem === 3 ? "red" : "#05153f",
+                  backgroundColor: selectedItem === 3 ? "red" : "#1f8baa",
                 }}
                 onClick={() => setSelectedItem(3)}
               >
@@ -53,7 +53,7 @@ export default function Navbar() {
           >
             <li
               style={{
-                backgroundColor: selectedItem === 2 ? "red" : "#05153f",
+                backgroundColor: selectedItem === 2 ? "red" : "#1f8baa",
               }}
               onClick={() => setSelectedItem(2)}
             >
@@ -67,7 +67,7 @@ export default function Navbar() {
           >
             <li
               style={{
-                backgroundColor: selectedItem === 9 ? "red" : "#05153f",
+                backgroundColor: selectedItem === 9 ? "red" : "#1f8baa",
               }}
               onClick={() => setSelectedItem(9)}
             >
@@ -77,7 +77,7 @@ export default function Navbar() {
           <Link to="profil" style={{ textDecoration: "none" }}>
             <li
               style={{
-                backgroundColor: selectedItem === 6 ? "red" : "#05153f",
+                backgroundColor: selectedItem === 6 ? "red" : "#1f8baa",
               }}
               onClick={() => setSelectedItem(6)}
             >
@@ -85,7 +85,7 @@ export default function Navbar() {
             </li>
           </Link>
           <li
-            style={{ backgroundColor: selectedItem === 7 ? "red" : "#05153f" }}
+            style={{ backgroundColor: selectedItem === 7 ? "red" : "#1f8baa" }}
             onClick={() => setSelectedItem(7)}
           >
             <i className="fa-solid fa-gears"></i>Parametre
@@ -94,7 +94,7 @@ export default function Navbar() {
             <i className="fa-solid fa-share-from-square"></i>Deconnexion
           </li>
           <div className="info">
-            <span>version 1.0.0</span>
+            <span>version 2.0.3</span>
             <span>2023-2024</span>
           </div>
         </ul>

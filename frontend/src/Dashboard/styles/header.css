@@ -6,11 +6,12 @@
 .global {
   top: 0;
   padding: 15px;
-  background-color: #063970;
+  background-color: white;
   height: 100%;
   /* width: 95%; */
   align-items: center;
   text-align: center;
+  box-shadow: 0px 4px 27px 0px rgba(0, 0, 0, 0.163);
 }
 
 .welcome {
@@ -31,7 +32,7 @@
       cursor: pointer;
     }
 
-    & input{
+    & input {
       margin-top: 10px;
       width: 300px;
       height: 40px;
@@ -48,13 +49,13 @@
     gap: 20px;
 
     & i {
-      color: white;
+      color: #043c77;
       border-radius: 60%;
       font-size: 15px;
       margin-top: 10px;
       padding: 10px;
       border-radius: 100px;
-      border: 1px solid white;
+      border: 1px solid #043c77;
       height: fit-content;
     }
   }
@@ -65,7 +66,7 @@
 
     & p {
       font-size: 16px;
-      color: white;
+      color: #043c77;
       line-height: 25px;
     }
 

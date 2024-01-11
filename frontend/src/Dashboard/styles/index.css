@@ -18,14 +18,14 @@
         position: absolute;
         top: 0;
         width:83%;
-        height: 10vh;
+        height: 8vh;
       }
   
       & .section_clients {
-        /* border: 2px solid red; */
-        background-color: rgb(212, 221, 230);
+        /* border: 1px solid red; */
+        background-color: #f7f8f9;
         overflow: auto;
-        margin-top: 92px;
+        margin-top: 80px;
         padding: 10px;
         height: 81.5%;
         width:98%;
